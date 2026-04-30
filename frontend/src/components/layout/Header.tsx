@@ -12,7 +12,7 @@ export function Header() {
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <NavLink to="/" className={styles.logo}>
-            Biblioteka
+            C.S. Lewis
           </NavLink>
         </motion.div>
 

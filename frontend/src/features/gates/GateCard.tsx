@@ -1,11 +1,16 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   motion,
   AnimatePresence,
   useMotionValue,
   useSpring,
   useTransform,
+  useAnimationControls,
 } from "framer-motion";
+
+const GLOW_OFF = "0 0 0 1px rgba(212,175,55,0), 0 10px 50px rgba(212,175,55,0), 0 0 80px rgba(212,175,55,0)";
+const GLOW_LO  = "0 0 0 1px rgba(212,175,55,0.55), 0 10px 50px rgba(212,175,55,0.42), 0 0 90px rgba(212,175,55,0.22)";
+const GLOW_HI  = "0 0 0 1px rgba(212,175,55,0.85), 0 14px 70px rgba(212,175,55,0.62), 0 0 130px rgba(212,175,55,0.38)";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import type { Gate } from "@/types/strapi";
@@ -63,6 +68,21 @@ export function GateCard({ gate }: Props) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [isHovered, setIsHovered] = useState(false);
   const particles = useMemo(() => makeParticles(38), []);
+  const glowControls = useAnimationControls();
+
+  useEffect(() => {
+    if (isHovered && phase === "idle") {
+      glowControls.start({
+        boxShadow: [GLOW_LO, GLOW_HI, GLOW_LO],
+        transition: { duration: 1.6, repeat: Infinity, ease: "easeInOut" },
+      });
+    } else {
+      glowControls.start({
+        boxShadow: GLOW_OFF,
+        transition: { duration: 0.4, ease: "easeOut" },
+      });
+    }
+  }, [isHovered, phase, glowControls]);
 
   // ── Cursor-tracked tilt ─────────────────────────────────────────────────
   const rawX = useMotionValue(0);
@@ -100,8 +120,10 @@ export function GateCard({ gate }: Props) {
 
   return (
     <>
-      <div
+      <motion.div
         className={styles.scene}
+        animate={glowControls}
+        initial={{ boxShadow: GLOW_OFF }}
         onClick={handleClick}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => phase === "idle" && setIsHovered(true)}
@@ -214,7 +236,7 @@ export function GateCard({ gate }: Props) {
               />
             ))}
         </AnimatePresence>
-      </div>
+      </motion.div>
 
       {createPortal(
         <AnimatePresence>

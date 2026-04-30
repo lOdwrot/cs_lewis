@@ -1,15 +1,20 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useAnimationControls } from "framer-motion";
 import type { Journey } from "@/types/strapi";
 import { strapiImageUrl } from "@/services/api";
 import { useProgressStore } from "@/store/progressStore";
 import styles from "./JourneyCard.module.scss";
+
+const GLOW_OFF = "0 0 0 1px rgba(212,175,55,0), 0 10px 50px rgba(212,175,55,0), 0 0 80px rgba(212,175,55,0)";
+const GLOW_LO  = "0 0 0 1px rgba(212,175,55,0.55), 0 10px 50px rgba(212,175,55,0.42), 0 0 90px rgba(212,175,55,0.22)";
+const GLOW_HI  = "0 0 0 1px rgba(212,175,55,0.85), 0 14px 70px rgba(212,175,55,0.62), 0 0 130px rgba(212,175,55,0.38)";
 
 interface Props {
   journey: Journey;
 }
 
 export function JourneyCard({ journey }: Props) {
+  const glowControls = useAnimationControls();
   const isStepComplete = useProgressStore((s) => s.isStepComplete);
   const steps = journey.steps ?? [];
   const totalSteps = steps.length;
@@ -22,8 +27,18 @@ export function JourneyCard({ journey }: Props) {
 
   return (
     <motion.div
-      whileHover={{ y: -3 }}
-      transition={{ type: "spring", stiffness: 320, damping: 24 }}
+      animate={glowControls}
+      initial={{ boxShadow: GLOW_OFF }}
+      whileHover={{ y: -5 }}
+      transition={{ y: { type: "spring", stiffness: 320, damping: 24 } }}
+      onHoverStart={() => glowControls.start({
+        boxShadow: [GLOW_LO, GLOW_HI, GLOW_LO],
+        transition: { duration: 1.6, repeat: Infinity, ease: "easeInOut" },
+      })}
+      onHoverEnd={() => glowControls.start({
+        boxShadow: GLOW_OFF,
+        transition: { duration: 0.4, ease: "easeOut" },
+      })}
     >
       <Link to={`/journey/${journey.slug}`} className={styles.card}>
         <div className={styles.imageWrap}>
