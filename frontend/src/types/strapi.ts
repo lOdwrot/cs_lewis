@@ -77,10 +77,13 @@ export interface Journey {
   slug: string;
   description: string;
   image: StrapiImage | null;
+  difficulty?: Difficulty;
   steps?: Step[];
 }
 
 export type StepType = "text" | "podcast" | "quiz";
+
+export type Difficulty = "easy" | "medium" | "hard";
 
 export interface Step {
   id: number;

@@ -508,6 +508,7 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
+    difficulty: Schema.Attribute.Enumeration<['easy', 'medium', 'hard']>;
     gates: Schema.Attribute.Relation<'manyToMany', 'api::gate.gate'>;
     image: Schema.Attribute.Media<'images'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;

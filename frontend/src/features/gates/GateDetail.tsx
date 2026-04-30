@@ -1,10 +1,19 @@
 import { useParams, Link } from "react-router-dom";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
 import { useFetch } from "@/hooks/useFetch";
 import { getGate } from "@/services/gates.service";
+import type { Difficulty } from "@/types/strapi";
 import styles from "./GateDetail.module.scss";
+
+const DIFFICULTY_FILTERS: { value: Difficulty; label: string; icon: string }[] =
+  [
+    { value: "easy", label: "Łatwa", icon: "eco" },
+    { value: "medium", label: "Średnia", icon: "bolt" },
+    { value: "hard", label: "Trudna", icon: "local_fire_department" },
+  ];
 
 const gridVariants = {
   hidden: {},
@@ -20,13 +29,24 @@ const cardVariants = {
     y: 0,
     rotateX: 0,
     scale: 1,
-    transition: { type: "spring" as const, stiffness: 160, damping: 18, mass: 0.9 },
+    transition: {
+      type: "spring" as const,
+      stiffness: 160,
+      damping: 18,
+      mass: 0.9,
+    },
   },
 };
 
 export function GateDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: gate, loading } = useFetch(() => getGate(slug!), [slug]);
+  const [activeFilter, setActiveFilter] = useState<Difficulty | null>(null);
+
+  const journeys = gate?.journeys ?? [];
+  const filteredJourneys = activeFilter
+    ? journeys.filter((j) => j.difficulty === activeFilter)
+    : journeys;
 
   return (
     <PageTransition>
@@ -78,6 +98,25 @@ export function GateDetail() {
               <div className={styles.divider} />
             </section>
 
+            <div className={styles.filterBar}>
+              <span className={styles.filterLabel}>
+                Filtruj po poziomie trudności przygody
+              </span>
+              {DIFFICULTY_FILTERS.map((f) => (
+                <button
+                  key={f.value}
+                  className={`${styles.filterTag} ${styles[f.value]} ${activeFilter === f.value ? styles.active : ""}`}
+                  onClick={() =>
+                    setActiveFilter(activeFilter === f.value ? null : f.value)
+                  }
+                  type="button"
+                >
+                  <span className="material-symbols-outlined">{f.icon}</span>
+                  {f.label}
+                </button>
+              ))}
+            </div>
+
             <motion.div
               className={styles.grid}
               style={{ perspective: 1200 }}
@@ -85,7 +124,7 @@ export function GateDetail() {
               initial="hidden"
               animate="show"
             >
-              {(gate.journeys ?? []).map((journey) => (
+              {filteredJourneys.map((journey) => (
                 <motion.div
                   key={journey.id}
                   variants={cardVariants}

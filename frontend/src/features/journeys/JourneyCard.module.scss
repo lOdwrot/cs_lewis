@@ -116,11 +116,46 @@
   font-weight: 500;
   letter-spacing: 0.04em;
   color: $secondary;
-  margin-bottom: 0.875rem;
+  margin-bottom: 0.5rem;
 
   span {
     font-size: 0.9rem;
     color: $gold-dark;
+  }
+}
+
+.difficultyBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.55rem 0.2rem 0.4rem;
+  border-radius: 999px;
+  margin-bottom: 0.875rem;
+  width: fit-content;
+
+  span {
+    font-size: 0.9rem;
+  }
+
+  &.easy {
+    background: rgba(74, 172, 74, 0.12);
+    color: #2d7a2d;
+    span { color: #3a963a; }
+  }
+
+  &.medium {
+    background: rgba(230, 150, 30, 0.12);
+    color: #a86000;
+    span { color: #c07000; }
+  }
+
+  &.hard {
+    background: rgba(220, 60, 60, 0.12);
+    color: #b02020;
+    span { color: #c83030; }
   }
 }
 

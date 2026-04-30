@@ -1,6 +1,11 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, useAnimationControls, useMotionValue, useSpring } from "framer-motion";
+import {
+  motion,
+  useAnimationControls,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 import type { Journey } from "@/types/strapi";
 import { strapiImageUrl } from "@/services/api";
 import { useProgressStore } from "@/store/progressStore";
@@ -8,9 +13,24 @@ import styles from "./JourneyCard.module.scss";
 
 const TILT_SPRING = { stiffness: 280, damping: 26, mass: 0.6 };
 
-const GLOW_OFF = "0 0 0 1px rgba(212,175,55,0), 0 10px 50px rgba(212,175,55,0), 0 0 80px rgba(212,175,55,0)";
-const GLOW_LO  = "0 0 0 1px rgba(212,175,55,0.55), 0 10px 50px rgba(212,175,55,0.42), 0 0 90px rgba(212,175,55,0.22)";
-const GLOW_HI  = "0 0 0 1px rgba(212,175,55,0.85), 0 14px 70px rgba(212,175,55,0.62), 0 0 130px rgba(212,175,55,0.38)";
+const GLOW_OFF =
+  "0 0 0 1px rgba(212,175,55,0), 0 10px 50px rgba(212,175,55,0), 0 0 80px rgba(212,175,55,0)";
+const GLOW_LO =
+  "0 0 0 1px rgba(212,175,55,0.55), 0 10px 50px rgba(212,175,55,0.42), 0 0 90px rgba(212,175,55,0.22)";
+const GLOW_HI =
+  "0 0 0 1px rgba(212,175,55,0.85), 0 14px 70px rgba(212,175,55,0.62), 0 0 130px rgba(212,175,55,0.38)";
+
+const DIFFICULTY_LABEL: Record<string, string> = {
+  easy: "Łatwa",
+  medium: "Średnia",
+  hard: "Trudna",
+};
+
+const DIFFICULTY_ICON: Record<string, string> = {
+  easy: "eco",
+  medium: "bolt",
+  hard: "local_fire_department",
+};
 
 interface Props {
   journey: Journey;
@@ -56,14 +76,18 @@ export function JourneyCard({ journey }: Props) {
       style={{ rotateX, rotateY, transformPerspective: 900 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      onHoverStart={() => glowControls.start({
-        boxShadow: [GLOW_LO, GLOW_HI, GLOW_LO],
-        transition: { duration: 1.6, repeat: Infinity, ease: "easeInOut" },
-      })}
-      onHoverEnd={() => glowControls.start({
-        boxShadow: GLOW_OFF,
-        transition: { duration: 0.4, ease: "easeOut" },
-      })}
+      onHoverStart={() =>
+        glowControls.start({
+          boxShadow: [GLOW_LO, GLOW_HI, GLOW_LO],
+          transition: { duration: 1.6, repeat: Infinity, ease: "easeInOut" },
+        })
+      }
+      onHoverEnd={() =>
+        glowControls.start({
+          boxShadow: GLOW_OFF,
+          transition: { duration: 0.4, ease: "easeOut" },
+        })
+      }
     >
       <Link to={`/journey/${journey.slug}`} className={styles.card}>
         <div className={styles.imageWrap}>
@@ -92,6 +116,16 @@ export function JourneyCard({ journey }: Props) {
             <div className={styles.timeLabel}>
               <span className="material-symbols-outlined">schedule</span>
               {totalTime} min
+            </div>
+          )}
+          {journey.difficulty && (
+            <div
+              className={`${styles.difficultyBadge} ${styles[journey.difficulty]}`}
+            >
+              <span className="material-symbols-outlined">
+                {DIFFICULTY_ICON[journey.difficulty]}
+              </span>
+              {DIFFICULTY_LABEL[journey.difficulty]}
             </div>
           )}
           <p className={styles.description}>{journey.description}</p>

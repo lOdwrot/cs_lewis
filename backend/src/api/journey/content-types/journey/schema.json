@@ -41,6 +41,11 @@
       "relation": "manyToMany",
       "target": "api::gate.gate",
       "inversedBy": "journeys"
+    },
+    "difficulty": {
+      "type": "enumeration",
+      "enum": ["easy", "medium", "hard"],
+      "required": false
     }
   }
 }
