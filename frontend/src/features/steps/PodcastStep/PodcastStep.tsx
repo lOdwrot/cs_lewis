@@ -136,9 +136,11 @@ export function PodcastStep({ step }: Props) {
 
               {podcastContent ? (
                 <AudioPlayer
-                  src={podcastContent.audioFile
-                    ? strapiImageUrl(podcastContent.audioFile.url)
-                    : (podcastContent.audioUrl ?? "")}
+                  src={
+                    podcastContent.audioFile
+                      ? strapiImageUrl(podcastContent.audioFile.url)
+                      : (podcastContent.audioUrl ?? "")
+                  }
                   stepId={step.documentId}
                   onComplete={handleComplete}
                 />
