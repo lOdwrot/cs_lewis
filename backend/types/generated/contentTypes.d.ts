@@ -475,6 +475,8 @@ export interface ApiGateGate extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
+    enterButtonLabel: Schema.Attribute.String;
+    iconCharacter: Schema.Attribute.String;
     image: Schema.Attribute.Media<'images'>;
     journeys: Schema.Attribute.Relation<'manyToMany', 'api::journey.journey'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;

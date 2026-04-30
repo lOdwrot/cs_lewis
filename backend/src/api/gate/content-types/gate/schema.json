@@ -30,6 +30,12 @@
       "required": false,
       "allowedTypes": ["images"]
     },
+    "enterButtonLabel": {
+      "type": "string"
+    },
+    "iconCharacter": {
+      "type": "string"
+    },
     "journeys": {
       "type": "relation",
       "relation": "manyToMany",

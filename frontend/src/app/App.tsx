@@ -27,8 +27,10 @@ export default function App() {
   return (
     <BrowserRouter>
       <ParticleField />
-      <Header />
-      <AnimatedRoutes />
+      <div style={{ position: "relative", zIndex: 2 }}>
+        <Header />
+        <AnimatedRoutes />
+      </div>
     </BrowserRouter>
   );
 }

@@ -1,5 +1,11 @@
 import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import type { Gate } from "@/types/strapi";
@@ -33,6 +39,21 @@ function makeParticles(n: number): Particle[] {
   });
 }
 
+// Icon float variants — mirror repeat creates smooth infinite oscillation
+const iconVariants = {
+  idle: { y: 0, scale: 1 },
+  floating: {
+    y: [0, -14],
+    scale: [1, 1.07],
+    transition: {
+      duration: 1.4,
+      repeat: Infinity,
+      repeatType: "mirror" as const,
+      ease: "easeInOut" as const,
+    },
+  },
+};
+
 interface Props {
   gate: Gate;
 }
@@ -40,10 +61,38 @@ interface Props {
 export function GateCard({ gate }: Props) {
   const navigate = useNavigate();
   const [phase, setPhase] = useState<Phase>("idle");
+  const [isHovered, setIsHovered] = useState(false);
   const particles = useMemo(() => makeParticles(38), []);
+
+  // ── Cursor-tracked tilt ─────────────────────────────────────────────────
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  // Spring smoothing so tilt glides rather than snapping
+  const springX = useSpring(rawX, { stiffness: 180, damping: 24 });
+  const springY = useSpring(rawY, { stiffness: 180, damping: 24 });
+  // Map normalised cursor offset (−0.5 … 0.5) to rotation degrees
+  const rotateX = useTransform(springY, [-0.5, 0.5], [9, -9]);
+  const rotateY = useTransform(springX, [-0.5, 0.5], [-9, 9]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (phase !== "idle") return;
+    const r = e.currentTarget.getBoundingClientRect();
+    rawX.set((e.clientX - r.left) / r.width - 0.5);
+    rawY.set((e.clientY - r.top) / r.height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    rawX.set(0);
+    rawY.set(0);
+    setIsHovered(false);
+  };
 
   const handleClick = () => {
     if (phase !== "idle") return;
+    // Snap tilt back immediately so opening animation is clean
+    rawX.set(0);
+    rawY.set(0);
+    setIsHovered(false);
     setPhase("open");
     setTimeout(() => setPhase("exit"), 1150);
     setTimeout(() => navigate(`/gate/${gate.slug}`), 1700);
@@ -51,9 +100,21 @@ export function GateCard({ gate }: Props) {
 
   return (
     <>
-      <div className={styles.scene} onClick={handleClick}>
+      <div
+        className={styles.scene}
+        onClick={handleClick}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => phase === "idle" && setIsHovered(true)}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* Book body — tilt follows cursor, preserve-3d lets cover compose */}
         <motion.div
           className={styles.book}
+          style={{
+            rotateX,
+            rotateY,
+            transformStyle: "preserve-3d",
+          }}
           whileHover={phase === "idle" ? { y: -6 } : {}}
           transition={{ type: "spring", stiffness: 280, damping: 22 }}
         >
@@ -80,17 +141,26 @@ export function GateCard({ gate }: Props) {
             animate={phase !== "idle" ? { rotateY: -180 } : { rotateY: 0 }}
             transition={{ duration: 1.0, ease: [0.4, 0, 0.15, 1] }}
           >
-            {/* Front face — the visible ivory/gold cover */}
+            {/* Front face — ivory/gold cover */}
             <div className={styles.coverFront}>
               <div className={styles.spine} />
               <div className={styles.face}>
-                <div className={styles.iconWrap}>
+                {/* Icon floats when the card is hovered */}
+                <motion.div
+                  className={styles.iconWrap}
+                  variants={iconVariants}
+                  animate={isHovered && phase === "idle" ? "floating" : "idle"}
+                >
                   {gate.image ? (
                     <img
                       src={strapiImageUrl(gate.image.url)}
                       alt={gate.image.alternativeText ?? gate.title}
                       className={styles.image}
                     />
+                  ) : gate.iconCharacter ? (
+                    <span className={styles.iconCharacter}>
+                      {gate.iconCharacter}
+                    </span>
                   ) : (
                     <span
                       className={`material-symbols-outlined ${styles.iconFallback}`}
@@ -98,10 +168,12 @@ export function GateCard({ gate }: Props) {
                       auto_stories
                     </span>
                   )}
-                </div>
+                </motion.div>
                 <h3 className={styles.title}>{gate.title}</h3>
                 <p className={styles.description}>{gate.description}</p>
-                <div className={styles.cta}>Open</div>
+                <div className={styles.cta}>
+                  {gate.enterButtonLabel ?? "Open"}
+                </div>
               </div>
             </div>
 
