@@ -24,8 +24,7 @@ const stepCardVariants = {
     },
   },
 };
-import { useFetch } from "@/hooks/useFetch";
-import { getJourney } from "@/services/journeys.service";
+import { useJourneyQuery } from "@/hooks/queries";
 import { useProgressStore } from "@/store/progressStore";
 import { strapiImageUrl } from "@/services/api";
 import type { StepType } from "@/types/strapi";
@@ -47,7 +46,7 @@ const TYPE_LABEL: Record<StepType, string> = {
 
 export function JourneyDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: journey, loading } = useFetch(() => getJourney(slug!), [slug]);
+  const { data: journey, isLoading: loading } = useJourneyQuery(slug!);
   const isStepComplete = useProgressStore((s) => s.isStepComplete);
 
   const steps = journey?.steps ?? [];

@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { GateCard } from "./GateCard";
-import { useFetch } from "@/hooks/useFetch";
-import { getGates } from "@/services/gates.service";
+import { useGatesQuery } from "@/hooks/queries";
 import styles from "./GatesPage.module.scss";
 
 const gridVariants = {
@@ -37,7 +36,7 @@ const cardVariants = {
 };
 
 export function GatesPage() {
-  const { data: gates, loading } = useFetch(getGates);
+  const { data: gates, isLoading: loading } = useGatesQuery();
 
   return (
     <PageTransition>

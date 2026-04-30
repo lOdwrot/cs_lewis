@@ -1,12 +1,10 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
-import { getJourneys } from "@/services/journeys.service";
-import type { Difficulty, Journey } from "@/types/strapi";
+import { useJourneysInfiniteQuery } from "@/hooks/queries";
+import type { Difficulty } from "@/types/strapi";
 import styles from "./AllJourneysPage.module.scss";
-
-const PAGE_SIZE = 6;
 
 const DIFFICULTY_FILTERS: { value: Difficulty; label: string; icon: string }[] =
   [
@@ -30,76 +28,45 @@ export function AllJourneysPage() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
 
-  const [journeys, setJourneys] = useState<Journey[]>([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [totalCount, setTotalCount] = useState<number | null>(null);
-
   // ── Debounce ────────────────────────────────────────────────────────────
-  useEffect(() => {
-    const t = setTimeout(() => setDebouncedSearch(search.trim()), 400);
-    return () => clearTimeout(t);
-  }, [search]);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setDebouncedSearch(value.trim()), 400);
+  };
 
-  // ── Reset list when filters change ──────────────────────────────────────
-  const prevFilterRef = useRef({ search: debouncedSearch, difficulty });
-  useEffect(() => {
-    const prev = prevFilterRef.current;
-    if (prev.search !== debouncedSearch || prev.difficulty !== difficulty) {
-      prevFilterRef.current = { search: debouncedSearch, difficulty };
-      setJourneys([]);
-      setPage(1);
-      setHasMore(true);
-      setTotalCount(null);
-    }
-  }, [debouncedSearch, difficulty]);
+  // ── Data ─────────────────────────────────────────────────────────────────
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useJourneysInfiniteQuery(debouncedSearch, difficulty);
 
-  // ── Fetch ────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    getJourneys({
-      page,
-      pageSize: PAGE_SIZE,
-      search: debouncedSearch,
-      difficulty,
-    })
-      .then((result) => {
-        if (cancelled) return;
-        setJourneys((prev) =>
-          page === 1 ? result.data : [...prev, ...result.data],
-        );
-        setHasMore(result.pagination.page < result.pagination.pageCount);
-        setTotalCount(result.pagination.total);
-      })
-      .catch(() => {})
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [page, debouncedSearch, difficulty]);
+  const journeys = data?.pages.flatMap((p) => p.data) ?? [];
+  const totalCount = data?.pages[0]?.pagination.total ?? null;
+  const loading = isLoading || isFetchingNextPage;
 
   // ── Intersection Observer sentinel ──────────────────────────────────────
   const observerRef = useRef<IntersectionObserver | null>(null);
   const sentinelRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (observerRef.current) observerRef.current.disconnect();
-      if (!node || !hasMore || loading) return;
+      if (!node || !hasNextPage || isFetchingNextPage) return;
       observerRef.current = new IntersectionObserver(
         ([entry]) => {
-          if (entry.isIntersecting) setPage((p) => p + 1);
+          if (entry.isIntersecting) fetchNextPage();
         },
         { rootMargin: "200px" },
       );
       observerRef.current.observe(node);
     },
-    [hasMore, loading],
+    [hasNextPage, isFetchingNextPage, fetchNextPage],
   );
 
-  const isEmpty = !loading && journeys.length === 0;
+  const isEmpty = !isLoading && journeys.length === 0;
 
   return (
     <PageTransition>
@@ -129,14 +96,14 @@ export function AllJourneysPage() {
             type="search"
             placeholder="Szukaj przygody…"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             autoComplete="off"
           />
           {search && (
             <button
               className={styles.searchClear}
               type="button"
-              onClick={() => setSearch("")}
+              onClick={() => handleSearchChange("")}
               aria-label="Wyczyść"
             >
               <span className="material-symbols-outlined">close</span>
@@ -209,12 +176,12 @@ export function AllJourneysPage() {
         )}
 
         {/* ── Sentinel for infinite scroll ── */}
-        {!loading && hasMore && (
+        {!loading && hasNextPage && (
           <div ref={sentinelRef} className={styles.sentinel} />
         )}
 
         {/* ── End of list ── */}
-        {!hasMore && journeys.length > 0 && (
+        {!hasNextPage && journeys.length > 0 && (
           <p className={styles.endMessage}>
             <span className="material-symbols-outlined">auto_stories</span>
             Wszystkie przygody załadowane

@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useFetch } from "@/hooks/useFetch";
-import { getStep } from "@/services/steps.service";
+import { useStepQuery } from "@/hooks/queries";
 import { TextVideoStep } from "./TextVideoStep/TextVideoStep";
 import { PodcastStep } from "./PodcastStep/PodcastStep";
 import { QuizStep } from "./QuizStep/QuizStep";
@@ -8,7 +7,7 @@ import { PageTransition } from "@/components/animations/PageTransition";
 
 export function StepRouter() {
   const { id } = useParams<{ id: string }>();
-  const { data: step, loading, error } = useFetch(() => getStep(id!), [id]);
+  const { data: step, isLoading: loading, error } = useStepQuery(id!);
 
   if (loading) {
     return (
@@ -28,7 +27,7 @@ export function StepRouter() {
         <div
           style={{ textAlign: "center", paddingTop: "6rem", color: "#ba1a1a" }}
         >
-          {error ?? "Nie znaleziono kroku"}
+          {error?.message ?? "Nie znaleziono kroku"}
         </div>
       </PageTransition>
     );

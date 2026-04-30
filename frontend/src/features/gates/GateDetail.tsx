@@ -3,8 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
-import { useFetch } from "@/hooks/useFetch";
-import { getGate } from "@/services/gates.service";
+import { useGateQuery } from "@/hooks/queries";
 import type { Difficulty } from "@/types/strapi";
 import styles from "./GateDetail.module.scss";
 
@@ -40,7 +39,7 @@ const cardVariants = {
 
 export function GateDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: gate, loading } = useFetch(() => getGate(slug!), [slug]);
+  const { data: gate, isLoading: loading } = useGateQuery(slug!);
   const [activeFilter, setActiveFilter] = useState<Difficulty | null>(null);
 
   const journeys = gate?.journeys ?? [];

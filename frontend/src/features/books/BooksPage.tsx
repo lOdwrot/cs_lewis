@@ -19,13 +19,12 @@ const cardVariants = {
     transition: { type: "spring" as const, stiffness: 160, damping: 18, mass: 0.9 },
   },
 };
-import { useFetch } from "@/hooks/useFetch";
-import { getBooks } from "@/services/books.service";
+import { useBooksQuery } from "@/hooks/queries";
 import { strapiImageUrl } from "@/services/api";
 import styles from "./BooksPage.module.scss";
 
 export function BooksPage() {
-  const { data: books, loading } = useFetch(getBooks);
+  const { data: books, isLoading: loading } = useBooksQuery();
 
   return (
     <PageTransition>
