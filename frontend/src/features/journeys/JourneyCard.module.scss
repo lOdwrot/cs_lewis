@@ -55,6 +55,20 @@
   font-weight: 500;
   color: $on-surface;
   margin-bottom: 0.625rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.completeBadge {
+  display: inline-flex;
+  align-items: center;
+  color: $gold;
+  flex-shrink: 0;
+
+  .material-symbols-outlined {
+    font-size: 1.1rem;
+  }
 }
 
 .description {
@@ -94,6 +108,20 @@
   letter-spacing: 0.04em;
 }
 
+.timeLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: $secondary;
+  text-transform: none;
+  margin-right: auto;
+
+  span { font-size: 0.9rem; }
+}
+
 .cta {
   display: flex;
   align-items: center;
@@ -106,6 +134,7 @@
   text-transform: uppercase;
   color: $gold-dark;
   transition: color $transition-fast;
+  gap: 0.5rem;
 
   .card:hover & {
     color: $gold;

@@ -112,6 +112,7 @@ async function seedIfEmpty(strapi: Core.Strapi) {
       title: "Narodziny Mitu",
       description: "Odkrycie przez Lewisa siły mitologii jako drogi do prawdy.",
       type: "text" as const,
+      estimatedTime: 10,
       tags: ["mitologia", "wyobraźnia"],
       content: [
         {
@@ -138,6 +139,7 @@ Ten wgląd przemienił ateizm Lewisa. Jeśli mit wskazuje ku prawdzie, a Ewangel
       description:
         "Esej dźwiękowy o przeszywającej tęsknocie, którą Lewis uznał za wskazówkę ku boskości.",
       type: "podcast" as const,
+      estimatedTime: 15,
       tags: ["tęsknota", "radość"],
       content: [
         {
@@ -160,6 +162,7 @@ Rozwiązanie przyszło dopiero wtedy, gdy uświadomił sobie, że to pragnienie 
       title: "Quiz: Kroniki Narnii",
       description: "Sprawdź swoją wiedzę o Narnii i wyobraźni C.S. Lewisa.",
       type: "quiz" as const,
+      estimatedTime: 8,
       tags: ["narnia", "quiz"],
       content: [
         {
@@ -210,6 +213,7 @@ Rozwiązanie przyszło dopiero wtedy, gdy uświadomił sobie, że to pragnienie 
       description:
         "Filozoficzny pojedynek Lewisa z Owenem Barfieldem, który rozbił jego młodzieńczy racjonalizm.",
       type: "text" as const,
+      estimatedTime: 12,
       tags: ["filozofia", "rozum"],
       content: [
         {
@@ -243,6 +247,7 @@ Lewis rozwinął to później we własny **Argument z Rozumu** w *Cudach* — by
       description:
         "Odtworzone rozmowy z wtorkowych porannych spotkań Inklingów w Eagle and Child.",
       type: "podcast" as const,
+      estimatedTime: 20,
       tags: ["inklingowie", "oxford"],
       content: [
         {
@@ -268,6 +273,7 @@ Lewis powiedział później, że przyjaźń z Tolkienem była „najbardziej zgo
       description:
         "Pytania o przełomowe dzieło apologetyki chrześcijańskiej Lewisa.",
       type: "quiz" as const,
+      estimatedTime: 10,
       tags: ["apologetyka", "quiz"],
       content: [
         {
@@ -330,6 +336,7 @@ Lewis powiedział później, że przyjaźń z Tolkienem była „najbardziej zgo
       description:
         "Słynny spacer wzdłuż Addison's Walk, podczas którego Tolkien i Dyson przekonali Lewisa, że mit może być prawdziwy.",
       type: "text" as const,
+      estimatedTime: 8,
       tags: ["nawrócenie", "wiara"],
       content: [
         {
@@ -360,6 +367,7 @@ Dwanaście dni później Lewis napisał do swojego przyjaciela Arthura Greevesa:
       description:
         "Pastoralne i filozoficzne zaangażowanie Lewisa w temat cierpienia.",
       type: "podcast" as const,
+      estimatedTime: 18,
       tags: ["cierpienie", "wiara"],
       content: [
         {
@@ -387,6 +395,7 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
       description:
         "Sprawdź swoje rozumienie integracji wiary i rozumu przez Lewisa.",
       type: "quiz" as const,
+      estimatedTime: 8,
       tags: ["wiara", "quiz"],
       content: [
         {

@@ -109,6 +109,12 @@ export function QuizStep({ step }: Props) {
             <span className="material-symbols-outlined">quiz</span>
             Misja Wiedzy
           </span>
+          {step.estimatedTime && (
+            <span className={styles.badge}>
+              <span className="material-symbols-outlined">schedule</span>
+              {step.estimatedTime} min
+            </span>
+          )}
         </div>
 
         {/* Progress */}

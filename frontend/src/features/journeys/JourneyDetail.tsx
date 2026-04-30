@@ -30,6 +30,7 @@ export function JourneyDetail() {
 
   const steps = journey?.steps ?? [];
   const allComplete = steps.length > 0 && steps.every((s) => isStepComplete(s.documentId));
+  const totalTime = steps.reduce((sum, s) => sum + (s.estimatedTime ?? 0), 0);
 
   return (
     <PageTransition>
@@ -72,6 +73,12 @@ export function JourneyDetail() {
               {journey.description && (
                 <p className={styles.headerDesc}>{journey.description}</p>
               )}
+              {totalTime > 0 && (
+                <div className={styles.headerTime}>
+                  <span className="material-symbols-outlined">schedule</span>
+                  {totalTime} min
+                </div>
+              )}
             </motion.header>
 
             <div className={styles.timeline}>
@@ -95,10 +102,13 @@ export function JourneyDetail() {
                           to={`/step/${step.documentId}`}
                           className={styles.card}
                           whileHover={{
+                            scale: 1.018,
+                            x: 4,
                             boxShadow:
-                              "0 0 0 2px rgba(212,175,55,0.55), 0 0 35px rgba(212,175,55,0.3), 0 4px 24px rgba(0,0,0,0.06)",
+                              "-10px 0 28px rgba(212,175,55,0.22), 0 12px 40px rgba(0,0,0,0.12)",
                           }}
-                          transition={{ duration: 0.22 }}
+                          transition={{ duration: 0.25, ease: "easeOut" }}
+                          style={{ transformOrigin: "left center" }}
                         >
                           <div className={styles.cardInner}>
                             <div className={styles.cardBody}>
@@ -131,6 +141,16 @@ export function JourneyDetail() {
                                   </span>
                                   {TYPE_LABEL[step.type]}
                                 </span>
+                                {step.estimatedTime && (
+                                  <span className={styles.tag}>
+                                    <span
+                                      className={`material-symbols-outlined ${styles.tagIcon}`}
+                                    >
+                                      schedule
+                                    </span>
+                                    {step.estimatedTime} min
+                                  </span>
+                                )}
                                 {step.tags?.map((tag) => (
                                   <span key={tag} className={styles.tag}>
                                     {tag}

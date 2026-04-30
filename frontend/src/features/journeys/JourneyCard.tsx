@@ -15,6 +15,8 @@ export function JourneyCard({ journey }: Props) {
   const totalSteps = steps.length;
   const completedCount = steps.filter((s) => isStepComplete(s.documentId)).length;
   const progressPct = totalSteps > 0 ? (completedCount / totalSteps) * 100 : 0;
+  const isJourneyComplete = totalSteps > 0 && completedCount === totalSteps;
+  const totalTime = steps.reduce((sum, s) => sum + (s.estimatedTime ?? 0), 0);
 
   return (
     <motion.div
@@ -36,7 +38,14 @@ export function JourneyCard({ journey }: Props) {
           )}
         </div>
         <div className={styles.body}>
-          <h3 className={styles.title}>{journey.title}</h3>
+          <h3 className={styles.title}>
+            {journey.title}
+            {isJourneyComplete && (
+              <span className={styles.completeBadge} title="Ukończono">
+                <span className="material-symbols-outlined">check_circle</span>
+              </span>
+            )}
+          </h3>
           <p className={styles.description}>{journey.description}</p>
           {totalSteps > 0 && (
             <div className={styles.progress}>
@@ -52,6 +61,12 @@ export function JourneyCard({ journey }: Props) {
             </div>
           )}
           <div className={styles.cta}>
+            {totalTime > 0 && (
+              <span className={styles.timeLabel}>
+                <span className="material-symbols-outlined">schedule</span>
+                {totalTime} min
+              </span>
+            )}
             <span>Przejdź do Podróży</span>
             <span className="material-symbols-outlined">arrow_forward</span>
           </div>

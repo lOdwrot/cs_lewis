@@ -34,6 +34,10 @@
     "tags": {
       "type": "json"
     },
+    "estimatedTime": {
+      "type": "integer",
+      "required": false
+    },
     "content": {
       "type": "dynamiczone",
       "components": ["step.text-content", "step.podcast-content", "step.quiz-content"]

@@ -54,6 +54,27 @@ export function PodcastStep({ step }: Props) {
           >
             {step.title}
           </p>
+          {step.estimatedTime && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                color: "#a08840",
+                fontSize: "0.8125rem",
+                fontWeight: 500,
+                marginTop: "1rem",
+              }}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{ fontSize: "1rem" }}
+              >
+                schedule
+              </span>
+              {step.estimatedTime} min
+            </div>
+          )}
           {done && (
             <motion.div
               initial={{ opacity: 0, y: 8 }}

@@ -89,6 +89,7 @@ export interface Step {
   image: StrapiImage | null;
   type: StepType;
   tags: string[];
+  estimatedTime: number | null;
   content: StepContent[];
 }
 

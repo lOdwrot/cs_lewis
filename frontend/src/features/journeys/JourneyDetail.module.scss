@@ -54,6 +54,20 @@
   margin: 0 auto;
 }
 
+.headerTime {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $gold-dark;
+  letter-spacing: 0.06em;
+
+  span { font-size: 1rem; }
+}
+
 // Timeline
 .timeline {
   position: relative;
@@ -79,6 +93,26 @@
 .stepCard {
   position: relative;
   padding-left: 4.75rem;
+
+  // glowing tail segment that lights up on hover
+  &::before {
+    content: '';
+    position: absolute;
+    left: calc(1.75rem - 1px);
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    box-shadow: none;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &:hover::before {
+    background: rgba($gold, 0.7);
+    box-shadow: 0 0 8px rgba($gold, 0.55), 0 0 20px rgba($gold, 0.25);
+  }
 }
 
 .dot {
@@ -90,10 +124,11 @@
   border-radius: 50%;
   background: $gold;
   box-shadow: 0 0 0 4px rgba($gold, 0.12);
-  transition: box-shadow $transition-fast;
+  transition: box-shadow $transition-fast, transform $transition-fast;
 
   .stepCard:hover & {
-    box-shadow: 0 0 0 6px rgba($gold, 0.2);
+    box-shadow: 0 0 0 8px rgba($gold, 0.22), 0 0 14px rgba($gold, 0.4);
+    transform: scale(1.3);
   }
 
   &.completed {
@@ -107,11 +142,27 @@
   border: 1px solid rgba($gold, 0.18);
   padding: 1.5rem;
   overflow: hidden;
+  position: relative;
   transition: border-color $transition-mid;
   text-decoration: none;
 
+  // radial glow overlay that fades in on hover
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 25% 50%, rgba($gold, 0.07) 0%, transparent 68%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
   &:hover {
     border-color: rgba($gold, 0.55);
+    border-left-color: rgba($gold, 0.18);
+
+    &::after { opacity: 1; }
   }
 }
 
@@ -134,7 +185,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.875rem;
 }
 
 .stopNumber {
@@ -145,6 +196,12 @@
   color: $gold-dark;
   padding: 0.15rem 0.5rem;
   border-radius: 2px;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+
+  .card:hover & {
+    background: rgba($gold, 0.2);
+    box-shadow: 0 0 8px rgba($gold, 0.22);
+  }
 }
 
 .cardTitle {
@@ -153,6 +210,16 @@
   font-weight: 500;
   color: $on-surface;
   margin-bottom: 0.5rem;
+  display: inline-block;
+  transition: transform 0.25s ease, text-shadow 0.25s ease;
+  position: relative;
+  z-index: 1;
+
+  .card:hover & {
+    transform: scale(1.025);
+    transform-origin: left center;
+    text-shadow: 0 0 18px rgba($gold, 0.2);
+  }
 }
 
 .cardDesc {
@@ -160,6 +227,14 @@
   color: $secondary;
   line-height: 1.6;
   margin-bottom: 1rem;
+  transition: transform 0.25s ease;
+  position: relative;
+  z-index: 1;
+
+  .card:hover & {
+    transform: scale(1.02);
+    transform-origin: left center;
+  }
 }
 
 .tags {
@@ -180,6 +255,16 @@
   font-size: 0.75rem;
   font-weight: 500;
   color: $on-surface-variant;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  position: relative;
+  z-index: 1;
+
+  .card:hover & {
+    transform: scale(1.06);
+    border-color: rgba($gold, 0.45);
+    background: rgba($gold, 0.07);
+    box-shadow: 0 0 6px rgba($gold, 0.18);
+  }
 
   span.tagIcon {
     font-size: 1rem;
@@ -209,6 +294,15 @@
   flex-shrink: 0;
   color: rgba($gold, 0.4);
   font-size: 2rem;
+  transition: color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  position: relative;
+  z-index: 1;
+
+  .card:hover & {
+    color: rgba($gold, 0.75);
+    box-shadow: inset 0 0 22px rgba($gold, 0.1);
+    transform: scale(1.04);
+  }
 }
 
 .completedCheck {

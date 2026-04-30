@@ -544,6 +544,7 @@ export interface ApiStepStep extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
+    estimatedTime: Schema.Attribute.Integer;
     image: Schema.Attribute.Media<'images'>;
     journeys: Schema.Attribute.Relation<'manyToMany', 'api::journey.journey'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;

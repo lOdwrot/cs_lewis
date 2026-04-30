@@ -59,6 +59,12 @@ export function TextVideoStep({ step }: Props) {
           {step.description && (
             <p className={styles.desc}>{step.description}</p>
           )}
+          {step.estimatedTime && (
+            <div className={styles.estimatedTime}>
+              <span className="material-symbols-outlined">schedule</span>
+              {step.estimatedTime} min
+            </div>
+          )}
         </motion.header>
 
         {embedUrl && (

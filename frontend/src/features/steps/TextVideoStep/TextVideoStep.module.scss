@@ -55,6 +55,19 @@
   max-width: 560px;
 }
 
+.estimatedTime {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $gold-dark;
+  letter-spacing: 0.04em;
+
+  span { font-size: 1rem; }
+}
+
 // Video embed
 .videoWrap {
   position: relative;
