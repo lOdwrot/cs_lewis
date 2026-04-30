@@ -84,11 +84,15 @@ export const useProgressStore = create<ProgressState>()(
 
       resetQuiz: (quizId) =>
         set((s) => {
-          const next = { ...s.quizProgress }
-          delete next[quizId]
           const completed = { ...s.completedSteps }
           delete completed[quizId]
-          return { quizProgress: next, completedSteps: completed }
+          return {
+            completedSteps: completed,
+            quizProgress: {
+              ...s.quizProgress,
+              [quizId]: { currentQuestion: 0, answers: {}, completed: false, score: 0 },
+            },
+          }
         }),
 
       getQuizProgress: (quizId) => get().quizProgress[quizId],

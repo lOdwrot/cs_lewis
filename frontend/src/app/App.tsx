@@ -6,7 +6,6 @@ import { GateDetail } from "@/features/gates/GateDetail";
 import { JourneyDetail } from "@/features/journeys/JourneyDetail";
 import { StepRouter } from "@/features/steps/StepRouter";
 import { BooksPage } from "@/features/books/BooksPage";
-import { ParticleField } from "@/components/animations/ParticleField";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -26,11 +25,8 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <ParticleField />
-      <div style={{ position: "relative", zIndex: 2 }}>
-        <Header />
-        <AnimatedRoutes />
-      </div>
+      <Header />
+      <AnimatedRoutes />
     </BrowserRouter>
   );
 }

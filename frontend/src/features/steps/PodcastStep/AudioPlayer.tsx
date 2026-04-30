@@ -142,10 +142,6 @@ export function AudioPlayer({ src, stepId, onComplete }: Props) {
           </button>
 
           <div className={styles.dividerSmall} />
-
-          <button className={styles.ctrlBtn} title="Głośność">
-            <span className="material-symbols-outlined">volume_up</span>
-          </button>
         </div>
       </div>
     </>

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Journey } from "@/types/strapi";
 import { strapiImageUrl } from "@/services/api";
+import { useProgressStore } from "@/store/progressStore";
 import styles from "./JourneyCard.module.scss";
 
 interface Props {
@@ -9,6 +10,12 @@ interface Props {
 }
 
 export function JourneyCard({ journey }: Props) {
+  const isStepComplete = useProgressStore((s) => s.isStepComplete);
+  const steps = journey.steps ?? [];
+  const totalSteps = steps.length;
+  const completedCount = steps.filter((s) => isStepComplete(s.documentId)).length;
+  const progressPct = totalSteps > 0 ? (completedCount / totalSteps) * 100 : 0;
+
   return (
     <motion.div
       whileHover={{ y: -3 }}
@@ -31,6 +38,19 @@ export function JourneyCard({ journey }: Props) {
         <div className={styles.body}>
           <h3 className={styles.title}>{journey.title}</h3>
           <p className={styles.description}>{journey.description}</p>
+          {totalSteps > 0 && (
+            <div className={styles.progress}>
+              <div className={styles.progressBar}>
+                <div
+                  className={styles.progressBarFill}
+                  style={{ width: `${progressPct}%` }}
+                />
+              </div>
+              <span className={styles.progressLabel}>
+                {completedCount} / {totalSteps} kroków ukończono
+              </span>
+            </div>
+          )}
           <div className={styles.cta}>
             <span>Przejdź do Podróży</span>
             <span className="material-symbols-outlined">arrow_forward</span>

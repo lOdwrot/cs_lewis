@@ -16,6 +16,7 @@ export async function getGate(slug: string): Promise<Gate> {
       'populate[image][fields][1]': 'alternativeText',
       'populate[journeys][populate][image][fields][0]': 'url',
       'populate[journeys][populate][image][fields][1]': 'alternativeText',
+      'populate[journeys][populate][steps][fields][0]': 'documentId',
     },
   })
   if (!res.data.data[0]) throw new Error(`Gate not found: ${slug}`)

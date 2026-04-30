@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -15,6 +15,7 @@ interface Props {
 }
 
 export function PodcastStep({ step }: Props) {
+  const navigate = useNavigate();
   const { markStepComplete, isStepComplete } = useProgressStore();
   const done = isStepComplete(step.documentId);
 
@@ -24,6 +25,11 @@ export function PodcastStep({ step }: Props) {
 
   const handleComplete = () => {
     markStepComplete(step.documentId);
+  };
+
+  const handleContinue = () => {
+    markStepComplete(step.documentId);
+    navigate(-1);
   };
 
   return (
@@ -138,6 +144,29 @@ export function PodcastStep({ step }: Props) {
               </div>
             </FadeInView>
           )}
+
+          <FadeInView delay={0.25}>
+            <div className={styles.continueRow}>
+              <motion.button
+                className={styles.continueBtn}
+                onClick={handleContinue}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                {done ? (
+                  <>
+                    <span className="material-symbols-outlined">check_circle</span>
+                    Kontynuuj
+                  </>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined">task_alt</span>
+                    Oznacz jako ukończone i kontynuuj
+                  </>
+                )}
+              </motion.button>
+            </div>
+          </FadeInView>
         </main>
       </div>
     </PageTransition>

@@ -9,6 +9,8 @@ import { strapiImageUrl } from "@/services/api";
 import type { StepType } from "@/types/strapi";
 import styles from "./JourneyDetail.module.scss";
 
+const MotionLink = motion(Link);
+
 const TYPE_ICON: Record<StepType, string> = {
   text: "description",
   podcast: "headphones",
@@ -26,12 +28,25 @@ export function JourneyDetail() {
   const { data: journey, loading } = useFetch(() => getJourney(slug!), [slug]);
   const isStepComplete = useProgressStore((s) => s.isStepComplete);
 
+  const steps = journey?.steps ?? [];
+  const allComplete = steps.length > 0 && steps.every((s) => isStepComplete(s.documentId));
+
   return (
     <PageTransition>
-      <main className={styles.page}>
-        <Link to="/" className={styles.backLink}>
+      <motion.main
+        className={styles.page}
+        animate={{
+          boxShadow: [
+            "0 0 0 1px rgba(212,175,55,0.1), 0 0 50px rgba(212,175,55,0.07), 0 0 100px rgba(212,175,55,0.04)",
+            "0 0 0 1px rgba(212,175,55,0.22), 0 0 80px rgba(212,175,55,0.14), 0 0 160px rgba(212,175,55,0.07)",
+            "0 0 0 1px rgba(212,175,55,0.1), 0 0 50px rgba(212,175,55,0.07), 0 0 100px rgba(212,175,55,0.04)",
+          ],
+        }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <Link to={-1 as never} className={styles.backLink}>
           <span className="material-symbols-outlined">arrow_back</span>
-          Wielki Portal
+          Powrót do Bramy
         </Link>
 
         {loading || !journey ? (
@@ -76,9 +91,14 @@ export function JourneyDetail() {
                         <div
                           className={`${styles.dot} ${done ? styles.completed : ""}`}
                         />
-                        <Link
+                        <MotionLink
                           to={`/step/${step.documentId}`}
                           className={styles.card}
+                          whileHover={{
+                            boxShadow:
+                              "0 0 0 2px rgba(212,175,55,0.55), 0 0 35px rgba(212,175,55,0.3), 0 4px 24px rgba(0,0,0,0.06)",
+                          }}
+                          transition={{ duration: 0.22 }}
                         >
                           <div className={styles.cardInner}>
                             <div className={styles.cardBody}>
@@ -132,16 +152,36 @@ export function JourneyDetail() {
                               </div>
                             )}
                           </div>
-                        </Link>
+                        </MotionLink>
                       </div>
                     </FadeInView>
                   );
                 })}
               </div>
+
+              {allComplete && (
+                <motion.div
+                  className={styles.journeyComplete}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+                >
+                  <div className={styles.journeyCompleteLine}>
+                    <span className={styles.journeyCompleteOrn}>✦</span>
+                  </div>
+                  <h2 className={styles.journeyCompleteTitle}>Podróż Ukończona</h2>
+                  <p className={styles.journeyCompleteSubtitle}>
+                    Wszystkie etapy zostały ukończone
+                  </p>
+                  <div className={styles.journeyCompleteLine} style={{ marginTop: "2rem", marginBottom: 0 }}>
+                    <span className={styles.journeyCompleteOrn}>✦</span>
+                  </div>
+                </motion.div>
+              )}
             </div>
           </>
         )}
-      </main>
+      </motion.main>
     </PageTransition>
   );
 }

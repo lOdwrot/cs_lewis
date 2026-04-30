@@ -4,6 +4,7 @@
   max-width: 860px;
   margin: 0 auto;
   padding: 4rem 2rem 6rem;
+  background: $surface;
 }
 
 .backLink {
@@ -105,12 +106,12 @@
   background: $surface;
   border: 1px solid rgba($gold, 0.18);
   padding: 1.5rem;
-  transition: border-color $transition-mid, box-shadow $transition-mid;
+  overflow: hidden;
+  transition: border-color $transition-mid;
   text-decoration: none;
 
   &:hover {
-    border-color: rgba($gold, 0.5);
-    box-shadow: 0 4px 20px rgba($gold, 0.08);
+    border-color: rgba($gold, 0.55);
   }
 }
 
@@ -165,6 +166,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  position: relative;
+  z-index: 1;
 }
 
 .tag {
@@ -248,4 +251,75 @@
   &:active {
     transform: scale(0.98);
   }
+}
+
+// Journey completion banner
+.journeyComplete {
+  margin-top: 4rem;
+  padding: 3.5rem 2rem;
+  text-align: center;
+}
+
+.journeyCompleteLine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    max-width: 140px;
+    height: 1px;
+  }
+
+  &::before {
+    background: linear-gradient(to right, transparent, rgba($gold, 0.55));
+  }
+
+  &::after {
+    background: linear-gradient(to left, transparent, rgba($gold, 0.55));
+  }
+}
+
+.journeyCompleteOrn {
+  font-size: 1.125rem;
+  color: $gold;
+  filter: drop-shadow(0 0 6px rgba($gold, 0.6));
+}
+
+@keyframes shimmer {
+  from { background-position: 0% center; }
+  to   { background-position: 200% center; }
+}
+
+.journeyCompleteTitle {
+  font-family: $font-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  background: linear-gradient(
+    110deg,
+    $gold-dark 0%,
+    $gold     30%,
+    $gold-light 50%,
+    $gold     70%,
+    $gold-dark 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3.5s linear infinite;
+  margin-bottom: 0.75rem;
+  filter: drop-shadow(0 2px 8px rgba($gold, 0.25));
+}
+
+.journeyCompleteSubtitle {
+  font-size: 0.9375rem;
+  font-style: italic;
+  color: $secondary;
+  letter-spacing: 0.04em;
 }
