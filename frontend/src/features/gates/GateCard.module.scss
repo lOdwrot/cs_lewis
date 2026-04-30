@@ -1,84 +1,258 @@
 @use '@/styles/variables' as *;
 
-.card {
+// ─── Scene (perspective root + click target) ───────────────────────────────
+.scene {
+  perspective: 1400px;
+  cursor: pointer;
+  position: relative; // particle anchor
+  display: flex;
+  flex-direction: column;
+  height: 440px; // uniform across all cards
+
+  &:hover .cover {
+    border-color: rgba($gold, 0.7);
+    box-shadow:
+      2px 6px 24px rgba($gold-dark, 0.14),
+      0 0 32px rgba($gold, 0.12);
+  }
+}
+
+// ─── Book body ──────────────────────────────────────────────────────────────
+.book {
+  position: relative;
+  flex: 1;
+  height: 440px;
+
+  // Page stack — right edge
+  &::before {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 4px;
+    bottom: 0;
+    width: 5px;
+    background: repeating-linear-gradient(
+      to bottom,
+      #ede8df 0px,
+      #ede8df 1px,
+      #cec9be 1px,
+      #cec9be 2px
+    );
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.18);
+  }
+
+  // Page stack — bottom edge
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 4px;
+    right: 0;
+    height: 5px;
+    background: repeating-linear-gradient(
+      to right,
+      #ede8df 0px,
+      #ede8df 1px,
+      #cec9be 1px,
+      #cec9be 2px
+    );
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+  }
+}
+
+// ─── Inner pages (parchment glow, always behind cover) ─────────────────────
+.pages {
+  position: absolute;
+  inset: 0;
+  background: $parchment;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pagesGlow {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 247, 180, 0.98) 0%,
+    rgba($gold-light, 0.85) 25%,
+    rgba($gold, 0.55) 50%,
+    rgba($gold, 0.15) 70%,
+    transparent 85%
+  );
+  box-shadow:
+    0 0 50px rgba($gold-light, 0.9),
+    0 0 100px rgba($gold, 0.55),
+    0 0 160px rgba($gold, 0.2);
+}
+
+// ─── Cover (rotates on click, origin = left spine) ─────────────────────────
+.cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  background: linear-gradient(160deg, #fdfaf2 0%, #f5ead5 55%, #faf5e8 100%);
+  border: 1px solid rgba($gold, 0.38);
+  box-shadow:
+    1px 3px 16px rgba($gold-dark, 0.1),
+    0 1px 4px rgba(0, 0, 0, 0.06);
+  transition: border-color $transition-mid, box-shadow $transition-mid;
+
+  // Subtle linen grain on light surface
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='1' height='1' fill='rgba(0,0,0,0.018)'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+}
+
+// ─── Spine ──────────────────────────────────────────────────────────────────
+.spine {
+  width: 26px;
+  flex-shrink: 0;
+  background: linear-gradient(to right, #b8920c, $gold);
+  border-right: 1px solid rgba($gold-dark, 0.3);
+  position: relative;
+
+  // Lighter central highlight
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(#fff, 0.35) 20%,
+      rgba(#fff, 0.55) 50%,
+      rgba(#fff, 0.35) 80%,
+      transparent 100%
+    );
+  }
+}
+
+// ─── Cover face (content) ───────────────────────────────────────────────────
+.face {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  border: 1px solid rgba($gold, 0.2);
-  background-color: $surface-container-low;
-  padding: 2rem 1.75rem 2rem;
-  cursor: pointer;
-  text-decoration: none;
-  transition: border-color $transition-mid, background-color $transition-mid;
-
-  &:hover {
-    border-color: rgba($gold, 0.7);
-    background-color: #fff;
-  }
+  padding: 2rem 1.5rem 1.75rem;
 }
 
 .iconWrap {
-  width: 80px;
-  height: 80px;
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
-  background: rgba($gold, 0.08);
+  background: rgba($gold, 0.1);
+  border: 1px solid rgba($gold, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
-  transition: background $transition-mid;
+  box-shadow: 0 0 12px rgba($gold, 0.14), inset 0 0 6px rgba($gold, 0.08);
+  transition: box-shadow $transition-mid, background $transition-mid;
 
-  .card:hover & {
-    background: rgba($gold, 0.15);
+  .scene:hover & {
+    background: rgba($gold, 0.16);
+    box-shadow: 0 0 20px rgba($gold, 0.22), inset 0 0 8px rgba($gold, 0.12);
   }
 }
 
 .image {
-  width: 80px;
-  height: 80px;
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .iconFallback {
-  font-size: 2.25rem;
-  color: $gold;
+  font-size: 2rem;
+  color: $gold-dark;
 }
 
 .title {
   font-family: $font-serif;
   font-size: 1.5rem;
-  font-weight: 500;
-  color: $on-surface;
+  font-weight: 600;
+  color: $gold-dark;
   margin-bottom: 0.75rem;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
 }
 
 .description {
   font-family: $font-sans;
-  font-size: 1rem;
-  color: $secondary;
+  font-size: 0.9rem;
+  color: $on-surface-variant;
   line-height: 1.65;
-  margin-bottom: 2rem;
+  margin-bottom: 1.75rem;
   flex: 1;
+  // Clamp to 4 lines so layout stays locked at fixed height
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .cta {
   margin-top: auto;
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid $gold;
-  color: $gold;
+  padding: 0.625rem 1rem;
+  border: 1px solid rgba($gold, 0.5);
+  color: $gold-dark;
   font-family: $font-sans;
   font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   background: transparent;
-  transition: background $transition-fast, color $transition-fast;
+  transition: background $transition-fast, color $transition-fast, border-color $transition-fast;
 
-  .card:hover & {
-    background: $gold;
-    color: #fff;
+  .scene:hover & {
+    background: rgba($gold, 0.12);
+    border-color: $gold;
+    color: $gold-dark;
   }
+}
+
+// ─── Glowing particles ──────────────────────────────────────────────────────
+.particle {
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 252, 210, 0.98) 0%,
+    rgba($gold-light, 0.9) 35%,
+    rgba($gold, 0.55) 65%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 6px rgba(255, 252, 200, 0.9),
+    0 0 14px rgba($gold-light, 0.7),
+    0 0 28px rgba($gold, 0.4);
+  pointer-events: none;
+  z-index: 20;
+}
+
+// ─── Full-screen exit flash ──────────────────────────────────────────────────
+.exitOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(255, 252, 220, 1) 0%,
+    rgba($parchment, 0.97) 45%,
+    rgba(#fff, 1) 100%
+  );
 }

@@ -51,38 +51,38 @@ async function seedIfEmpty(strapi: Core.Strapi) {
   const count = await strapi.db.query('api::gate.gate').count({})
   if (count > 0) return
 
-  strapi.log.info('🌱 Seeding sample C.S. Lewis data…')
+  strapi.log.info('🌱 Sianie przykładowych danych C.S. Lewisa…')
 
   // ── Books ────────────────────────────────────────────────────────────────
   const books = [
     {
-      title: 'The Chronicles of Narnia',
+      title: 'Kroniki Narnii',
       description:
-        'A foundational series of seven high fantasy novels that transport readers to a land of talking beasts and epic battles between good and evil.',
+        'Fundamentalna seria siedmiu powieści fantasy, przenosząca czytelników do krainy rozmawiających zwierząt i epickich zmagań dobra ze złem.',
       redirectUrl: 'https://www.amazon.com/s?k=chronicles+of+narnia+cs+lewis',
     },
     {
-      title: 'Mere Christianity',
+      title: 'Chrześcijaństwo po prostu',
       description:
-        'Adapted from a series of BBC radio talks, this classic work explores the common ground upon which all those of Christian faith stand.',
+        'Wywodzące się z audycji radiowych BBC, to klasyczne dzieło bada wspólny grunt, na którym stoi każdy wyznający wiarę chrześcijańską.',
       redirectUrl: 'https://www.amazon.com/s?k=mere+christianity+cs+lewis',
     },
     {
-      title: 'The Screwtape Letters',
+      title: 'Listy Starszego Diabła',
       description:
-        'A satirical masterpiece told through letters from a senior demon to his nephew, providing a sharp look at human nature.',
+        'Satyryczne arcydzieło opowiedziane przez listy starszego demona do swojego bratanka, stanowiące przenikliwe spojrzenie na ludzką naturę.',
       redirectUrl: 'https://www.amazon.com/s?k=screwtape+letters+cs+lewis',
     },
     {
-      title: 'The Great Divorce',
+      title: 'Wielki Rozwód',
       description:
-        'A theological dream vision about a bus ride from Hell to Heaven, examining the choices that lead to ultimate separation or salvation.',
+        'Teologiczna wizja senna o podróży autobusem z Piekła do Nieba, badająca wybory prowadzące do ostatecznego oddzielenia lub zbawienia.',
       redirectUrl: 'https://www.amazon.com/s?k=great+divorce+cs+lewis',
     },
     {
-      title: 'Miracles',
+      title: 'Cuda',
       description:
-        'A philosophical defense of the possibility of divine intervention, arguing that the natural world is not a closed system.',
+        'Filozoficzna obrona możliwości Bożej interwencji, argumentująca, że świat przyrody nie jest zamkniętym systemem.',
       redirectUrl: 'https://www.amazon.com/s?k=miracles+cs+lewis',
     },
   ]
@@ -94,56 +94,56 @@ async function seedIfEmpty(strapi: Core.Strapi) {
 
   // ── Steps ─────────────────────────────────────────────────────────────────
   const stepsData = [
-    // Imagination gate steps
+    // Brama Wyobraźnia
     {
-      title: 'The Birth of Myth',
-      description: 'Exploring how Lewis discovered the power of mythology as a conduit for truth.',
+      title: 'Narodziny Mitu',
+      description: 'Odkrycie przez Lewisa siły mitologii jako drogi do prawdy.',
       type: 'text' as const,
-      tags: ['mythology', 'imagination'],
+      tags: ['mitologia', 'wyobraźnia'],
       content: [
         {
           __component: 'step.text-content',
-          markdown: `## The Mythopoeic Vision
+          markdown: `## Wizja Mitopoetyczna
 
-For C.S. Lewis, myth was not mere fiction — it was a *real though unfocused gleam of divine truth*, as he described it in his famous letter to Arthur Greeves.
+Dla C.S. Lewisa mit nie był zwykłą fikcją — był *prawdziwym, choć rozproszonym blaskiem Bożej prawdy*, jak opisał to w słynnym liście do Arthura Greevesa.
 
-> "Myth is the mountain whence all the different streams arise which become at last, after many wanderings, the river of Truth."
+> „Mit to góra, z której wypływają wszystkie różne strumienie, które po wielu wędrówkach stają się ostatecznie rzeką Prawdy."
 
-The young Lewis was first captivated by what he called **Northernness** — a stabbing, aching longing awakened by Norse mythology and Wagnerian themes. This *Sehnsucht* (longing) would become the cornerstone of his apologetic.
+Młody Lewis po raz pierwszy poczuł fascynację tym, co nazywał **Północnością** — przeszywającą, bolesną tęsknotą rozbudzoną przez mitologię nordycką i wagneriańskie tematy. Ta *Sehnsucht* (tęsknota) miała stać się kamieniem węgielnym jego apologetyki.
 
-### The Inklings and Sub-Creation
+### Inklingowie i Pod-Tworzenie
 
-At Oxford, Lewis joined with Tolkien and Barfield in believing that humanity, made in God's image, is itself a **sub-creator** — that writing myth is a divine act, a participation in God's ongoing creative work.
+W Oxfordzie Lewis dołączył do Tolkiena i Barfielda, wierząc, że człowiek — stworzony na obraz Boży — sam jest **pod-twórcą** i że pisanie mitów jest aktem Bożym, uczestnictwem w trwającym dziele stworzenia.
 
-This insight transformed Lewis's atheism. If myth points toward truth, and if the Gospel itself reads like the greatest myth of all — except that it *actually happened* — then perhaps mythology had been preparing him all along.`,
+Ten wgląd przemienił ateizm Lewisa. Jeśli mit wskazuje ku prawdzie, a Ewangelia sama w sobie brzmi jak największy ze wszystkich mitów — z tą różnicą, że *naprawdę się wydarzyła* — to być może mitologia przygotowywała go przez cały czas.`,
           videoUrl: 'https://www.youtube.com/watch?v=I0e4AiXMmMw',
         },
       ],
     },
     {
-      title: 'Sehnsucht: The Ache of Joy',
-      description: 'An audio essay on the piercing longing that Lewis identified as a pointer toward the divine.',
+      title: 'Sehnsucht: Ból Radości',
+      description: 'Esej dźwiękowy o przeszywającej tęsknocie, którą Lewis uznał za wskazówkę ku boskości.',
       type: 'podcast' as const,
-      tags: ['longing', 'joy'],
+      tags: ['tęsknota', 'radość'],
       content: [
         {
           __component: 'step.podcast-content',
           audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-          transcript: `In "Surprised by Joy," Lewis describes an experience that would shape his entire intellectual and spiritual life — what he called *Joy*, with a capital J.
+          transcript: `W „Zaskoczony radością" Lewis opisuje doświadczenie, które ukształtuje całe jego intelektualne i duchowe życie — to, co nazywał *Radością*, z wielkiej litery.
 
-It was not happiness, not pleasure. It was a sudden, sharp longing — like hearing a tune from a distant country you have never visited. It came unexpectedly, triggered by a line of poetry, a landscape, the smell of autumn leaves.
+Nie było to szczęście ani przyjemność. Była to nagła, przeszywająca tęsknota — jak słyszenie melodii z odległego kraju, którego nigdy nie odwiedziłeś. Przychodziła niespodziewanie, wywoływana wierszem, krajobrazem, zapachem jesiennych liści.
 
-> "It is difficult to find words strong enough for the sensation which came over me… it was a desire for something that has never actually appeared in our experience."
+> „Trudno znaleźć słowa dość mocne na to odczucie, które mnie ogarnęło… Było to pragnienie czegoś, co nigdy nie pojawiło się w naszym doświadczeniu."
 
-Lewis spent decades trying to identify the object of this longing. He tried nature, romance, books. Each time the longing appeared, seized him — and then passed, leaving him wanting not the thing but something *beyond* the thing.
+Lewis przez dziesięciolecia próbował zidentyfikować przedmiot tej tęsknoty. Szukał go w naturze, miłości, książkach. Za każdym razem, gdy tęsknota pojawiała się i go ogarniała — a potem mijała — pozostawiało go pragnącym nie samej rzeczy, lecz czegoś *poza* tą rzeczą.
 
-The resolution came only when he recognized that this ache was not a defect to be cured, but a *signpost* — pointing toward a homeland his rational mind had not yet dared to name.`,
+Rozwiązanie przyszło dopiero wtedy, gdy uświadomił sobie, że to pragnienie nie jest defektem wymagającym leczenia, lecz *drogowskazem* — wskazującym ku ojczyźnie, której jego rozum nie śmiał jeszcze nazwać.`,
         },
       ],
     },
     {
-      title: 'The Chronicles Quiz',
-      description: 'Test your knowledge of Narnia and the imagination of C.S. Lewis.',
+      title: 'Quiz: Kroniki Narnii',
+      description: 'Sprawdź swoją wiedzę o Narnii i wyobraźni C.S. Lewisa.',
       type: 'quiz' as const,
       tags: ['narnia', 'quiz'],
       content: [
@@ -151,222 +151,222 @@ The resolution came only when he recognized that this ache was not a defect to b
           __component: 'step.quiz-content',
           questions: [
             {
-              question: 'What is the name of the wardrobe world Lewis created in his famous series?',
-              options: ['Middle-earth', 'Narnia', 'Prydain', 'Earthsea'],
+              question: 'Jak nazywa się magiczny świat stworzony przez Lewisa w jego słynnej serii?',
+              options: ['Śródziemie', 'Narnia', 'Prydain', 'Earthsea'],
               correctIndex: 1,
-              explanation: 'Narnia is the magical world Lewis created in The Chronicles of Narnia, first appearing in The Lion, the Witch and the Wardrobe (1950).',
+              explanation: 'Narnia to magiczny świat stworzony przez Lewisa w Kronikach Narnii, który po raz pierwszy pojawia się w „Lwie, Czarownicy i starej szafie" (1950).',
             },
             {
-              question: 'What does Lewis call the stabbing, bittersweet longing for something beyond ordinary experience?',
+              question: 'Jak Lewis nazywa przeszywającą, gorzko-słodką tęsknotę za czymś poza zwykłym doświadczeniem?',
               options: ['Agape', 'Sehnsucht', 'Logos', 'Mythos'],
               correctIndex: 1,
-              explanation: 'Lewis borrowed the German word *Sehnsucht* (yearning/longing) to describe the inexplicable ache he saw as a pointer toward the divine.',
+              explanation: 'Lewis zapożyczył niemieckie słowo *Sehnsucht* (tęsknota/pragnienie), by opisać niewytłumaczalny ból, który uznawał za wskazówkę ku boskości.',
             },
             {
-              question: 'Which lion represents the Christ figure in Narnia?',
+              question: 'Który lew reprezentuje postać Chrystusa w Narnii?',
               options: ['Puzzle', 'Reepicheep', 'Aslan', 'Shift'],
               correctIndex: 2,
-              explanation: 'Aslan the Lion is Lewis\'s allegorical Christ figure — sacrificed and resurrected in The Lion, the Witch and the Wardrobe.',
+              explanation: 'Aslan Lew jest alegoryczną postacią Chrystusa Lewisa — ofiarowaną i zmartwychwstałą w „Lwie, Czarownicy i starej szafie".',
             },
             {
-              question: 'Lewis coined the term "mythopoeia" — what does it mean?',
-              options: ['The study of ancient myths', 'The making of myths', 'The critique of mythology', 'The translation of myths'],
+              question: 'Lewis ukuł termin „mitopoeia" — co oznacza?',
+              options: ['Nauka o dawnych mitach', 'Tworzenie mitów', 'Krytyka mitologii', 'Tłumaczenie mitów'],
               correctIndex: 1,
-              explanation: 'Mythopoeia (myth-making) describes the act of creating mythology. Tolkien used it in his poem arguing that humans, as sub-creators, participate in divine creation.',
+              explanation: 'Mitopoeia (tworzenie mitów) opisuje akt tworzenia mitologii. Tolkien użył go w swoim wierszu, argumentując, że ludzie jako pod-twórcy uczestniczą w Bożym dziele stworzenia.',
             },
           ],
         },
       ],
     },
-    // Reason gate steps
+    // Brama Rozum
     {
-      title: 'The Great War of Ideas',
-      description: 'Lewis\'s philosophical duel with Owen Barfield that shattered his youthful rationalism.',
+      title: 'Wielka Wojna Idei',
+      description: 'Filozoficzny pojedynek Lewisa z Owenem Barfieldem, który rozbił jego młodzieńczy racjonalizm.',
       type: 'text' as const,
-      tags: ['philosophy', 'reason'],
+      tags: ['filozofia', 'rozum'],
       content: [
         {
           __component: 'step.text-content',
-          markdown: `## The Absolute Rationalist
+          markdown: `## Absolutny Racjonalista
 
-When Lewis arrived at Oxford, he was a thoroughgoing materialist. Mind was an accident of matter. Beauty was subjective. Logic was a tool, not a guide to ultimate truth.
+Gdy Lewis przybył do Oxfordu, był zagorzałym materialistą. Umysł był przypadkiem materii. Piękno — subiektywne. Logika — narzędziem, nie przewodnikiem ku prawdzie ostatecznej.
 
-Then he met **Owen Barfield**.
+Potem poznał **Owena Barfielda**.
 
-> "He has a genius for debate… His arguments were not just good — they were irresistible."
-> — C.S. Lewis on Barfield
+> „Posiada geniusz do debat… Jego argumenty nie były tylko dobre — były nieodparte."
+> — C.S. Lewis o Barfieldzie
 
-### The Chronological Snob
+### Chronologiczny Snob
 
-Barfield introduced Lewis to what Lewis would later call the *Chronological Snob* — the uncritical assumption that what is newer is always better, that previous ages were simply mistaken.
+Barfield zapoznał Lewisa z tym, co Lewis nazwie później *Chronologicznym Snobem* — bezkrytycznym założeniem, że co nowsze, to zawsze lepsze; że poprzednie epoki po prostu się myliły.
 
-Lewis began to notice he'd been treating ancient wisdom with contempt it didn't deserve. The Platonic tradition, the Medieval synthesis, the great chain of being — these were not naive precursors to modern science; they were profound attempts to see reality whole.
+Lewis zaczął dostrzegać, że traktował starożytną mądrość z pogardą, na którą nie zasługiwała. Tradycja platońska, średniowieczna synteza, wielki łańcuch bytów — to nie były naiwne poprzedniczki współczesnej nauki; były to głębokie próby ujrzenia rzeczywistości w całości.
 
-### The Argument from Reason
+### Argument z Rozumu
 
-Most devastating was Barfield's challenge: if the mind is merely a product of non-rational natural processes, why trust it? If my beliefs are the result of atoms bouncing around rather than rational inference, the conclusion "there is no God" carries no more authority than a belch.
+Najbardziej druzgocące było wyzwanie Barfielda: jeśli umysł jest jedynie produktem nieracjonalnych procesów naturalnych, dlaczego mu ufać? Jeśli moje przekonania wynikają z atomów skaczących w przestrzeni, a nie z racjonalnego wnioskowania, to konkluzja „Boga nie ma" nie ma większej wartości niż beknięcie.
 
-Lewis would later develop this into his own **Argument from Reason** in *Miracles* — perhaps the most devastating critique of strict naturalism ever formulated.`,
+Lewis rozwinął to później we własny **Argument z Rozumu** w *Cudach* — być może najbardziej druzgocącą krytyką ścisłego naturalizmu, jaka kiedykolwiek została sformułowana.`,
           videoUrl: null,
         },
       ],
     },
     {
-      title: 'The Oxford Conversations',
-      description: 'Recreated discussions from the Inklings\' Tuesday morning meetings at the Eagle and Child.',
+      title: 'Rozmowy Oksfordzkie',
+      description: 'Odtworzone rozmowy z wtorkowych porannych spotkań Inklingów w Eagle and Child.',
       type: 'podcast' as const,
-      tags: ['inklings', 'oxford'],
+      tags: ['inklingowie', 'oxford'],
       content: [
         {
           __component: 'step.podcast-content',
           audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-          transcript: `The Eagle and Child pub on St Giles\' Street, Oxford. Tuesday mornings, 1930s–1950s.
+          transcript: `Pub Eagle and Child przy St Giles' Street, Oxford. Wtorkowe poranki, lata 30.–50. XX wieku.
 
-Here, over pints of bitter and pipes of tobacco, some of the twentieth century\'s most imaginative minds gathered to read unfinished work aloud and debate everything from Norse mythology to the nature of consciousness.
+Tutaj, przy kuflu gorzkiego piwa i fajce tytoniu, gromadziły się niektóre z najbardziej twórczych umysłów dwudziestego wieku — by czytać głośno niedokończone dzieła i debatować o wszystkim, od mitologii nordyckiej po naturę świadomości.
 
-**C.S. Lewis** would arrive with pages covered in his small, neat handwriting — chapters of what would become the Narnia Chronicles, or the latest instalment of his space trilogy.
+**C.S. Lewis** przychodził ze stronami pokrytymi drobnym, starannym pismem — rozdziałami tego, co miało stać się Kronikami Narnii, lub kolejnym odcinkiem jego trylogii kosmicznej.
 
-**J.R.R. Tolkien** might bring pages from *The Lord of the Rings*, listening carefully to the group\'s reactions, occasionally defending a word-choice with scholarly ferocity.
+**J.R.R. Tolkien** mógł przynosić strony z *Władcy Pierścieni*, słuchając uważnie reakcji grupy i od czasu do czasu broniąc z uczoną zaciętością wyboru słowa.
 
-**Charles Williams** — poet, novelist, mystical theologian — would offer observations so startling that the room would fall silent.
+**Charles Williams** — poeta, powieściopisarz, teolog mistyczny — rzucał obserwacje tak zaskakujące, że w pokoju zapadała cisza.
 
-Lewis later said that Tolkien's friendship was "the most to my taste of all." It was Tolkien who, on a long walk along Addison\'s Walk, finally convinced Lewis that myth could be *true myth* — that the Gospel was the one myth that had entered history as fact.`,
+Lewis powiedział później, że przyjaźń z Tolkienem była „najbardziej zgodna z moim gustem spośród wszystkich". To właśnie Tolkien — podczas długiego spaceru wzdłuż Addison's Walk — przekonał w końcu Lewisa, że mit może być *prawdziwym mitem* — że Ewangelia jest tym jedynym mitem, który wszedł w historię jako fakt.`,
         },
       ],
     },
     {
-      title: 'Mere Christianity Quiz',
-      description: 'Questions on Lewis\'s landmark work of Christian apologetics.',
+      title: 'Quiz: Chrześcijaństwo po prostu',
+      description: 'Pytania o przełomowe dzieło apologetyki chrześcijańskiej Lewisa.',
       type: 'quiz' as const,
-      tags: ['apologetics', 'quiz'],
+      tags: ['apologetyka', 'quiz'],
       content: [
         {
           __component: 'step.quiz-content',
           questions: [
             {
-              question: 'In "The Weight of Glory," Lewis argues that our desires are not too strong, but too:',
-              options: ['Intellectual', 'Weak', 'Sophisticated', 'Complex'],
+              question: 'W „Wadze chwały" Lewis argumentuje, że nasze pragnienia nie są zbyt silne, lecz zbyt:',
+              options: ['Intelektualne', 'Słabe', 'Wyrafinowane', 'Złożone'],
               correctIndex: 1,
-              explanation: 'Lewis writes: "We are half-hearted creatures... We are far too easily pleased." Our desires are not the problem — they are too small, not too large.',
+              explanation: 'Lewis pisze: „Jesteśmy połowicznymi stworzeniami… Zbyt łatwo nas zadowolić." Problem nie leży w naszych pragnieniach — są zbyt małe, nie za duże.',
             },
             {
-              question: 'What is the "Trilemma" Lewis presents regarding Jesus in Mere Christianity?',
+              question: 'Jaki „trylemaat" Lewis przedstawia odnośnie Jezusa w Chrześcijaństwie po prostu?',
               options: [
-                'Teacher, Prophet, or Messiah',
-                'Lord, Liar, or Lunatic',
-                'Man, Myth, or God',
-                'Philosopher, Reformer, or Rabbi'
+                'Nauczyciel, Prorok lub Mesjasz',
+                'Pan, Kłamca lub Szaleniec',
+                'Człowiek, Mit lub Bóg',
+                'Filozof, Reformator lub Rabin',
               ],
               correctIndex: 1,
-              explanation: 'Lewis\'s famous trilemma: Jesus claimed to be God. Either he was lying, deluded, or telling the truth. He cannot be merely "a good moral teacher."',
+              explanation: 'Słynny trylemaat Lewisa: Jezus twierdził, że jest Bogiem. Albo kłamał, albo był szaleńcem, albo mówił prawdę. Nie może być jedynie „dobrym nauczycielem moralności".',
             },
             {
-              question: 'From which medium were the talks that became Mere Christianity originally broadcast?',
-              options: ['Television', 'Radio', 'Newspaper columns', 'University lectures'],
+              question: 'Z jakiego medium pochodziły rozmowy, które stały się książką Chrześcijaństwo po prostu?',
+              options: ['Telewizji', 'Radia', 'Felietonów prasowych', 'Wykładów uniwersyteckich'],
               correctIndex: 1,
-              explanation: 'Lewis delivered the talks on BBC Radio during World War II (1941–1944). They were collected and published as Mere Christianity in 1952.',
+              explanation: 'Lewis wygłaszał te rozmowy w BBC Radio podczas II wojny światowej (1941–1944). Zostały zebrane i opublikowane jako Chrześcijaństwo po prostu w 1952 roku.',
             },
             {
-              question: 'Lewis describes morality as having three parts. Which of these is NOT one of them?',
+              question: 'Lewis opisuje moralność jako mającą trzy części. Która z poniższych NIE jest jedną z nich?',
               options: [
-                'Fairness between individuals',
-                'Harmonizing an individual\'s inner life',
-                'The purpose of human life as a whole',
-                'Political doctrine of the state'
+                'Sprawiedliwość między jednostkami',
+                'Harmonizowanie wewnętrznego życia jednostki',
+                'Cel życia ludzkiego jako całości',
+                'Doktryna polityczna państwa',
               ],
               correctIndex: 3,
-              explanation: 'Lewis identifies three parts of morality: relations between individuals, the individual\'s inner life, and the general purpose of human existence — not political doctrine.',
+              explanation: 'Lewis wymienia trzy części moralności: relacje między jednostkami, wewnętrzne życie jednostki i ogólny cel egzystencji ludzkiej — nie doktrynę polityczną.',
             },
           ],
         },
       ],
     },
-    // Faith gate steps
+    // Brama Wiara
     {
-      title: 'The Midnight Conversion',
-      description: 'The famous walk along Addison\'s Walk where Tolkien and Dyson convinced Lewis that myth could be true.',
+      title: 'Nocne Nawrócenie',
+      description: 'Słynny spacer wzdłuż Addison\'s Walk, podczas którego Tolkien i Dyson przekonali Lewisa, że mit może być prawdziwy.',
       type: 'text' as const,
-      tags: ['conversion', 'faith'],
+      tags: ['nawrócenie', 'wiara'],
       content: [
         {
           __component: 'step.text-content',
-          markdown: `## Addison's Walk, September 1931
+          markdown: `## Addison's Walk, wrzesień 1931
 
-It was past midnight. Lewis had been walking with J.R.R. Tolkien and Hugo Dyson for hours, the arguments washing over him like a tide.
+Była już po północy. Lewis spacerował z J.R.R. Tolkienem i Hugo Dysonem od kilku godzin, gdy argumenty zalewały go niczym fala.
 
-The question: why could Lewis accept the dying-and-rising God motif as *true* in Norse or Greek myth, but not in the Gospels?
+Pytanie brzmiało: dlaczego Lewis mógł przyjąć motyw umierającego i zmartwychwstającego Boga jako *prawdziwy* w mitologii nordyckiej lub greckiej, ale nie w Ewangeliach?
 
-> "The story of Christ is simply a true myth: a myth working on us in the same way as the others, but with this tremendous difference that it really happened."
+> „Historia Chrystusa jest po prostu prawdziwym mitem: mitem działającym na nas w ten sam sposób co inne, lecz z tą ogromną różnicą, że naprawdę się wydarzyła."
 
-### The Logic of Myth Made Fact
+### Logika Mitu Stającego się Faktem
 
-Tolkien's argument was precise. When humans tell myths about gods who die and rise, they are expressing a deep truth embedded in them as image-bearers of God. This longing for redemption, death overcome, new life — it points toward something real.
+Argument Tolkiena był precyzyjny. Kiedy ludzie opowiadają mity o bogach, którzy umierają i zmartwychwstają, wyrażają głęboką prawdę wpisaną w nich jako obraz-nosicieli Boga. Ta tęsknota za odkupieniem, za pokonaniem śmierci, za nowym życiem — wskazuje ku czemuś realnemu.
 
-The Gospels are the fulfillment of what all the myths were pointing toward. God, the author of myth, entered his own story.
+Ewangelie są wypełnieniem tego, ku czemu wskazywały wszystkie mity. Bóg, autor mitu, wszedł we własną historię.
 
-Twelve days later, Lewis wrote to his friend Arthur Greeves:
+Dwanaście dni później Lewis napisał do swojego przyjaciela Arthura Greevesa:
 
-> "I have just passed on from believing in God to definitely believing in Christ — in Christianity... My long night watches and wakings are over."`,
+> „Właśnie przeszedłem od wiary w Boga do definitywnego wierzenia w Chrystusa — w chrześcijaństwo… Moje długie nocne czuwania i przebudzenia dobiegły końca."`,
           videoUrl: null,
         },
       ],
     },
     {
-      title: 'The Problem of Pain',
-      description: 'Lewis\'s pastoral and philosophical engagement with suffering.',
+      title: 'Problem Bólu',
+      description: 'Pastoralne i filozoficzne zaangażowanie Lewisa w temat cierpienia.',
       type: 'podcast' as const,
-      tags: ['suffering', 'faith'],
+      tags: ['cierpienie', 'wiara'],
       content: [
         {
           __component: 'step.podcast-content',
           audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
-          transcript: `In 1940, Lewis published *The Problem of Pain* — a lucid, almost clinical examination of why God permits suffering.
+          transcript: `W 1940 roku Lewis opublikował *Problem Bólu* — klarowne, niemal kliniczne badanie tego, dlaczego Bóg dopuszcza cierpienie.
 
-His core argument: pain is God's *megaphone*.
+Jego kluczowy argument: ból jest Bożym *megafonem*.
 
-> "God whispers to us in our pleasures, speaks in our conscience, but shouts in our pains: it is his megaphone to rouse a deaf world."
+> „Bóg szepcze do nas w naszych przyjemnościach, mówi w naszym sumieniu, ale krzyczy przez nasze bóle: jest to jego megafon, by obudzić głuchy świat."
 
-Lewis argues that a world without suffering would be a world without moral growth, without courage, without compassion. A God who simply shielded us from all discomfort would be treating us like pets, not children.
+Lewis argumentuje, że świat bez cierpienia byłby światem bez moralnego wzrostu, bez odwagi, bez współczucia. Bóg, który po prostu chronił nas przed wszelkim dyskomfortem, traktowałby nas jak zwierzęta domowe, nie jak dzieci.
 
-But Lewis was not merely academic. In 1960, his wife Joy died of cancer. His response — *A Grief Observed* — shattered the tidy arguments of *The Problem of Pain*.
+Lewis nie był jednak wyłącznie akademicki. W 1960 roku jego żona Joy umarła na raka. Jego odpowiedzią były *Rozważania o żalu* — które rozbiły starannie ułożone argumenty *Problemu Bólu*.
 
-> "No one ever told me that grief felt so like fear."
+> „Nikt nigdy nie mówił mi, że żal tak bardzo przypomina strach."
 
-The later Lewis understood something the earlier Lewis could only argue: that faith is not maintained by logic alone, but by the daily choice to trust a God who seems silent, even when the megaphone has gone quiet.`,
+Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadniać: że wiary nie utrzymuje się samą logiką, lecz codziennym wyborem zaufania Bogu, który wydaje się milczeć — nawet gdy megafon zamilkł.`,
         },
       ],
     },
     {
-      title: 'Faith and Reason Quiz',
-      description: 'Test your understanding of Lewis\'s integration of faith and reason.',
+      title: 'Quiz: Wiara i Rozum',
+      description: 'Sprawdź swoje rozumienie integracji wiary i rozumu przez Lewisa.',
       type: 'quiz' as const,
-      tags: ['faith', 'quiz'],
+      tags: ['wiara', 'quiz'],
       content: [
         {
           __component: 'step.quiz-content',
           questions: [
             {
-              question: 'What book did Lewis write after his wife Joy died, processing his grief?',
-              options: ['The Problem of Pain', 'A Grief Observed', 'Till We Have Faces', 'Surprised by Joy'],
+              question: 'Jaką książkę Lewis napisał po śmierci żony Joy, przetwarzając swój smutek?',
+              options: ['Problem Bólu', 'Rozważania o żalu', 'Dopóki mamy twarze', 'Zaskoczony radością'],
               correctIndex: 1,
-              explanation: 'Lewis wrote *A Grief Observed* under the pseudonym N.W. Clerk after his wife Joy Davidman died of cancer in 1960. It is his most raw and personal work.',
+              explanation: 'Lewis napisał *Rozważania o żalu* pod pseudonimem N.W. Clerk po tym, jak jego żona Joy Davidman umarła na raka w 1960 roku. Jest to jego najbardziej osobiste dzieło.',
             },
             {
-              question: 'Lewis describes the Moral Law as evidence for what?',
-              options: ['Human evolution', 'Cultural conditioning', 'A lawgiving Mind behind the universe', 'Democratic consensus'],
+              question: 'Lewis opisuje Prawo Moralne jako dowód na co?',
+              options: ['Ludzką ewolucję', 'Uwarunkowania kulturowe', 'Prawodawczy Umysł stojący za wszechświatem', 'Demokratyczny konsensus'],
               correctIndex: 2,
-              explanation: 'In Mere Christianity, Lewis argues the universal Moral Law — the sense of "ought" all humans share — points to a Mind that made it, just as traffic laws point to a legislator.',
+              explanation: 'W Chrześcijaństwie po prostu Lewis argumentuje, że powszechne Prawo Moralne — poczucie „powinności" wspólne wszystkim ludziom — wskazuje na Umysł, który je ustanowił, podobnie jak przepisy drogowe wskazują na ustawodawcę.',
             },
             {
-              question: 'What does Lewis mean by "Faith" as a virtue in Mere Christianity?',
+              question: 'Co Lewis rozumie przez „Wiarę" jako cnotę w Chrześcijaństwie po prostu?',
               options: [
-                'Believing without any evidence',
-                'Holding on to what reason has accepted, despite changing moods',
-                'Emotional feeling of closeness to God',
-                'Accepting the authority of the Church'
+                'Wierzenie bez żadnych dowodów',
+                'Trzymanie się tego, co rozum raz przyjął, mimo zmieniających się nastrojów',
+                'Emocjonalne poczucie bliskości z Bogiem',
+                'Przyjęcie autorytetu Kościoła',
               ],
               correctIndex: 1,
-              explanation: 'Lewis defines faith as "the art of holding on to things your reason has once accepted, in spite of your changing moods." It is a discipline, not a feeling.',
+              explanation: 'Lewis definiuje wiarę jako „sztukę trzymania się tego, co rozum raz przyjął, mimo zmieniających się nastrojów". To dyscyplina, nie uczucie.',
             },
           ],
         },
@@ -388,22 +388,22 @@ The later Lewis understood something the earlier Lewis could only argue: that fa
   // ── Journeys ──────────────────────────────────────────────────────────────
   const journeysData = [
     {
-      title: 'The Mythopoeic Vision',
-      slug: 'the-mythopoeic-vision',
-      description: 'Journey through Lewis\'s discovery of myth as a vessel for truth, from Norse sagas to Narnia.',
-      stepTitles: ['The Birth of Myth', 'Sehnsucht: The Ache of Joy', 'The Chronicles Quiz'],
+      title: 'Wizja Mitopoetyczna',
+      slug: 'wizja-mitopoetyczna',
+      description: 'Podążaj śladami odkrycia przez Lewisa mitu jako naczynia dla prawdy — od nordyckich sag po Narnię.',
+      stepTitles: ['Narodziny Mitu', 'Sehnsucht: Ból Radości', 'Quiz: Kroniki Narnii'],
     },
     {
-      title: 'The Sceptic\'s Journey',
-      slug: 'the-sceptics-journey',
-      description: 'A deep dive into the Great War of ideas between Lewis and Owen Barfield regarding logic and imagination.',
-      stepTitles: ['The Great War of Ideas', 'The Oxford Conversations', 'Mere Christianity Quiz'],
+      title: 'Droga Sceptyka',
+      slug: 'droga-sceptyka',
+      description: 'Głęboka analiza Wielkiej Wojny Idei między Lewisem a Owenem Barfieldem na temat logiki i wyobraźni.',
+      stepTitles: ['Wielka Wojna Idei', 'Rozmowy Oksfordzkie', 'Quiz: Chrześcijaństwo po prostu'],
     },
     {
-      title: 'The Road to Faith',
-      slug: 'the-road-to-faith',
-      description: 'Tracing the final steps of Lewis\'s intellectual and spiritual conversion, from Oxford paths to Christian faith.',
-      stepTitles: ['The Midnight Conversion', 'The Problem of Pain', 'Faith and Reason Quiz'],
+      title: 'Droga do Wiary',
+      slug: 'droga-do-wiary',
+      description: 'Śledząc ostatnie kroki intelektualnego i duchowego nawrócenia Lewisa — od oksfordzkich ścieżek do wiary chrześcijańskiej.',
+      stepTitles: ['Nocne Nawrócenie', 'Problem Bólu', 'Quiz: Wiara i Rozum'],
     },
   ]
 
@@ -430,22 +430,22 @@ The later Lewis understood something the earlier Lewis could only argue: that fa
   // ── Gates ─────────────────────────────────────────────────────────────────
   const gatesData = [
     {
-      title: 'Imagination',
-      slug: 'imagination',
-      description: 'Journey through the mythic and the fantastic to uncover truths that logic cannot reach.',
-      journeySlugs: ['the-mythopoeic-vision'],
+      title: 'Wyobraźnia',
+      slug: 'wyobraznia',
+      description: 'Podróżuj przez mit i fantazję, odkrywając prawdy, których logika nie jest w stanie dosięgnąć.',
+      journeySlugs: ['wizja-mitopoetyczna'],
     },
     {
-      title: 'Reason',
-      slug: 'reason',
-      description: 'Engage the intellect with clarity and precision through the rigorous examination of truth.',
-      journeySlugs: ['the-sceptics-journey'],
+      title: 'Rozum',
+      slug: 'rozum',
+      description: 'Angażuj intelekt z klarownością i precyzją poprzez rygorystyczne badanie prawdy.',
+      journeySlugs: ['droga-sceptyka'],
     },
     {
-      title: 'Faith',
-      slug: 'faith',
-      description: 'Explore the transcendent foundations and the quiet beauty of the eternal perspective.',
-      journeySlugs: ['the-road-to-faith'],
+      title: 'Wiara',
+      slug: 'wiara',
+      description: 'Odkryj transcendentne fundamenty i cichą piękność wiecznej perspektywy.',
+      journeySlugs: ['droga-do-wiary'],
     },
   ]
 
@@ -466,5 +466,5 @@ The later Lewis understood something the earlier Lewis could only argue: that fa
     await publishDoc(strapi, 'api::gate.gate', doc.documentId)
   }
 
-  strapi.log.info('✅ Seed complete — 3 gates, 3 journeys, 9 steps, 5 books created.')
+  strapi.log.info('✅ Seedowanie zakończone — 3 bramy, 3 podróże, 9 kroków, 5 książek utworzonych.')
 }

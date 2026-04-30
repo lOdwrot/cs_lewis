@@ -1,27 +1,33 @@
-import { useParams, Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { PageTransition } from '@/components/animations/PageTransition'
-import { StaggerList, StaggerItem } from '@/components/animations/StaggerList'
-import { JourneyCard } from '@/features/journeys/JourneyCard'
-import { useFetch } from '@/hooks/useFetch'
-import { getGate } from '@/services/gates.service'
-import styles from './GateDetail.module.scss'
+import { useParams, Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { PageTransition } from "@/components/animations/PageTransition";
+import { StaggerList, StaggerItem } from "@/components/animations/StaggerList";
+import { JourneyCard } from "@/features/journeys/JourneyCard";
+import { useFetch } from "@/hooks/useFetch";
+import { getGate } from "@/services/gates.service";
+import styles from "./GateDetail.module.scss";
 
 export function GateDetail() {
-  const { slug } = useParams<{ slug: string }>()
-  const { data: gate, loading } = useFetch(() => getGate(slug!), [slug])
+  const { slug } = useParams<{ slug: string }>();
+  const { data: gate, loading } = useFetch(() => getGate(slug!), [slug]);
 
   return (
     <PageTransition>
       <main className={styles.page}>
         <Link to="/" className={styles.backLink}>
           <span className="material-symbols-outlined">arrow_back</span>
-          The Great Portal
+          Wielki Portal
         </Link>
 
         {loading || !gate ? (
-          <div style={{ textAlign: 'center', paddingTop: '4rem', color: '#7f7663' }}>
-            Loading…
+          <div
+            style={{
+              textAlign: "center",
+              paddingTop: "4rem",
+              color: "#7f7663",
+            }}
+          >
+            Ładowanie…
           </div>
         ) : (
           <>
@@ -32,7 +38,7 @@ export function GateDetail() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
               >
-                Gate
+                Brama
               </motion.span>
               <motion.h1
                 className={styles.title}
@@ -66,5 +72,5 @@ export function GateDetail() {
         )}
       </main>
     </PageTransition>
-  )
+  );
 }

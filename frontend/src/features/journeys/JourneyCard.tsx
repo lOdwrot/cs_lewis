@@ -1,18 +1,18 @@
-import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import type { Journey } from '@/types/strapi'
-import { strapiImageUrl } from '@/services/api'
-import styles from './JourneyCard.module.scss'
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import type { Journey } from "@/types/strapi";
+import { strapiImageUrl } from "@/services/api";
+import styles from "./JourneyCard.module.scss";
 
 interface Props {
-  journey: Journey
+  journey: Journey;
 }
 
 export function JourneyCard({ journey }: Props) {
   return (
     <motion.div
       whileHover={{ y: -3 }}
-      transition={{ type: 'spring', stiffness: 320, damping: 24 }}
+      transition={{ type: "spring", stiffness: 320, damping: 24 }}
     >
       <Link to={`/journey/${journey.slug}`} className={styles.card}>
         <div className={styles.imageWrap}>
@@ -32,11 +32,11 @@ export function JourneyCard({ journey }: Props) {
           <h3 className={styles.title}>{journey.title}</h3>
           <p className={styles.description}>{journey.description}</p>
           <div className={styles.cta}>
-            <span>Go to Journey</span>
+            <span>Przejdź do Podróży</span>
             <span className="material-symbols-outlined">arrow_forward</span>
           </div>
         </div>
       </Link>
     </motion.div>
-  )
+  );
 }

@@ -1,44 +1,48 @@
-import { useNavigate, Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import { PageTransition } from '@/components/animations/PageTransition'
-import { FadeInView } from '@/components/animations/FadeInView'
-import { useProgressStore } from '@/store/progressStore'
-import type { Step, TextContent } from '@/types/strapi'
-import styles from './TextVideoStep.module.scss'
+import { useNavigate, Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { PageTransition } from "@/components/animations/PageTransition";
+import { FadeInView } from "@/components/animations/FadeInView";
+import { useProgressStore } from "@/store/progressStore";
+import type { Step, TextContent } from "@/types/strapi";
+import styles from "./TextVideoStep.module.scss";
 
 interface Props {
-  step: Step
+  step: Step;
 }
 
 function getYoutubeEmbedUrl(url: string): string | null {
-  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?/]+)/)
-  return match ? `https://www.youtube.com/embed/${match[1]}` : null
+  const match = url.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?/]+)/,
+  );
+  return match ? `https://www.youtube.com/embed/${match[1]}` : null;
 }
 
 export function TextVideoStep({ step }: Props) {
-  const navigate = useNavigate()
-  const { markStepComplete, isStepComplete } = useProgressStore()
-  const done = isStepComplete(step.documentId)
+  const navigate = useNavigate();
+  const { markStepComplete, isStepComplete } = useProgressStore();
+  const done = isStepComplete(step.documentId);
 
   const textContent = step.content.find(
-    (c): c is TextContent => c.__component === 'step.text-content'
-  )
+    (c): c is TextContent => c.__component === "step.text-content",
+  );
 
   const handleContinue = () => {
-    markStepComplete(step.documentId)
-    navigate(-1)
-  }
+    markStepComplete(step.documentId);
+    navigate(-1);
+  };
 
-  const embedUrl = textContent?.videoUrl ? getYoutubeEmbedUrl(textContent.videoUrl) : null
+  const embedUrl = textContent?.videoUrl
+    ? getYoutubeEmbedUrl(textContent.videoUrl)
+    : null;
 
   return (
     <PageTransition>
       <main className={styles.page}>
         <Link to={-1 as never} className={styles.backLink}>
           <span className="material-symbols-outlined">arrow_back</span>
-          Back to Journey
+          Powrót do Podróży
         </Link>
 
         <motion.header
@@ -49,10 +53,12 @@ export function TextVideoStep({ step }: Props) {
         >
           <div className={styles.typeLabel}>
             <span className="material-symbols-outlined">description</span>
-            Reading
+            Lektura
           </div>
           <h1 className={styles.title}>{step.title}</h1>
-          {step.description && <p className={styles.desc}>{step.description}</p>}
+          {step.description && (
+            <p className={styles.desc}>{step.description}</p>
+          )}
         </motion.header>
 
         {embedUrl && (
@@ -80,7 +86,12 @@ export function TextVideoStep({ step }: Props) {
         )}
 
         <div className={styles.divider}>
-          <span className="material-symbols-outlined" style={{ fontSize: '0.75rem' }}>diamond</span>
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: "0.75rem" }}
+          >
+            diamond
+          </span>
         </div>
 
         <FadeInView delay={0.2}>
@@ -88,7 +99,7 @@ export function TextVideoStep({ step }: Props) {
             {done ? (
               <div className={styles.doneBadge}>
                 <span className="material-symbols-outlined">check_circle</span>
-                Completed — well done!
+                Ukończono — brawo!
               </div>
             ) : (
               <motion.button
@@ -97,7 +108,7 @@ export function TextVideoStep({ step }: Props) {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
               >
-                Continue
+                Kontynuuj
                 <span className="material-symbols-outlined">arrow_forward</span>
               </motion.button>
             )}
@@ -105,5 +116,5 @@ export function TextVideoStep({ step }: Props) {
         </FadeInView>
       </main>
     </PageTransition>
-  )
+  );
 }

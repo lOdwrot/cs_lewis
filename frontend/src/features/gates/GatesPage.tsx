@@ -1,14 +1,14 @@
-import { motion } from 'framer-motion'
-import { PageTransition } from '@/components/animations/PageTransition'
-import { StaggerList, StaggerItem } from '@/components/animations/StaggerList'
-import { FadeInView } from '@/components/animations/FadeInView'
-import { GateCard } from './GateCard'
-import { useFetch } from '@/hooks/useFetch'
-import { getGates } from '@/services/gates.service'
-import styles from './GatesPage.module.scss'
+import { motion } from "framer-motion";
+import { PageTransition } from "@/components/animations/PageTransition";
+import { StaggerList, StaggerItem } from "@/components/animations/StaggerList";
+import { FadeInView } from "@/components/animations/FadeInView";
+import { GateCard } from "./GateCard";
+import { useFetch } from "@/hooks/useFetch";
+import { getGates } from "@/services/gates.service";
+import styles from "./GatesPage.module.scss";
 
 export function GatesPage() {
-  const { data: gates, loading } = useFetch(getGates)
+  const { data: gates, loading } = useFetch(getGates);
 
   return (
     <PageTransition>
@@ -21,7 +21,7 @@ export function GatesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            The Intellectual Frontier
+            Granica Intelektu
           </motion.span>
           <motion.h1
             className={styles.heroTitle}
@@ -29,7 +29,7 @@ export function GatesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.1 }}
           >
-            Choose Your Threshold
+            Wybierz Swoją Bramę
           </motion.h1>
           <motion.p
             className={styles.heroDesc}
@@ -37,8 +37,8 @@ export function GatesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.2 }}
           >
-            Step beyond the mundane. Explore the depths of the Inkling philosophy through
-            distinct pathways of discovery.
+            Przekrocz próg codzienności. Odkryj głębię filozofii Inklingów
+            poprzez wyjątkowe ścieżki poznania.
           </motion.p>
           <motion.div
             className={styles.heroDivider}
@@ -54,7 +54,14 @@ export function GatesPage() {
         {loading ? (
           <div className={styles.grid}>
             {[1, 2, 3].map((i) => (
-              <div key={i} style={{ height: 320, background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.1)' }} />
+              <div
+                key={i}
+                style={{
+                  height: 320,
+                  background: "rgba(212,175,55,0.06)",
+                  border: "1px solid rgba(212,175,55,0.1)",
+                }}
+              />
             ))}
           </div>
         ) : (
@@ -71,21 +78,26 @@ export function GatesPage() {
         <FadeInView delay={0.2}>
           <section className={styles.contextSection}>
             <div className={styles.contextBody}>
-              <span className={styles.contextLabel}>The Archives</span>
-              <h2 className={styles.contextTitle}>A Common Heritage</h2>
+              <span className={styles.contextLabel}>Archiwum</span>
+              <h2 className={styles.contextTitle}>Wspólne Dziedzictwo</h2>
               <p className={styles.contextText}>
-                Discover the shared history of the Inklings at Oxford — the meetings at the
-                Eagle and Child, the readings of unfinished works, and the pursuit of the
-                &ldquo;Permanent Things.&rdquo;
+                Odkryj wspólną historię Inklingów w Oxfordzie — spotkania w
+                Eagle and Child, czytanie niedokończonych dzieł oraz dążenie do
+                &ldquo;Rzeczy Trwałych.&rdquo;
               </p>
               <a href="#" className={styles.contextLink}>
-                Browse the Bibliography
-                <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>arrow_forward</span>
+                Przeglądaj Bibliografię
+                <span
+                  className="material-symbols-outlined"
+                  style={{ fontSize: "1rem" }}
+                >
+                  arrow_forward
+                </span>
               </a>
             </div>
           </section>
         </FadeInView>
       </main>
     </PageTransition>
-  )
+  );
 }

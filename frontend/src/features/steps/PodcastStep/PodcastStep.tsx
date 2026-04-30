@@ -1,30 +1,30 @@
-import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import { PageTransition } from '@/components/animations/PageTransition'
-import { FadeInView } from '@/components/animations/FadeInView'
-import { AudioPlayer } from './AudioPlayer'
-import { useProgressStore } from '@/store/progressStore'
-import { strapiImageUrl } from '@/services/api'
-import type { Step, PodcastContent } from '@/types/strapi'
-import styles from './PodcastStep.module.scss'
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { PageTransition } from "@/components/animations/PageTransition";
+import { FadeInView } from "@/components/animations/FadeInView";
+import { AudioPlayer } from "./AudioPlayer";
+import { useProgressStore } from "@/store/progressStore";
+import { strapiImageUrl } from "@/services/api";
+import type { Step, PodcastContent } from "@/types/strapi";
+import styles from "./PodcastStep.module.scss";
 
 interface Props {
-  step: Step
+  step: Step;
 }
 
 export function PodcastStep({ step }: Props) {
-  const { markStepComplete, isStepComplete } = useProgressStore()
-  const done = isStepComplete(step.documentId)
+  const { markStepComplete, isStepComplete } = useProgressStore();
+  const done = isStepComplete(step.documentId);
 
   const podcastContent = step.content.find(
-    (c): c is PodcastContent => c.__component === 'step.podcast-content'
-  )
+    (c): c is PodcastContent => c.__component === "step.podcast-content",
+  );
 
   const handleComplete = () => {
-    markStepComplete(step.documentId)
-  }
+    markStepComplete(step.documentId);
+  };
 
   return (
     <PageTransition>
@@ -33,23 +33,41 @@ export function PodcastStep({ step }: Props) {
         <aside className={styles.sidebar}>
           <Link to={-1 as never} className={styles.backLink}>
             <span className="material-symbols-outlined">arrow_back</span>
-            Journey
+            Podróż
           </Link>
           <div className={styles.sidebarLabel}>
             <div className={styles.bar} />
-            <h3>Now Playing</h3>
+            <h3>Teraz Odtwarzane</h3>
           </div>
-          <p style={{ fontFamily: "'Newsreader', serif", fontSize: '1.125rem', color: '#1c1c1a' }}>
+          <p
+            style={{
+              fontFamily: "'Newsreader', serif",
+              fontSize: "1.125rem",
+              color: "#1c1c1a",
+            }}
+          >
             {step.title}
           </p>
           {done && (
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#16a34a', fontSize: '0.8125rem', marginTop: '1rem' }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.35rem",
+                color: "#16a34a",
+                fontSize: "0.8125rem",
+                marginTop: "1rem",
+              }}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>check_circle</span>
-              Completed
+              <span
+                className="material-symbols-outlined"
+                style={{ fontSize: "1rem" }}
+              >
+                check_circle
+              </span>
+              Ukończono
             </motion.div>
           )}
         </aside>
@@ -96,7 +114,7 @@ export function PodcastStep({ step }: Props) {
                   onComplete={handleComplete}
                 />
               ) : (
-                <p style={{ color: '#7f7663' }}>No audio available.</p>
+                <p style={{ color: "#7f7663" }}>Brak dostępnego dźwięku.</p>
               )}
             </div>
           </motion.div>
@@ -106,7 +124,7 @@ export function PodcastStep({ step }: Props) {
             <FadeInView delay={0.15}>
               <div className={styles.transcriptSection}>
                 <div className={styles.transcriptHeader}>
-                  <h2>Transcript</h2>
+                  <h2>Transkrypt</h2>
                 </div>
                 <div className={styles.transcriptContent}>
                   <div className={styles.transcriptBlock}>
@@ -123,5 +141,5 @@ export function PodcastStep({ step }: Props) {
         </main>
       </div>
     </PageTransition>
-  )
+  );
 }

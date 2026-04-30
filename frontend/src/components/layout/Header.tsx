@@ -1,6 +1,6 @@
-import { NavLink } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import styles from './Header.module.scss'
+import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
+import styles from "./Header.module.scss";
 
 export function Header() {
   return (
@@ -9,10 +9,10 @@ export function Header() {
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <NavLink to="/" className={styles.logo}>
-            The Library
+            Biblioteka
           </NavLink>
         </motion.div>
 
@@ -20,27 +20,27 @@ export function Header() {
           className={styles.nav}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
+          transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
         >
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `${styles.navLink} ${isActive ? styles.active : ''}`
+              `${styles.navLink} ${isActive ? styles.active : ""}`
             }
             end
           >
-            The Great Portal
+            Wielki Portal
           </NavLink>
           <NavLink
             to="/books"
             className={({ isActive }) =>
-              `${styles.navLink} ${isActive ? styles.active : ''}`
+              `${styles.navLink} ${isActive ? styles.active : ""}`
             }
           >
-            Books
+            Książki
           </NavLink>
         </motion.nav>
       </div>
     </header>
-  )
+  );
 }

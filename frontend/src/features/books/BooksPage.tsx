@@ -21,7 +21,7 @@ export function BooksPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            Curated Collection
+            Starannie Dobrana Kolekcja
           </motion.span>
           <motion.h1
             className={styles.heroTitle}
@@ -29,7 +29,7 @@ export function BooksPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.1 }}
           >
-            The Scholar's Bookshelf
+            Półka Uczonego
           </motion.h1>
           <motion.p
             className={styles.heroDesc}
@@ -37,9 +37,9 @@ export function BooksPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.18 }}
           >
-            "We read to know we are not alone." Explore the definitive works of
-            C.S. Lewis, where reason meets imagination in the pursuit of eternal
-            truths.
+            „Czytamy, by wiedzieć, że nie jesteśmy sami." Odkryj najważniejsze
+            dzieła C.S. Lewisa, gdzie rozum spotyka wyobraźnię w dążeniu do
+            wiecznych prawd.
           </motion.p>
           <motion.div
             className={styles.heroDivider}
@@ -98,7 +98,7 @@ export function BooksPage() {
                       rel="noopener noreferrer"
                       className={styles.bookLink}
                     >
-                      <span>Buy or Borrow</span>
+                      <span>Kup lub Wypożycz</span>
                       <span
                         className="material-symbols-outlined"
                         style={{ fontSize: "1rem" }}

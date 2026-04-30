@@ -1,16 +1,16 @@
-import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import styles from './QuizComplete.module.scss'
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import styles from "./QuizComplete.module.scss";
 
 interface Props {
-  quizTitle: string
-  score: number
-  total: number
-  onRedo: () => void
+  quizTitle: string;
+  score: number;
+  total: number;
+  onRedo: () => void;
 }
 
 export function QuizComplete({ quizTitle, score, total, onRedo }: Props) {
-  const pct = Math.round((score / total) * 100)
+  const pct = Math.round((score / total) * 100);
 
   return (
     <motion.div
@@ -23,7 +23,12 @@ export function QuizComplete({ quizTitle, score, total, onRedo }: Props) {
         className={styles.icon}
         initial={{ scale: 0, rotate: -30 }}
         animate={{ scale: 1, rotate: 0 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.15 }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 18,
+          delay: 0.15,
+        }}
       >
         <span className="material-symbols-outlined">emoji_events</span>
       </motion.div>
@@ -33,19 +38,24 @@ export function QuizComplete({ quizTitle, score, total, onRedo }: Props) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25, duration: 0.4 }}
       >
-        <h2 className={styles.title}>Congratulations!</h2>
+        <h2 className={styles.title}>Gratulacje!</h2>
         <p className={styles.quizTitle}>{quizTitle}</p>
 
         <div className={styles.scoreWrap}>
           <div className={styles.score}>{pct}%</div>
           <p className={styles.scoreLabel}>
-            {score} of {total} correct
+            {score} z {total} poprawnych
           </p>
         </div>
       </motion.div>
 
       <div className={styles.divider}>
-        <span className="material-symbols-outlined" style={{ fontSize: '0.6rem' }}>diamond</span>
+        <span
+          className="material-symbols-outlined"
+          style={{ fontSize: "0.6rem" }}
+        >
+          diamond
+        </span>
       </div>
 
       <motion.div
@@ -60,13 +70,18 @@ export function QuizComplete({ quizTitle, score, total, onRedo }: Props) {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
         >
-          <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>replay</span>
-          Redo Quiz
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: "1rem" }}
+          >
+            replay
+          </span>
+          Powtórz Quiz
         </motion.button>
         <Link to={-1 as never} className={styles.backBtn}>
-          ← Back to Journey
+          ← Powrót do Podróży
         </Link>
       </motion.div>
     </motion.div>
-  )
+  );
 }
