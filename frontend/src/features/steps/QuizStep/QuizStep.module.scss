@@ -1,0 +1,268 @@
+@use '@/styles/variables' as *;
+
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $secondary;
+  text-decoration: none;
+  margin-bottom: 2.5rem;
+  transition: color $transition-fast;
+  &:hover { color: $gold; }
+  span { font-size: 1.1rem; }
+}
+
+.topBadge {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba($gold, 0.1);
+  border: 1px solid rgba($gold, 0.2);
+  padding: 0.3rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $gold-dark;
+
+  span { font-size: 1rem; }
+}
+
+// Progress bar
+.progressWrap {
+  max-width: 420px;
+  margin: 0 auto 2.5rem;
+}
+
+.progressMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $on-surface-variant;
+  margin-bottom: 0.375rem;
+}
+
+.progressPct {
+  color: $gold-dark;
+}
+
+.progressTrack {
+  height: 4px;
+  background: $surface-container-high;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: $gold;
+}
+
+// Question
+.questionArea {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.questionText {
+  font-family: $font-serif;
+  font-size: clamp(1.375rem, 3vw, 1.75rem);
+  font-weight: 500;
+  color: $on-surface;
+  line-height: 1.35;
+  max-width: 660px;
+  margin: 0 auto 1.75rem;
+}
+
+.questionImage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba($gold, 0.2);
+  background: $surface-container;
+  max-width: 660px;
+  margin: 0 auto;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.88;
+  }
+}
+
+// Answer options
+.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.875rem;
+  max-width: 660px;
+  margin: 0 auto 2.5rem;
+
+  @media (max-width: 520px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1.125rem 1.25rem;
+  border: 1px solid rgba($gold, 0.25);
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  font-family: $font-sans;
+  font-size: 1rem;
+  color: $on-surface;
+  transition: border-color $transition-fast, background $transition-fast, transform $transition-fast;
+
+  &:hover:not(:disabled) {
+    border-color: rgba($gold, 0.55);
+    background: rgba($gold, 0.03);
+    transform: scale(1.01);
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  &.selected {
+    border-color: $gold;
+    background: rgba($gold, 0.06);
+  }
+
+  &.correct {
+    border-color: #16a34a;
+    background: rgba(34, 197, 94, 0.08);
+    color: #15803d;
+  }
+
+  &.wrong {
+    border-color: #dc2626;
+    background: rgba(220, 38, 38, 0.06);
+    color: #b91c1c;
+  }
+}
+
+.optionCircle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba($gold, 0.4);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color $transition-fast, background $transition-fast;
+
+  .selected & {
+    border-color: $gold;
+    background: $gold;
+  }
+
+  .correct & {
+    border-color: #16a34a;
+    background: #16a34a;
+  }
+
+  .wrong & {
+    border-color: #dc2626;
+    background: #dc2626;
+  }
+
+  span {
+    font-size: 0.75rem;
+    color: #fff;
+  }
+}
+
+// Explanation after answer
+.explanation {
+  max-width: 660px;
+  margin: 0 auto 1.5rem;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid $gold;
+  background: rgba($gold, 0.05);
+  font-size: 0.9375rem;
+  color: $on-surface-variant;
+  line-height: 1.65;
+  font-style: italic;
+}
+
+// Actions
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.submitBtn {
+  background: $gold;
+  color: #fff;
+  padding: 0.875rem 3.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background $transition-fast;
+  box-shadow: 0 2px 12px rgba($gold, 0.3);
+
+  &:hover { background: $gold-dark; }
+  &:active { transform: scale(0.98); }
+  &:disabled { opacity: 0.5; cursor: default; }
+}
+
+.nextBtn {
+  @extend .submitBtn;
+  background: $on-surface;
+  box-shadow: none;
+
+  &:hover { background: #333; }
+}
+
+.skipBtn {
+  background: none;
+  border: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $secondary;
+  cursor: pointer;
+  transition: color $transition-fast;
+
+  &:hover { color: $gold-dark; }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2.5rem 0;
+  color: rgba($gold, 0.6);
+
+  &::before, &::after {
+    content: '';
+    width: 6rem;
+    height: 1px;
+    background: rgba($gold, 0.25);
+  }
+}

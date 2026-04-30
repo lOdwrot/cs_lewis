@@ -1,0 +1,86 @@
+@use 'variables' as *;
+@use 'animations';
+
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Work+Sans:wght@300;400;500;600&display=swap');
+
+/* Tailwind base */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 30% 98%;
+    --foreground: 60 5% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 60 5% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 60 5% 10%;
+    --primary: 44 100% 22%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 37%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 40 15% 92%;
+    --muted-foreground: 44 20% 40%;
+    --accent: 40 60% 52%;
+    --accent-foreground: 44 100% 10%;
+    --destructive: 0 72% 41%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 44 30% 80%;
+    --input: 44 30% 88%;
+    --ring: 44 80% 42%;
+    --radius: 0.125rem;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-sans;
+  background-color: $parchment;
+  color: $on-surface;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: radial-gradient(rgba($gold, 0.055) 1px, transparent 0);
+  background-size: 40px 40px;
+}
+
+::selection {
+  background-color: rgba($gold-light, 0.6);
+  color: $on-surface;
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba($gold, 0.4);
+  border-radius: 3px;
+  &:hover {
+    background: rgba($gold, 0.7);
+  }
+}
+
+// Typography
+h1, h2, h3 {
+  font-family: $font-serif;
+}
+
+// Images
+img {
+  max-width: 100%;
+  display: block;
+}

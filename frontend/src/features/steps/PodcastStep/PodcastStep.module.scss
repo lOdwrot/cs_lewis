@@ -1,0 +1,338 @@
+@use '@/styles/variables' as *;
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+
+  @media (min-width: 900px) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.sidebar {
+  width: 100%;
+
+  @media (min-width: 900px) {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 96px;
+  }
+}
+
+.sidebarLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+
+  .bar {
+    width: 3px;
+    height: 1.5rem;
+    background: $gold;
+  }
+
+  h3 {
+    font-family: $font-serif;
+    font-size: 1.125rem;
+    color: $on-surface-variant;
+  }
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $secondary;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color $transition-fast;
+  &:hover { color: $gold; }
+  span { font-size: 1.1rem; }
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+// Podcast header
+.podcastHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  margin-bottom: 2.5rem;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.coverWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+
+  @media (min-width: 640px) {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+.coverBorder {
+  position: absolute;
+  inset: 0;
+  border: 1px solid $gold;
+  transform: translate(8px, 8px);
+  z-index: 0;
+}
+
+.cover {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid rgba($gold, 0.2);
+}
+
+.coverPlaceholder {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: $surface-container;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba($gold, 0.2);
+  color: rgba($gold, 0.5);
+  font-size: 3.5rem;
+}
+
+.coverBadge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2;
+  background: $gold;
+  color: #fff;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  span { font-size: 0.875rem; }
+}
+
+.podcastInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.podcastLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $gold-dark;
+  display: block;
+  margin-bottom: 0.625rem;
+}
+
+.podcastTitle {
+  font-family: $font-serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: $on-surface;
+  margin-bottom: 0.75rem;
+}
+
+.podcastDesc {
+  font-size: 1rem;
+  color: $secondary;
+  font-style: italic;
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+// Audio player
+.player {
+  background: $surface-container-low;
+  border: 1px solid rgba($gold, 0.2);
+  padding: 1.25rem 1.5rem;
+}
+
+.progressRow {
+  margin-bottom: 1rem;
+}
+
+.timeRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: $outline;
+  margin-bottom: 0.375rem;
+}
+
+.progressTrack {
+  height: 4px;
+  background: $surface-container-high;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
+  &:hover .progressFill::after {
+    opacity: 1;
+  }
+}
+
+.progressFill {
+  height: 100%;
+  background: $gold;
+  transition: width 0.1s linear;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: -4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: $gold;
+    opacity: 0;
+    transition: opacity $transition-fast;
+  }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ctrlBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $on-surface-variant;
+  display: flex;
+  align-items: center;
+  transition: color $transition-fast, transform $transition-fast;
+
+  span { font-size: 1.5rem; }
+
+  &:hover {
+    color: $gold-dark;
+    transform: scale(1.1);
+  }
+
+  &:active { transform: scale(0.92); }
+}
+
+.playBtn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: $gold;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 2px 12px rgba($gold, 0.35);
+  transition: background $transition-fast, transform $transition-fast, box-shadow $transition-fast;
+
+  span { font-size: 2rem; }
+
+  &:hover {
+    background: $gold-dark;
+    transform: scale(1.07);
+    box-shadow: 0 4px 20px rgba($gold, 0.45);
+  }
+
+  &:active { transform: scale(0.95); }
+}
+
+.dividerSmall {
+  width: 1px;
+  height: 2rem;
+  background: rgba($gold, 0.2);
+  margin: 0 0.5rem;
+}
+
+// Transcript
+.transcriptSection {
+  margin-top: 2.5rem;
+}
+
+.transcriptHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+
+  h2 {
+    font-family: $font-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: $on-surface;
+  }
+}
+
+.transcriptContent {
+  max-height: 520px;
+  overflow-y: auto;
+  padding-right: 0.75rem;
+}
+
+.transcriptBlock {
+  margin-bottom: 2rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  border-left: 2px solid transparent;
+  padding-left: 1rem;
+  margin-left: -1rem;
+  transition: border-color $transition-fast;
+
+  &:hover { border-left-color: rgba($gold, 0.4); }
+
+  &.active {
+    border-left-color: $gold;
+    background: rgba($gold, 0.03);
+  }
+}
+
+.transcriptTime {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba($gold, 0.8);
+  margin-bottom: 0.375rem;
+}
+
+.transcriptText {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: $on-surface-variant;
+  font-style: italic;
+}

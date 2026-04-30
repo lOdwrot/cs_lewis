@@ -1,0 +1,100 @@
+@use '@/styles/variables' as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: $parchment;
+  border-bottom: 1px solid rgba($gold, 0.2);
+  backdrop-filter: blur(8px);
+  background-color: rgba($parchment, 0.92);
+}
+
+.inner {
+  max-width: $max-content;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-family: $font-serif;
+  font-size: 1.35rem;
+  font-style: italic;
+  font-weight: 600;
+  color: $gold;
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $gold-dark;
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.navLink {
+  font-family: $font-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: $secondary;
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 2px;
+  transition: color $transition-fast;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: $gold;
+    transition: width $transition-mid;
+  }
+
+  &:hover {
+    color: $gold;
+
+    &::after {
+      width: 100%;
+    }
+  }
+
+  &.active {
+    color: $gold;
+
+    &::after {
+      width: 100%;
+    }
+  }
+}
+
+.mobileMenuBtn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $gold;
+  padding: 4px;
+
+  @media (max-width: 640px) {
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav {
+    display: none;
+  }
+}

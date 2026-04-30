@@ -1,0 +1,84 @@
+@use '@/styles/variables' as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid rgba($gold, 0.2);
+  background-color: $surface-container-low;
+  padding: 2rem 1.75rem 2rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color $transition-mid, background-color $transition-mid;
+
+  &:hover {
+    border-color: rgba($gold, 0.7);
+    background-color: #fff;
+  }
+}
+
+.iconWrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba($gold, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  transition: background $transition-mid;
+
+  .card:hover & {
+    background: rgba($gold, 0.15);
+  }
+}
+
+.image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.iconFallback {
+  font-size: 2.25rem;
+  color: $gold;
+}
+
+.title {
+  font-family: $font-serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: $on-surface;
+  margin-bottom: 0.75rem;
+}
+
+.description {
+  font-family: $font-sans;
+  font-size: 1rem;
+  color: $secondary;
+  line-height: 1.65;
+  margin-bottom: 2rem;
+  flex: 1;
+}
+
+.cta {
+  margin-top: auto;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid $gold;
+  color: $gold;
+  font-family: $font-sans;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  transition: background $transition-fast, color $transition-fast;
+
+  .card:hover & {
+    background: $gold;
+    color: #fff;
+  }
+}

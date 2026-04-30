@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-strapi@latest backend --quickstart --ts --no-run --skip-cloud)",
+      "Bash(npm create *)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(timeout 15 npm run dev)",
+      "Bash(npm run *)",
+      "Bash(kill %1)",
+      "Bash(echo \"PID: $!\")",
+      "Bash(curl -s \"http://localhost:1337/api/gates\")",
+      "Bash(python3 -m json.tool)",
+      "Read(//tmp/**)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s \"http://localhost:1337/api/steps/lmom5a8hx0p3wasrq1izqmnj?populate%5Bimage%5D%5Bfields%5D%5B0%5D=url&populate%5Bimage%5D%5Bfields%5D%5B1%5D=alternativeText&populate%5Bcontent%5D=*\")",
+      "Bash(curl -s \"http://localhost:1337/api/steps/lmom5a8hx0p3wasrq1izqmnj\")"
+    ]
+  }
+}

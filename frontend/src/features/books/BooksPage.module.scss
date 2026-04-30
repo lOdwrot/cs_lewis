@@ -1,0 +1,230 @@
+@use '@/styles/variables' as *;
+
+.page {
+  max-width: $max-content;
+  margin: 0 auto;
+  padding: 5rem 2rem 7rem;
+}
+
+.hero {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 5rem;
+}
+
+.heroLabel {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $gold-dark;
+  background: rgba($gold, 0.08);
+  border: 1px solid rgba($gold, 0.2);
+  padding: 0.25rem 0.875rem;
+  margin-bottom: 1.25rem;
+}
+
+.heroTitle {
+  font-family: $font-serif;
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: $on-surface;
+  margin-bottom: 1.125rem;
+}
+
+.heroDesc {
+  font-size: 1.0625rem;
+  color: $secondary;
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.heroDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  color: rgba($gold, 0.7);
+
+  &::before, &::after {
+    content: '';
+    width: 4rem;
+    height: 1px;
+    background: rgba($gold, 0.35);
+  }
+
+  span { font-size: 0.5rem; }
+}
+
+// Grid
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+// Book card
+.card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid rgba($gold, 0.2);
+  padding: 1.5rem;
+  transition: border-color $transition-mid;
+  height: 100%;
+
+  &:hover {
+    border-color: rgba($gold, 0.6);
+  }
+}
+
+.imageWrap {
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: $surface-container;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.bookImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.15);
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), filter $transition-mid;
+
+  .card:hover & {
+    transform: scale(1.06);
+    filter: grayscale(0);
+  }
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $surface-container;
+  color: rgba($gold, 0.35);
+  font-size: 3rem;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.bookTitle {
+  font-family: $font-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: $on-surface;
+  margin-bottom: 0.625rem;
+}
+
+.bookDesc {
+  font-size: 0.9375rem;
+  color: $secondary;
+  line-height: 1.65;
+  font-style: italic;
+  flex: 1;
+  margin-bottom: 1.75rem;
+}
+
+.bookLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba($gold, 0.15);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $gold-dark;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  span {
+    transition: transform $transition-fast;
+  }
+
+  &:hover {
+    color: $gold;
+
+    span {
+      transform: translateX(3px);
+    }
+  }
+}
+
+// Placeholder card
+.placeholderCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  border: 2px dashed rgba($gold, 0.3);
+  background: $surface-container-low;
+  padding: 2rem;
+  text-align: center;
+}
+
+.placeholderIcon {
+  font-size: 2.5rem;
+  color: rgba($gold, 0.4);
+  margin-bottom: 1rem;
+}
+
+.placeholderText {
+  font-family: $font-serif;
+  font-style: italic;
+  font-size: 0.875rem;
+  color: $secondary;
+  margin-bottom: 1.5rem;
+}
+
+.placeholderBtn {
+  padding: 0.625rem 1.5rem;
+  border: 1px solid rgba($gold, 0.4);
+  background: none;
+  color: $gold-dark;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    border-color: $gold;
+    color: $gold;
+  }
+}
+
+// Latin motto section
+.motto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 5rem;
+}
+
+.mottoDivider {
+  width: 1px;
+  height: 5rem;
+  background: linear-gradient(to bottom, transparent, rgba($gold, 0.4), transparent);
+}
+
+.mottoText {
+  font-family: $font-serif;
+  font-style: italic;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  color: rgba($gold, 0.6);
+  text-transform: uppercase;
+}
