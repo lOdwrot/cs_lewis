@@ -32,6 +32,14 @@ export function Header() {
             Wielki Portal
           </NavLink>
           <NavLink
+            to="/journeys"
+            className={({ isActive }) =>
+              `${styles.navLink} ${isActive ? styles.active : ""}`
+            }
+          >
+            Wszystkie Przygody
+          </NavLink>
+          <NavLink
             to="/books"
             className={({ isActive }) =>
               `${styles.navLink} ${isActive ? styles.active : ""}`
