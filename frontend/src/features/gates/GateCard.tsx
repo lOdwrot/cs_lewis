@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import {
   motion,
   AnimatePresence,
@@ -6,6 +6,7 @@ import {
   useSpring,
   useTransform,
   useAnimationControls,
+  animate,
 } from "framer-motion";
 
 const GLOW_OFF =
@@ -70,8 +71,14 @@ export function GateCard({ gate }: Props) {
   const navigate = useNavigate();
   const [phase, setPhase] = useState<Phase>("idle");
   const [isHovered, setIsHovered] = useState(false);
+  const sceneRef = useRef<HTMLDivElement>(null);
   const particles = useMemo(() => makeParticles(38), []);
   const glowControls = useAnimationControls();
+
+  // Motion values for the portal-suck — driven imperatively on exit
+  const portalX = useMotionValue(0);
+  const portalY = useMotionValue(0);
+  const portalScale = useMotionValue(1);
 
   useEffect(() => {
     if (isHovered && phase === "idle") {
@@ -112,21 +119,46 @@ export function GateCard({ gate }: Props) {
 
   const handleClick = () => {
     if (phase !== "idle") return;
-    // Snap tilt back immediately so opening animation is clean
     rawX.set(0);
     rawY.set(0);
     setIsHovered(false);
+
+    // Capture position now — it won't change during the book-open animation
+    const rect = sceneRef.current?.getBoundingClientRect();
+
     setPhase("open");
-    setTimeout(() => setPhase("exit"), 1150);
-    setTimeout(() => navigate(`/gate/${gate.slug}`), 1700);
+
+    setTimeout(() => {
+      setPhase("exit");
+      if (rect) {
+        const tx = window.innerWidth / 2 - (rect.left + rect.width / 2);
+        const ty = window.innerHeight / 2 - (rect.top + rect.height / 2);
+
+        animate(portalX, tx, { duration: 0.38, ease: [0.25, 0.1, 0.25, 1] });
+        animate(portalY, ty, { duration: 0.38, ease: [0.25, 0.1, 0.25, 1] });
+        animate(portalScale, [1, 1.04, 1.15, 2, 6, 20, 65], {
+          duration: 1.25,
+          times: [0, 0.08, 0.22, 0.42, 0.62, 0.82, 1],
+        });
+      }
+    }, 1150);
+
+    setTimeout(() => navigate(`/gate/${gate.slug}`), 2400);
   };
 
   return (
     <>
       <motion.div
+        ref={sceneRef}
         className={styles.scene}
         animate={glowControls}
         initial={{ boxShadow: GLOW_OFF }}
+        style={{
+          x: portalX,
+          y: portalY,
+          scale: portalScale,
+          ...(phase === "exit" ? { position: "relative", zIndex: 9999 } : {}),
+        }}
         onClick={handleClick}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => phase === "idle" && setIsHovered(true)}
@@ -248,7 +280,7 @@ export function GateCard({ gate }: Props) {
               className={styles.exitOverlay}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.55, ease: "easeIn" }}
+              transition={{ duration: 0.45, ease: "easeIn", delay: 1.0 }}
             />
           )}
         </AnimatePresence>,

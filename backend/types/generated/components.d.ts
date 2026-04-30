@@ -8,7 +8,8 @@ export interface StepPodcastContent extends Struct.ComponentSchema {
     icon: 'headphones';
   };
   attributes: {
-    audioUrl: Schema.Attribute.String & Schema.Attribute.Required;
+    audioFile: Schema.Attribute.Media<'audios'>;
+    audioUrl: Schema.Attribute.String;
     transcript: Schema.Attribute.RichText;
   };
 }

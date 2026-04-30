@@ -37,7 +37,8 @@ export interface TextContent {
 export interface PodcastContent {
   __component: "step.podcast-content";
   id: number;
-  audioUrl: string;
+  audioUrl: string | null;
+  audioFile: StrapiImage | null;
   transcript: string | null;
 }
 

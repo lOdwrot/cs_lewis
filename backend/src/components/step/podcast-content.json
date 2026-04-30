@@ -8,8 +8,13 @@
   "options": {},
   "attributes": {
     "audioUrl": {
-      "type": "string",
-      "required": true
+      "type": "string"
+    },
+    "audioFile": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["audios"]
     },
     "transcript": {
       "type": "richtext"
