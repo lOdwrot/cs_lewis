@@ -63,6 +63,12 @@ export function JourneyCard({ journey }: Props) {
               </span>
             )}
           </h3>
+          {totalTime > 0 && (
+            <div className={styles.timeLabel}>
+              <span className="material-symbols-outlined">schedule</span>
+              {totalTime} min
+            </div>
+          )}
           <p className={styles.description}>{journey.description}</p>
           {totalSteps > 0 && (
             <div className={styles.progress}>
@@ -78,12 +84,6 @@ export function JourneyCard({ journey }: Props) {
             </div>
           )}
           <div className={styles.cta}>
-            {totalTime > 0 && (
-              <span className={styles.timeLabel}>
-                <span className="material-symbols-outlined">schedule</span>
-                {totalTime} min
-              </span>
-            )}
             <span>Przejdź do Podróży</span>
             <span className="material-symbols-outlined">arrow_forward</span>
           </div>

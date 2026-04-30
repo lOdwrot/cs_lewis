@@ -116,16 +116,19 @@
   font-weight: 500;
   letter-spacing: 0.04em;
   color: $secondary;
-  text-transform: none;
-  margin-right: auto;
+  margin-bottom: 0.875rem;
 
-  span { font-size: 0.9rem; }
+  span {
+    font-size: 0.9rem;
+    color: $gold-dark;
+  }
 }
 
 .cta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 0.4rem;
   padding-top: 0.75rem;
   border-top: 1px solid rgba($gold, 0.15);
   font-size: 0.8125rem;
@@ -134,7 +137,6 @@
   text-transform: uppercase;
   color: $gold-dark;
   transition: color $transition-fast;
-  gap: 0.5rem;
 
   .card:hover & {
     color: $gold;
