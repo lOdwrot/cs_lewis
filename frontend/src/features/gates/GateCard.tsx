@@ -70,38 +70,43 @@ export function GateCard({ gate }: Props) {
             />
           </div>
 
-          {/* Cover — rotates open around left spine; hidden once past 90° */}
+          {/* Cover — rotates fully open around left spine */}
           <motion.div
             className={styles.cover}
             style={{
               transformOrigin: "left center",
-              backfaceVisibility: "hidden",
-              WebkitBackfaceVisibility: "hidden",
+              transformStyle: "preserve-3d",
             }}
-            animate={phase !== "idle" ? { rotateY: -168 } : { rotateY: 0 }}
-            transition={{ duration: 0.9, ease: [0.4, 0, 0.15, 1] }}
+            animate={phase !== "idle" ? { rotateY: -180 } : { rotateY: 0 }}
+            transition={{ duration: 1.0, ease: [0.4, 0, 0.15, 1] }}
           >
-            <div className={styles.spine} />
-            <div className={styles.face}>
-              <div className={styles.iconWrap}>
-                {gate.image ? (
-                  <img
-                    src={strapiImageUrl(gate.image.url)}
-                    alt={gate.image.alternativeText ?? gate.title}
-                    className={styles.image}
-                  />
-                ) : (
-                  <span
-                    className={`material-symbols-outlined ${styles.iconFallback}`}
-                  >
-                    auto_stories
-                  </span>
-                )}
+            {/* Front face — the visible ivory/gold cover */}
+            <div className={styles.coverFront}>
+              <div className={styles.spine} />
+              <div className={styles.face}>
+                <div className={styles.iconWrap}>
+                  {gate.image ? (
+                    <img
+                      src={strapiImageUrl(gate.image.url)}
+                      alt={gate.image.alternativeText ?? gate.title}
+                      className={styles.image}
+                    />
+                  ) : (
+                    <span
+                      className={`material-symbols-outlined ${styles.iconFallback}`}
+                    >
+                      auto_stories
+                    </span>
+                  )}
+                </div>
+                <h3 className={styles.title}>{gate.title}</h3>
+                <p className={styles.description}>{gate.description}</p>
+                <div className={styles.cta}>Open</div>
               </div>
-              <h3 className={styles.title}>{gate.title}</h3>
-              <p className={styles.description}>{gate.description}</p>
-              <div className={styles.cta}>Open</div>
             </div>
+
+            {/* Back face — plain white page revealed when fully open */}
+            <div className={styles.coverBack} />
           </motion.div>
         </motion.div>
 

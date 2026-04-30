@@ -9,7 +9,7 @@
   flex-direction: column;
   height: 440px; // uniform across all cards
 
-  &:hover .cover {
+  &:hover .coverFront {
     border-color: rgba($gold, 0.7);
     box-shadow:
       2px 6px 24px rgba($gold-dark, 0.14),
@@ -89,11 +89,19 @@
     0 0 160px rgba($gold, 0.2);
 }
 
-// ─── Cover (rotates on click, origin = left spine) ─────────────────────────
+// ─── Cover (bare 3D pivot — visuals live on coverFront / coverBack) ─────────
 .cover {
   position: absolute;
   inset: 0;
+}
+
+// ─── Front face ─────────────────────────────────────────────────────────────
+.coverFront {
+  position: absolute;
+  inset: 0;
   display: flex;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   background: linear-gradient(160deg, #fdfaf2 0%, #f5ead5 55%, #faf5e8 100%);
   border: 1px solid rgba($gold, 0.38);
   box-shadow:
@@ -101,7 +109,7 @@
     0 1px 4px rgba(0, 0, 0, 0.06);
   transition: border-color $transition-mid, box-shadow $transition-mid;
 
-  // Subtle linen grain on light surface
+  // Subtle linen grain
   &::after {
     content: '';
     position: absolute;
@@ -109,6 +117,19 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='1' height='1' fill='rgba(0,0,0,0.018)'/%3E%3C/svg%3E");
     pointer-events: none;
   }
+}
+
+// ─── Back face (plain white page) ───────────────────────────────────────────
+.coverBack {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: rotateY(180deg);
+  background: #fdfcf8;
+  border: 1px solid rgba($gold, 0.18);
+  // Soft inner shadow for paper depth
+  box-shadow: inset 4px 0 16px rgba($gold-dark, 0.06), inset 0 0 40px rgba(0, 0, 0, 0.02);
 }
 
 // ─── Spine ──────────────────────────────────────────────────────────────────
