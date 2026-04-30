@@ -1,11 +1,28 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
-import { StaggerList, StaggerItem } from "@/components/animations/StaggerList";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
 import { useFetch } from "@/hooks/useFetch";
 import { getGate } from "@/services/gates.service";
 import styles from "./GateDetail.module.scss";
+
+const gridVariants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.3 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 90, rotateX: 28, scale: 0.88 },
+  show: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    scale: 1,
+    transition: { type: "spring" as const, stiffness: 160, damping: 18, mass: 0.9 },
+  },
+};
 
 export function GateDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -61,13 +78,23 @@ export function GateDetail() {
               <div className={styles.divider} />
             </section>
 
-            <StaggerList className={styles.grid}>
+            <motion.div
+              className={styles.grid}
+              style={{ perspective: 1200 }}
+              variants={gridVariants}
+              initial="hidden"
+              animate="show"
+            >
               {(gate.journeys ?? []).map((journey) => (
-                <StaggerItem key={journey.id}>
+                <motion.div
+                  key={journey.id}
+                  variants={cardVariants}
+                  style={{ transformOrigin: "bottom center" }}
+                >
                   <JourneyCard journey={journey} />
-                </StaggerItem>
+                </motion.div>
               ))}
-            </StaggerList>
+            </motion.div>
           </>
         )}
       </main>

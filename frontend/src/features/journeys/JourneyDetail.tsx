@@ -1,7 +1,24 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
-import { FadeInView } from "@/components/animations/FadeInView";
+
+const stepsContainerVariants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.08, delayChildren: 0.4 },
+  },
+};
+
+const stepCardVariants = {
+  hidden: { opacity: 0, y: 90, rotateX: 28, scale: 0.88 },
+  show: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    scale: 1,
+    transition: { type: "spring" as const, stiffness: 160, damping: 18, mass: 0.9 },
+  },
+};
 import { useFetch } from "@/hooks/useFetch";
 import { getJourney } from "@/services/journeys.service";
 import { useProgressStore } from "@/store/progressStore";
@@ -90,11 +107,21 @@ export function JourneyDetail() {
                 transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
               />
 
-              <div className={styles.steps}>
+              <motion.div
+                className={styles.steps}
+                style={{ perspective: 1200 }}
+                variants={stepsContainerVariants}
+                initial="hidden"
+                animate="show"
+              >
                 {(journey.steps ?? []).map((step, i) => {
                   const done = isStepComplete(step.documentId);
                   return (
-                    <FadeInView key={step.id} delay={i * 0.07} direction="left">
+                    <motion.div
+                      key={step.id}
+                      variants={stepCardVariants}
+                      style={{ transformOrigin: "bottom center" }}
+                    >
                       <div className={styles.stepCard}>
                         <div
                           className={`${styles.dot} ${done ? styles.completed : ""}`}
@@ -175,10 +202,10 @@ export function JourneyDetail() {
                           </div>
                         </MotionLink>
                       </div>
-                    </FadeInView>
+                    </motion.div>
                   );
                 })}
-              </div>
+              </motion.div>
 
               {allComplete && (
                 <motion.div

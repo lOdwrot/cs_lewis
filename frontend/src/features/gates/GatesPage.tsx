@@ -1,10 +1,40 @@
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
-import { StaggerList, StaggerItem } from "@/components/animations/StaggerList";
 import { GateCard } from "./GateCard";
 import { useFetch } from "@/hooks/useFetch";
 import { getGates } from "@/services/gates.service";
 import styles from "./GatesPage.module.scss";
+
+const gridVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.22,
+      delayChildren: 0.65,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 90,
+    rotateX: 28,
+    scale: 0.88,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    scale: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 160,
+      damping: 18,
+      mass: 0.9,
+    },
+  },
+};
 
 export function GatesPage() {
   const { data: gates, loading } = useFetch(getGates);
@@ -76,13 +106,19 @@ export function GatesPage() {
             ))}
           </div>
         ) : (
-          <StaggerList className={styles.grid}>
+          <motion.div
+            className={styles.grid}
+            style={{ perspective: 1200 }}
+            variants={gridVariants}
+            initial="hidden"
+            animate="show"
+          >
             {(gates ?? []).map((gate) => (
-              <StaggerItem key={gate.id}>
+              <motion.div key={gate.id} variants={cardVariants} style={{ transformOrigin: "bottom center" }}>
                 <GateCard gate={gate} />
-              </StaggerItem>
+              </motion.div>
             ))}
-          </StaggerList>
+          </motion.div>
         )}
       </main>
     </PageTransition>

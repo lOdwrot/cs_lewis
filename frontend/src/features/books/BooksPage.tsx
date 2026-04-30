@@ -1,7 +1,24 @@
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
-import { StaggerList, StaggerItem } from "@/components/animations/StaggerList";
 import { FadeInView } from "@/components/animations/FadeInView";
+
+const gridVariants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.10, delayChildren: 0.35 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 90, rotateX: 28, scale: 0.88 },
+  show: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    scale: 1,
+    transition: { type: "spring" as const, stiffness: 160, damping: 18, mass: 0.9 },
+  },
+};
 import { useFetch } from "@/hooks/useFetch";
 import { getBooks } from "@/services/books.service";
 import { strapiImageUrl } from "@/services/api";
@@ -66,9 +83,19 @@ export function BooksPage() {
             ))}
           </div>
         ) : (
-          <StaggerList className={styles.grid}>
+          <motion.div
+            className={styles.grid}
+            style={{ perspective: 1200 }}
+            variants={gridVariants}
+            initial="hidden"
+            animate="show"
+          >
             {(books ?? []).map((book) => (
-              <StaggerItem key={book.id}>
+              <motion.div
+                key={book.id}
+                variants={cardVariants}
+                style={{ transformOrigin: "bottom center" }}
+              >
                 <motion.article
                   className={styles.card}
                   whileHover={{ y: -4 }}
@@ -108,9 +135,9 @@ export function BooksPage() {
                     </a>
                   </div>
                 </motion.article>
-              </StaggerItem>
+              </motion.div>
             ))}
-          </StaggerList>
+          </motion.div>
         )}
 
         {/* Motto */}
