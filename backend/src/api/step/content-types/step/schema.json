@@ -40,7 +40,11 @@
     },
     "content": {
       "type": "dynamiczone",
-      "components": ["step.text-content", "step.podcast-content", "step.quiz-content"]
+      "components": [
+        "step.text-content",
+        "step.podcast-content",
+        "step.quiz-content"
+      ]
     },
     "journeys": {
       "type": "relation",

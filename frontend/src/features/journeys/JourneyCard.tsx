@@ -13,7 +13,9 @@ export function JourneyCard({ journey }: Props) {
   const isStepComplete = useProgressStore((s) => s.isStepComplete);
   const steps = journey.steps ?? [];
   const totalSteps = steps.length;
-  const completedCount = steps.filter((s) => isStepComplete(s.documentId)).length;
+  const completedCount = steps.filter((s) =>
+    isStepComplete(s.documentId),
+  ).length;
   const progressPct = totalSteps > 0 ? (completedCount / totalSteps) * 100 : 0;
   const isJourneyComplete = totalSteps > 0 && completedCount === totalSteps;
   const totalTime = steps.reduce((sum, s) => sum + (s.estimatedTime ?? 0), 0);

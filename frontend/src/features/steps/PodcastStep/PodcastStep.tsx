@@ -176,7 +176,9 @@ export function PodcastStep({ step }: Props) {
               >
                 {done ? (
                   <>
-                    <span className="material-symbols-outlined">check_circle</span>
+                    <span className="material-symbols-outlined">
+                      check_circle
+                    </span>
                     Kontynuuj
                   </>
                 ) : (

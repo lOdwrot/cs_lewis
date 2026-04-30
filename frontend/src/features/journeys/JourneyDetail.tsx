@@ -29,7 +29,8 @@ export function JourneyDetail() {
   const isStepComplete = useProgressStore((s) => s.isStepComplete);
 
   const steps = journey?.steps ?? [];
-  const allComplete = steps.length > 0 && steps.every((s) => isStepComplete(s.documentId));
+  const allComplete =
+    steps.length > 0 && steps.every((s) => isStepComplete(s.documentId));
   const totalTime = steps.reduce((sum, s) => sum + (s.estimatedTime ?? 0), 0);
 
   return (
@@ -184,16 +185,25 @@ export function JourneyDetail() {
                   className={styles.journeyComplete}
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.25,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                  }}
                 >
                   <div className={styles.journeyCompleteLine}>
                     <span className={styles.journeyCompleteOrn}>✦</span>
                   </div>
-                  <h2 className={styles.journeyCompleteTitle}>Podróż Ukończona</h2>
+                  <h2 className={styles.journeyCompleteTitle}>
+                    Podróż Ukończona
+                  </h2>
                   <p className={styles.journeyCompleteSubtitle}>
                     Wszystkie etapy zostały ukończone
                   </p>
-                  <div className={styles.journeyCompleteLine} style={{ marginTop: "2rem", marginBottom: 0 }}>
+                  <div
+                    className={styles.journeyCompleteLine}
+                    style={{ marginTop: "2rem", marginBottom: 0 }}
+                  >
                     <span className={styles.journeyCompleteOrn}>✦</span>
                   </div>
                 </motion.div>
