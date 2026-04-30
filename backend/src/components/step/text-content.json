@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_step_text_contents",
+  "info": {
+    "displayName": "Text Content",
+    "icon": "file-alt",
+    "description": "Markdown text with optional video URL"
+  },
+  "options": {},
+  "attributes": {
+    "markdown": {
+      "type": "richtext"
+    },
+    "videoUrl": {
+      "type": "string"
+    }
+  }
+}

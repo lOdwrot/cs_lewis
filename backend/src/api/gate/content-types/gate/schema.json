@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "gates",
+  "info": {
+    "singularName": "gate",
+    "pluralName": "gates",
+    "displayName": "Gate",
+    "description": "Top-level thematic entry points"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "journeys": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::journey.journey",
+      "mappedBy": "gates"
+    }
+  }
+}

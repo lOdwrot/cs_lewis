@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "steps",
+  "info": {
+    "singularName": "step",
+    "pluralName": "steps",
+    "displayName": "Step",
+    "description": "Individual step within a journey (text, podcast, or quiz)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": ["text", "podcast", "quiz"],
+      "required": true,
+      "default": "text"
+    },
+    "tags": {
+      "type": "json"
+    },
+    "content": {
+      "type": "dynamiczone",
+      "components": ["step.text-content", "step.podcast-content", "step.quiz-content"]
+    },
+    "journeys": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::journey.journey",
+      "inversedBy": "steps"
+    }
+  }
+}

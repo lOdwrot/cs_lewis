@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "journeys",
+  "info": {
+    "singularName": "journey",
+    "pluralName": "journeys",
+    "displayName": "Journey",
+    "description": "A thematic journey through C.S. Lewis content"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "steps": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::step.step",
+      "mappedBy": "journeys"
+    },
+    "gates": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::gate.gate",
+      "inversedBy": "journeys"
+    }
+  }
+}

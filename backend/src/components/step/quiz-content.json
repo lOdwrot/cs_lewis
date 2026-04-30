@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_step_quiz_contents",
+  "info": {
+    "displayName": "Quiz Content",
+    "icon": "check-square",
+    "description": "Quiz questions stored as JSON"
+  },
+  "options": {},
+  "attributes": {
+    "questions": {
+      "type": "json",
+      "required": true
+    }
+  }
+}
