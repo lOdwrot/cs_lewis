@@ -1,9 +1,12 @@
+import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, useAnimationControls } from "framer-motion";
+import { motion, useAnimationControls, useMotionValue, useSpring } from "framer-motion";
 import type { Journey } from "@/types/strapi";
 import { strapiImageUrl } from "@/services/api";
 import { useProgressStore } from "@/store/progressStore";
 import styles from "./JourneyCard.module.scss";
+
+const TILT_SPRING = { stiffness: 280, damping: 26, mass: 0.6 };
 
 const GLOW_OFF = "0 0 0 1px rgba(212,175,55,0), 0 10px 50px rgba(212,175,55,0), 0 0 80px rgba(212,175,55,0)";
 const GLOW_LO  = "0 0 0 1px rgba(212,175,55,0.55), 0 10px 50px rgba(212,175,55,0.42), 0 0 90px rgba(212,175,55,0.22)";
@@ -14,8 +17,28 @@ interface Props {
 }
 
 export function JourneyCard({ journey }: Props) {
+  const cardRef = useRef<HTMLDivElement>(null);
   const glowControls = useAnimationControls();
   const isStepComplete = useProgressStore((s) => s.isStepComplete);
+
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const rotateX = useSpring(rawX, TILT_SPRING);
+  const rotateY = useSpring(rawY, TILT_SPRING);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const cx = (e.clientX - rect.left) / rect.width - 0.5;
+    const cy = (e.clientY - rect.top) / rect.height - 0.5;
+    rawY.set(cx * 16);
+    rawX.set(-cy * 10);
+  }
+
+  function handleMouseLeave() {
+    rawX.set(0);
+    rawY.set(0);
+  }
   const steps = journey.steps ?? [];
   const totalSteps = steps.length;
   const completedCount = steps.filter((s) =>
@@ -27,10 +50,12 @@ export function JourneyCard({ journey }: Props) {
 
   return (
     <motion.div
+      ref={cardRef}
       animate={glowControls}
       initial={{ boxShadow: GLOW_OFF }}
-      whileHover={{ y: -5 }}
-      transition={{ y: { type: "spring", stiffness: 320, damping: 24 } }}
+      style={{ rotateX, rotateY, transformPerspective: 900 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       onHoverStart={() => glowControls.start({
         boxShadow: [GLOW_LO, GLOW_HI, GLOW_LO],
         transition: { duration: 1.6, repeat: Infinity, ease: "easeInOut" },

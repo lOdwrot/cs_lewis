@@ -215,6 +215,10 @@ export function JourneyDetail() {
                   <p className={styles.journeyCompleteSubtitle}>
                     Wszystkie etapy zostały ukończone
                   </p>
+                  <Link to="/" className={styles.journeyCompleteBtn} onClick={() => window.scrollTo({ top: 0 })}>
+                    <span>Dalsza eksploracja</span>
+                    <span className="material-symbols-outlined">explore</span>
+                  </Link>
                   <div
                     className={styles.journeyCompleteLine}
                     style={{ marginTop: "2rem", marginBottom: 0 }}
