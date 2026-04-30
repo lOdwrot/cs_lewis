@@ -16,7 +16,12 @@ const stepCardVariants = {
     y: 0,
     rotateX: 0,
     scale: 1,
-    transition: { type: "spring" as const, stiffness: 160, damping: 18, mass: 0.9 },
+    transition: {
+      type: "spring" as const,
+      stiffness: 160,
+      damping: 18,
+      mass: 0.9,
+    },
   },
 };
 import { useFetch } from "@/hooks/useFetch";
@@ -52,17 +57,7 @@ export function JourneyDetail() {
 
   return (
     <PageTransition>
-      <motion.main
-        className={styles.page}
-        animate={{
-          boxShadow: [
-            "0 0 0 1px rgba(212,175,55,0.1), 0 0 50px rgba(212,175,55,0.07), 0 0 100px rgba(212,175,55,0.04)",
-            "0 0 0 1px rgba(212,175,55,0.22), 0 0 80px rgba(212,175,55,0.14), 0 0 160px rgba(212,175,55,0.07)",
-            "0 0 0 1px rgba(212,175,55,0.1), 0 0 50px rgba(212,175,55,0.07), 0 0 100px rgba(212,175,55,0.04)",
-          ],
-        }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-      >
+      <main className={styles.page}>
         <Link to={-1 as never} className={styles.backLink}>
           <span className="material-symbols-outlined">arrow_back</span>
           Powrót do Bramy
@@ -142,7 +137,7 @@ export function JourneyDetail() {
                             <div className={styles.cardBody}>
                               <div className={styles.stopBadge}>
                                 <span className={styles.stopNumber}>
-                                  STOP {String(i + 1).padStart(2, "0")}
+                                  Przystanek {String(i + 1).padStart(2, "0")}
                                 </span>
                                 {done && (
                                   <span className={styles.completedCheck}>
@@ -238,7 +233,7 @@ export function JourneyDetail() {
             </div>
           </>
         )}
-      </motion.main>
+      </main>
     </PageTransition>
   );
 }

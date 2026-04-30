@@ -185,7 +185,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.875rem;
+  margin-bottom: 1.375rem;
 }
 
 .stopNumber {
@@ -298,11 +298,6 @@
   position: relative;
   z-index: 1;
 
-  .card:hover & {
-    color: rgba($gold, 0.75);
-    box-shadow: inset 0 0 22px rgba($gold, 0.1);
-    transform: scale(1.04);
-  }
 }
 
 .completedCheck {
@@ -313,6 +308,7 @@
   font-weight: 500;
   color: #16a34a;
   margin-left: 0.5rem;
+  padding-right: 1rem;
 }
 
 .continueSection {
