@@ -51,19 +51,21 @@ export function TextVideoStep({ step }: Props) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45 }}
         >
-          <div className={styles.typeLabel}>
-            <span className="material-symbols-outlined">description</span>
-            Lektura
+          <div className={styles.headerMeta}>
+            <div className={styles.typeLabel}>
+              <span className="material-symbols-outlined">description</span>
+              Lektura
+            </div>
+            {step.estimatedTime && (
+              <div className={styles.estimatedTime}>
+                <span className="material-symbols-outlined">schedule</span>
+                {step.estimatedTime} min
+              </div>
+            )}
           </div>
           <h1 className={styles.title}>{step.title}</h1>
           {step.description && (
             <p className={styles.desc}>{step.description}</p>
-          )}
-          {step.estimatedTime && (
-            <div className={styles.estimatedTime}>
-              <span className="material-symbols-outlined">schedule</span>
-              {step.estimatedTime} min
-            </div>
           )}
         </motion.header>
 

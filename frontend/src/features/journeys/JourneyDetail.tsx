@@ -139,6 +139,15 @@ export function JourneyDetail() {
                                 <span className={styles.stopNumber}>
                                   Przystanek {String(i + 1).padStart(2, "0")}
                                 </span>
+                                <span className={styles.stopMeta}>
+                                  <span className={`material-symbols-outlined ${styles.stopMetaIcon}`}>
+                                    {TYPE_ICON[step.type]}
+                                  </span>
+                                  {TYPE_LABEL[step.type]}
+                                  {step.estimatedTime && (
+                                    <> · {step.estimatedTime} min</>
+                                  )}
+                                </span>
                                 {done && (
                                   <span className={styles.completedCheck}>
                                     <span
@@ -155,31 +164,15 @@ export function JourneyDetail() {
                               <p className={styles.cardDesc}>
                                 {step.description}
                               </p>
-                              <div className={styles.tags}>
-                                <span className={styles.tag}>
-                                  <span
-                                    className={`material-symbols-outlined ${styles.tagIcon}`}
-                                  >
-                                    {TYPE_ICON[step.type]}
-                                  </span>
-                                  {TYPE_LABEL[step.type]}
-                                </span>
-                                {step.estimatedTime && (
-                                  <span className={styles.tag}>
-                                    <span
-                                      className={`material-symbols-outlined ${styles.tagIcon}`}
-                                    >
-                                      schedule
+                              {step.tags && step.tags.length > 0 && (
+                                <div className={styles.tags}>
+                                  {step.tags.map((tag) => (
+                                    <span key={tag} className={styles.tag}>
+                                      {tag}
                                     </span>
-                                    {step.estimatedTime} min
-                                  </span>
-                                )}
-                                {step.tags?.map((tag) => (
-                                  <span key={tag} className={styles.tag}>
-                                    {tag}
-                                  </span>
-                                ))}
-                              </div>
+                                  ))}
+                                </div>
+                              )}
                             </div>
                             {step.image ? (
                               <img

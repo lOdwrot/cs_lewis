@@ -36,6 +36,10 @@
     "iconCharacter": {
       "type": "string"
     },
+    "order": {
+      "type": "integer",
+      "default": 0
+    },
     "journeys": {
       "type": "relation",
       "relation": "manyToMany",

@@ -3,7 +3,7 @@ import type { Gate, StrapiResponse } from "@/types/strapi";
 
 export async function getGates(): Promise<Gate[]> {
   const res = await api.get<StrapiResponse<Gate[]>>("/gates", {
-    params: { populate: "image" },
+    params: { populate: "image", sort: "order:asc" },
   });
   return res.data.data;
 }

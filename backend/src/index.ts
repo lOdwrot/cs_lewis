@@ -518,6 +518,7 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
         "Podróżuj przez mit i fantazję, odkrywając prawdy, których logika nie jest w stanie dosięgnąć.",
       enterButtonLabel: "Wejdź przez szafę",
       iconCharacter: "🦁",
+      order: 1,
       journeySlugs: ["wizja-mitopoetyczna"],
     },
     {
@@ -527,6 +528,7 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
         "Angażuj intelekt z klarownością i precyzją poprzez rygorystyczne badanie prawdy.",
       enterButtonLabel: "Zbadaj przez argument",
       iconCharacter: "🧠",
+      order: 2,
       journeySlugs: ["droga-sceptyka"],
     },
     {
@@ -536,6 +538,7 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
         "Odkryj transcendentne fundamenty i cichą piękność wiecznej perspektywy.",
       enterButtonLabel: "Odkryj przez doświadczenie",
       iconCharacter: "❤️",
+      order: 3,
       journeySlugs: ["droga-do-wiary"],
     },
   ];
@@ -553,6 +556,7 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
         description: gData.description,
         enterButtonLabel: gData.enterButtonLabel,
         iconCharacter: gData.iconCharacter,
+        order: gData.order,
         journeys: journeyIds,
       } as never,
     });

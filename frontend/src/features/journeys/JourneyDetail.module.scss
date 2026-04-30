@@ -182,10 +182,26 @@
 }
 
 .stopBadge {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1.375rem;
+}
+
+.stopMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: $secondary;
+  letter-spacing: 0.02em;
+}
+
+.stopMetaIcon {
+  font-size: 0.875rem;
+  color: $gold-dark;
 }
 
 .stopNumber {
