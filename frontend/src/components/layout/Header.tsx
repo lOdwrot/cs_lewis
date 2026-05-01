@@ -131,18 +131,21 @@ function HamburgerIcon({ open }: { open: boolean }) {
       {/* top line → top-left to bottom-right diagonal */}
       <motion.path
         {...pathProps}
+        initial={{ d: "M 5 9 L 23 9" }}
         animate={{ d: open ? "M 7 7 L 21 21" : "M 5 9 L 23 9" }}
         transition={t}
       />
       {/* middle line → fades out */}
       <motion.path
         {...pathProps}
+        initial={{ d: "M 5 14 L 23 14", opacity: 1 }}
         animate={{ d: "M 5 14 L 23 14", opacity: open ? 0 : 1 }}
         transition={{ duration: 0.2, ease: "easeInOut" }}
       />
       {/* bottom line → bottom-left to top-right diagonal */}
       <motion.path
         {...pathProps}
+        initial={{ d: "M 5 19 L 23 19" }}
         animate={{ d: open ? "M 7 21 L 21 7" : "M 5 19 L 23 19" }}
         transition={t}
       />
