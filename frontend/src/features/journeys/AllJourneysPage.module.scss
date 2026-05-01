@@ -168,10 +168,17 @@
     border-color: rgba(74, 172, 74, 0.35);
     background: rgba(74, 172, 74, 0.06);
     span { color: #3a963a; }
-    &.active,
     &:hover {
       background: rgba(74, 172, 74, 0.18);
       border-color: rgba(74, 172, 74, 0.7);
+    }
+    &.active {
+      background: #2d7a2d;
+      border-color: #2d7a2d;
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(45, 122, 45, 0.4);
+      span { color: #fff; }
+      &:hover { background: #3a8f3a; border-color: #3a8f3a; }
     }
   }
 
@@ -180,10 +187,17 @@
     border-color: rgba(230, 150, 30, 0.35);
     background: rgba(230, 150, 30, 0.06);
     span { color: #c07000; }
-    &.active,
     &:hover {
       background: rgba(230, 150, 30, 0.18);
       border-color: rgba(230, 150, 30, 0.7);
+    }
+    &.active {
+      background: #a86000;
+      border-color: #a86000;
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(168, 96, 0, 0.4);
+      span { color: #fff; }
+      &:hover { background: #c07000; border-color: #c07000; }
     }
   }
 
@@ -192,11 +206,52 @@
     border-color: rgba(220, 60, 60, 0.35);
     background: rgba(220, 60, 60, 0.06);
     span { color: #c83030; }
-    &.active,
     &:hover {
       background: rgba(220, 60, 60, 0.18);
       border-color: rgba(220, 60, 60, 0.7);
     }
+    &.active {
+      background: #b02020;
+      border-color: #b02020;
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(176, 32, 32, 0.4);
+      span { color: #fff; }
+      &:hover { background: #c83030; border-color: #c83030; }
+    }
+  }
+}
+
+.filterCheck {
+  font-size: 0.9rem !important;
+  line-height: 1 !important;
+}
+
+.filterClearAll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba($outline, 0.4);
+  cursor: pointer;
+  background: transparent;
+  color: $secondary;
+  transition: all $transition-fast;
+
+  span { font-size: 0.875rem; }
+
+  &:hover:not(:disabled) {
+    border-color: rgba($gold, 0.5);
+    color: $gold-dark;
+    background: rgba($gold, 0.06);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
   }
 }
 

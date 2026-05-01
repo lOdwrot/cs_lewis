@@ -27,7 +27,7 @@ const cardVariants = {
 export function AllJourneysPage() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
+  const [difficulties, setDifficulties] = useState<Difficulty[]>([]);
 
   // ── Debounce ────────────────────────────────────────────────────────────
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -44,7 +44,7 @@ export function AllJourneysPage() {
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
-  } = useJourneysInfiniteQuery(debouncedSearch, difficulty);
+  } = useJourneysInfiniteQuery(debouncedSearch, difficulties);
 
   const journeys = data?.pages.flatMap((p) => p.data) ?? [];
   const totalCount = data?.pages[0]?.pagination.total ?? null;
@@ -127,17 +127,35 @@ export function AllJourneysPage() {
               <button
                 key={f.value}
                 className={`${styles.filterTag} ${styles[f.value]} ${
-                  difficulty === f.value ? styles.active : ""
+                  difficulties.includes(f.value) ? styles.active : ""
                 }`}
                 onClick={() =>
-                  setDifficulty(difficulty === f.value ? null : f.value)
+                  setDifficulties((prev) =>
+                    prev.includes(f.value)
+                      ? prev.filter((d) => d !== f.value)
+                      : [...prev, f.value]
+                  )
                 }
                 type="button"
               >
                 <span className="material-symbols-outlined">{f.icon}</span>
                 {f.label}
+                {difficulties.includes(f.value) && (
+                  <span className={`material-symbols-outlined ${styles.filterCheck}`}>
+                    check
+                  </span>
+                )}
               </button>
             ))}
+            <button
+              className={styles.filterClearAll}
+              type="button"
+              onClick={() => setDifficulties([])}
+              disabled={difficulties.length === 0}
+            >
+              <span className="material-symbols-outlined">close</span>
+              Wyczyść
+            </button>
           </div>
         </div>
 

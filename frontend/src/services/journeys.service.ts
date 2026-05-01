@@ -19,7 +19,7 @@ export interface JourneysQuery {
   page?: number;
   pageSize?: number;
   search?: string;
-  difficulty?: Difficulty | null;
+  difficulties?: Difficulty[];
 }
 
 export interface JourneysPage {
@@ -35,7 +35,7 @@ export interface JourneysPage {
 export async function getJourneys(
   query: JourneysQuery = {},
 ): Promise<JourneysPage> {
-  const { page = 1, pageSize = 6, search, difficulty } = query;
+  const { page = 1, pageSize = 6, search, difficulties } = query;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: Record<string, any> = {
     "populate[image][fields][0]": "url",
@@ -47,8 +47,10 @@ export async function getJourneys(
   if (search) {
     params["filters[title][$containsi]"] = search;
   }
-  if (difficulty) {
-    params["filters[difficulty][$eq]"] = difficulty;
+  if (difficulties && difficulties.length > 0) {
+    difficulties.forEach((d, i) => {
+      params[`filters[difficulty][$in][${i}]`] = d;
+    });
   }
   const res = await api.get<StrapiResponse<Journey[]>>("/journeys", { params });
   return {

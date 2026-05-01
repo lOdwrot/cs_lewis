@@ -22,11 +22,11 @@ export const useStepQuery = (id: string) =>
 export const useBooksQuery = () =>
   useQuery({ queryKey: ['books'], queryFn: getBooks })
 
-export const useJourneysInfiniteQuery = (search: string, difficulty: Difficulty | null) =>
+export const useJourneysInfiniteQuery = (search: string, difficulties: Difficulty[]) =>
   useInfiniteQuery({
-    queryKey: ['journeys', { search, difficulty }],
+    queryKey: ['journeys', { search, difficulties }],
     queryFn: ({ pageParam }) =>
-      getJourneys({ page: pageParam, pageSize: PAGE_SIZE, search, difficulty }),
+      getJourneys({ page: pageParam, pageSize: PAGE_SIZE, search, difficulties }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.pagination.page < lastPage.pagination.pageCount

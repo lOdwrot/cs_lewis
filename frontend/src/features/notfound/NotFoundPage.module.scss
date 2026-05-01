@@ -1,0 +1,115 @@
+@use "@/styles/variables" as *;
+
+.page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  background: $parchment;
+}
+
+.inner {
+  text-align: center;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ornament {
+  font-size: 2.5rem;
+  color: $gold;
+  line-height: 1;
+  filter: drop-shadow(0 0 12px rgba($gold, 0.45));
+  margin-bottom: 0.25rem;
+}
+
+.code {
+  font-family: $font-serif;
+  font-size: clamp(5rem, 15vw, 8rem);
+  font-weight: 700;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba($gold, 0.5);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.title {
+  font-family: $font-serif;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 600;
+  color: $on-surface;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.quote {
+  font-family: $font-serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: $on-surface-variant;
+  line-height: 1.7;
+  margin: 0.5rem 0 0;
+}
+
+.author {
+  font-family: $font-sans;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $gold-dark;
+  margin: 0;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  color: rgba($gold, 0.5);
+  font-size: 0.7rem;
+  margin: 0.5rem 0;
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba($gold, 0.35),
+      transparent
+    );
+  }
+}
+
+.homeLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: $font-sans;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: $gold-dark;
+  text-decoration: none;
+  padding: 0.65rem 1.5rem;
+  border: 1px solid rgba($gold, 0.35);
+  border-radius: 4px;
+  background: rgba($gold, 0.05);
+  transition: background $transition-fast, border-color $transition-fast,
+    color $transition-fast;
+
+  .material-symbols-outlined {
+    font-size: 1.1rem;
+  }
+
+  &:hover {
+    background: rgba($gold, 0.12);
+    border-color: rgba($gold, 0.65);
+    color: $gold;
+  }
+}
