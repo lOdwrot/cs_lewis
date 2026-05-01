@@ -104,22 +104,21 @@ export function TextVideoStep({ step }: Props) {
 
         <FadeInView delay={0.2}>
           <div className={styles.continueSection}>
-            {done ? (
+            {done && (
               <div className={styles.doneBadge}>
                 <span className="material-symbols-outlined">check_circle</span>
                 Ukończono — brawo!
               </div>
-            ) : (
-              <motion.button
-                className={styles.continueBtn}
-                onClick={handleContinue}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Kontynuuj
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </motion.button>
             )}
+            <motion.button
+              className={styles.continueBtn}
+              onClick={handleContinue}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              Kontynuuj
+              <span className="material-symbols-outlined">arrow_forward</span>
+            </motion.button>
           </div>
         </FadeInView>
       </main>

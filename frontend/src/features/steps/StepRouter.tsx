@@ -13,7 +13,9 @@ export function StepRouter() {
   if (loading) {
     return (
       <PageTransition>
-        <GatesLoadingSkeleton />
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+          <GatesLoadingSkeleton />
+        </div>
       </PageTransition>
     );
   }

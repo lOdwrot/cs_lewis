@@ -52,6 +52,7 @@ export function JourneyDetail() {
   const { data: journey, isLoading: loading } = useJourneyQuery(slug!);
   const isStepComplete = useProgressStore((s) => s.isStepComplete);
   const stepRefs = useRef<Map<string, HTMLElement>>(new Map());
+  const completeRef = useRef<HTMLDivElement>(null);
 
   const steps = journey?.steps ?? [];
   const allComplete =
@@ -64,7 +65,10 @@ export function JourneyDetail() {
     const anyComplete = journeySteps.some((s) => isStepComplete(s.documentId));
     if (!anyComplete) return;
     const firstIncomplete = journeySteps.find((s) => !isStepComplete(s.documentId));
-    if (!firstIncomplete) return;
+    if (!firstIncomplete) {
+      setTimeout(() => completeRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 500);
+      return;
+    }
     const el = stepRefs.current.get(firstIncomplete.documentId);
     if (el) {
       setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "center" }), 500);
@@ -216,6 +220,7 @@ export function JourneyDetail() {
 
               {allComplete && (
                 <motion.div
+                  ref={completeRef}
                   className={styles.journeyComplete}
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
