@@ -28,6 +28,7 @@ const stepCardVariants = {
 import { useJourneyQuery } from "@/hooks/queries";
 import { useProgressStore } from "@/store/progressStore";
 import { strapiImageUrl } from "@/services/api";
+import { SEO } from "@/components/SEO";
 import type { StepType } from "@/types/strapi";
 import styles from "./JourneyDetail.module.scss";
 
@@ -57,6 +58,11 @@ export function JourneyDetail() {
 
   return (
     <PageTransition>
+      <SEO
+        title={journey?.title}
+        description={journey?.description ?? undefined}
+        path={`/journey/${slug}`}
+      />
       <main className={styles.page}>
         <Link to={-1 as never} className={styles.backLink}>
           <span className="material-symbols-outlined">arrow_back</span>
@@ -110,9 +116,6 @@ export function JourneyDetail() {
                       style={{ transformOrigin: "bottom center" }}
                     >
                       <div className={styles.stepCard}>
-                        <div
-                          className={`${styles.dot} ${done ? styles.completed : ""}`}
-                        />
                         <MotionLink
                           to={`/step/${step.documentId}`}
                           className={styles.card}
@@ -183,6 +186,9 @@ export function JourneyDetail() {
                             )}
                           </div>
                         </MotionLink>
+                        <div
+                          className={`${styles.dot} ${done ? styles.completed : ""}`}
+                        />
                       </div>
                     </motion.div>
                   );

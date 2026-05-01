@@ -124,6 +124,7 @@
   border-radius: 50%;
   background: $gold;
   box-shadow: 0 0 0 4px rgba($gold, 0.12);
+  z-index: 2;
   transition: box-shadow $transition-fast, transform $transition-fast;
 
   .stepCard:hover & {
@@ -278,7 +279,7 @@
   .card:hover & {
     transform: scale(1.06);
     border-color: rgba($gold, 0.45);
-    background: rgba($gold, 0.07);
+    background: mix($gold, $surface-container, 12%);
     box-shadow: 0 0 6px rgba($gold, 0.18);
   }
 

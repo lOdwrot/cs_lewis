@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { SEO } from "@/components/SEO";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
 import { useJourneysInfiniteQuery } from "@/hooks/queries";
 import type { Difficulty } from "@/types/strapi";
@@ -70,6 +71,11 @@ export function AllJourneysPage() {
 
   return (
     <PageTransition>
+      <SEO
+        title="Wszystkie Przygody"
+        description="Przeglądaj wszystkie podróże z myślą C.S. Lewisa — filtruj według poziomu trudności i znajdź swoją drogę."
+        path="/journeys"
+      />
       <main className={styles.page}>
         {/* ── Hero ── */}
         <motion.header

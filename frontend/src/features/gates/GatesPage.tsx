@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { SEO } from "@/components/SEO";
 import { GateCard } from "./GateCard";
 import { useGatesQuery } from "@/hooks/queries";
 import styles from "./GatesPage.module.scss";
@@ -40,6 +41,11 @@ export function GatesPage() {
 
   return (
     <PageTransition>
+      <SEO
+        title="C.S. Lewis: Trzy Drogi do Prawdy"
+        description="Odkryj myśl C.S. Lewisa przez interaktywne podróże przez Wyobraźnię, Rozum i Wiarę. Eseje, podcasty i quizy."
+        path="/"
+      />
       <main className={styles.page}>
         {/* Hero */}
         <section className={styles.hero}>

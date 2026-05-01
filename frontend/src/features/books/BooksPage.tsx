@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { FadeInView } from "@/components/animations/FadeInView";
+import { SEO } from "@/components/SEO";
 
 const gridVariants = {
   hidden: {},
@@ -28,6 +29,11 @@ export function BooksPage() {
 
   return (
     <PageTransition>
+      <SEO
+        title="Półka Uczonego"
+        description="Odkryj najważniejsze książki C.S. Lewisa — od Narni po apologetykę i filozofię chrześcijańską."
+        path="/books"
+      />
       <main className={styles.page}>
         {/* Hero */}
         <section className={styles.hero}>
