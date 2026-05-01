@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { SEO } from "@/components/SEO";
 import { GateCard } from "./GateCard";
+import { GatesLoadingSkeleton } from "./GatesLoadingSkeleton";
 import { useGatesQuery } from "@/hooks/queries";
 import styles from "./GatesPage.module.scss";
 
@@ -98,18 +99,7 @@ export function GatesPage() {
 
         {/* Gates Grid */}
         {loading ? (
-          <div className={styles.grid}>
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                style={{
-                  height: 320,
-                  background: "rgba(212,175,55,0.06)",
-                  border: "1px solid rgba(212,175,55,0.1)",
-                }}
-              />
-            ))}
-          </div>
+          <GatesLoadingSkeleton />
         ) : (
           <motion.div
             className={styles.grid}
