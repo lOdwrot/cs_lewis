@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { SEO } from "@/components/SEO";
-import { Spinner } from "@/components/ui/Spinner";
+import { GatesLoadingSkeleton } from "./GatesLoadingSkeleton";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
 import { useGateQuery } from "@/hooks/queries";
 import styles from "./GateDetail.module.scss";
@@ -48,7 +48,7 @@ export function GateDetail() {
         </Link>
 
         {loading || !gate ? (
-          <Spinner />
+          <GatesLoadingSkeleton />
         ) : (
           <>
             <section className={styles.hero}>

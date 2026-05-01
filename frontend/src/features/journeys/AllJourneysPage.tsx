@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { SEO } from "@/components/SEO";
+import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
 import { useJourneysInfiniteQuery } from "@/hooks/queries";
 import type { Difficulty } from "@/types/strapi";
@@ -193,11 +194,7 @@ export function AllJourneysPage() {
         )}
 
         {/* ── Loader ── */}
-        {loading && (
-          <div className={styles.loader}>
-            <span className={styles.spinner} />
-          </div>
-        )}
+        {loading && <GatesLoadingSkeleton />}
 
         {/* ── Sentinel for infinite scroll ── */}
         {!loading && hasNextPage && (

@@ -20,6 +20,7 @@ const cardVariants = {
     transition: { type: "spring" as const, stiffness: 160, damping: 18, mass: 0.9 },
   },
 };
+import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
 import { useBooksQuery } from "@/hooks/queries";
 import { strapiImageUrl } from "@/services/api";
 import styles from "./BooksPage.module.scss";
@@ -75,18 +76,7 @@ export function BooksPage() {
 
         {/* Grid */}
         {loading ? (
-          <div className={styles.grid}>
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div
-                key={i}
-                style={{
-                  height: 440,
-                  background: "rgba(212,175,55,0.04)",
-                  border: "1px solid rgba(212,175,55,0.1)",
-                }}
-              />
-            ))}
-          </div>
+          <GatesLoadingSkeleton />
         ) : (
           <motion.div
             className={styles.grid}

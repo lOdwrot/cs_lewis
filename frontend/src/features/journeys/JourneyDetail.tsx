@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
-import { Spinner } from "@/components/ui/Spinner";
+import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
 
 const stepsContainerVariants = {
   hidden: {},
@@ -70,7 +70,7 @@ export function JourneyDetail() {
         </Link>
 
         {loading || !journey ? (
-          <Spinner />
+          <GatesLoadingSkeleton />
         ) : (
           <>
             <motion.header
