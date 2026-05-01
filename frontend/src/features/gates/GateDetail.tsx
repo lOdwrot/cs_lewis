@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { Spinner } from "@/components/ui/Spinner";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
 import { useGateQuery } from "@/hooks/queries";
 import type { Difficulty } from "@/types/strapi";
@@ -56,15 +57,7 @@ export function GateDetail() {
         </Link>
 
         {loading || !gate ? (
-          <div
-            style={{
-              textAlign: "center",
-              paddingTop: "4rem",
-              color: "#7f7663",
-            }}
-          >
-            Ładowanie…
-          </div>
+          <Spinner />
         ) : (
           <>
             <section className={styles.hero}>

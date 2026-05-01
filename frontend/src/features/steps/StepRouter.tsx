@@ -4,6 +4,7 @@ import { TextVideoStep } from "./TextVideoStep/TextVideoStep";
 import { PodcastStep } from "./PodcastStep/PodcastStep";
 import { QuizStep } from "./QuizStep/QuizStep";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { Spinner } from "@/components/ui/Spinner";
 
 export function StepRouter() {
   const { id } = useParams<{ id: string }>();
@@ -12,11 +13,7 @@ export function StepRouter() {
   if (loading) {
     return (
       <PageTransition>
-        <div
-          style={{ textAlign: "center", paddingTop: "6rem", color: "#7f7663" }}
-        >
-          Ładowanie…
-        </div>
+        <Spinner />
       </PageTransition>
     );
   }

@@ -1,0 +1,22 @@
+@use "@/styles/variables" as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 5rem;
+}
+
+.ring {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid rgba($gold, 0.2);
+  border-top-color: $gold;
+  animation: spin 0.8s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite;
+  box-shadow: 0 0 12px rgba($gold, 0.25);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

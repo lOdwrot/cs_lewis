@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { Spinner } from "@/components/ui/Spinner";
 
 const stepsContainerVariants = {
   hidden: {},
@@ -63,15 +64,7 @@ export function JourneyDetail() {
         </Link>
 
         {loading || !journey ? (
-          <div
-            style={{
-              textAlign: "center",
-              paddingTop: "4rem",
-              color: "#7f7663",
-            }}
-          >
-            Ładowanie…
-          </div>
+          <Spinner />
         ) : (
           <>
             <motion.header
@@ -139,7 +132,9 @@ export function JourneyDetail() {
                                   Przystanek {String(i + 1).padStart(2, "0")}
                                 </span>
                                 <span className={styles.stopMeta}>
-                                  <span className={`material-symbols-outlined ${styles.stopMetaIcon}`}>
+                                  <span
+                                    className={`material-symbols-outlined ${styles.stopMetaIcon}`}
+                                  >
                                     {TYPE_ICON[step.type]}
                                   </span>
                                   {TYPE_LABEL[step.type]}
@@ -214,7 +209,11 @@ export function JourneyDetail() {
                   <p className={styles.journeyCompleteSubtitle}>
                     Wszystkie etapy zostały ukończone
                   </p>
-                  <Link to="/" className={styles.journeyCompleteBtn} onClick={() => window.scrollTo({ top: 0 })}>
+                  <Link
+                    to="/"
+                    className={styles.journeyCompleteBtn}
+                    onClick={() => window.scrollTo({ top: 0 })}
+                  >
                     <span>Dalsza eksploracja</span>
                     <span className="material-symbols-outlined">explore</span>
                   </Link>
