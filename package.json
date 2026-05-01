@@ -3,11 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run develop --prefix backend\" \"npm run dev --prefix frontend\"",
+    "dev": "dotenv -e .env -- concurrently \"npm run develop --prefix backend\" \"npm run dev --prefix frontend\"",
     "dev:frontend": "npm run dev --prefix frontend",
-    "dev:backend": "npm run develop --prefix backend"
+    "dev:backend": "dotenv -e .env -- npm run develop --prefix backend",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:frontend": "npm run build --prefix frontend",
+    "build:backend": "dotenv -e .env -- npm run build --prefix backend",
+    "start": "dotenv -e .env -- concurrently \"npm run start --prefix backend\" \"npm run preview --prefix frontend\"",
+    "start:frontend": "npm run preview --prefix frontend",
+    "start:backend": "dotenv -e .env -- npm run start --prefix backend"
   },
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "dotenv-cli": "^8.0.0"
   }
 }
