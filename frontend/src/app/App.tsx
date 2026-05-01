@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { Header } from "@/components/layout/Header";
+import { BreathingBackground } from "@/components/animations/BreathingBackground";
 import { GatesPage } from "@/features/gates/GatesPage";
 import { GateDetail } from "@/features/gates/GateDetail";
 import { JourneyDetail } from "@/features/journeys/JourneyDetail";
@@ -29,6 +30,7 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
+      <BreathingBackground />
       <Header />
       <AnimatedRoutes />
     </BrowserRouter>

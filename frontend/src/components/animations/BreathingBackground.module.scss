@@ -1,0 +1,10 @@
+.root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(ellipse at 20% 20%, rgba(212, 175, 55, 0.18) 0%, transparent 55%),
+              radial-gradient(ellipse at 80% 80%, rgba(115, 92, 0, 0.14) 0%, transparent 55%),
+              radial-gradient(ellipse at 60% 10%, rgba(212, 175, 55, 0.10) 0%, transparent 45%),
+              #FDFBF7;
+}

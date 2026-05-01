@@ -42,7 +42,7 @@ const TYPE_ICON: Record<StepType, string> = {
 
 const TYPE_LABEL: Record<StepType, string> = {
   text: "Lektura",
-  podcast: "Esej Dźwiękowy",
+  podcast: "Podcast",
   quiz: "Quiz Wiedzy",
 };
 
