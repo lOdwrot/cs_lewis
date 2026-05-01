@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { Header } from "@/components/layout/Header";
@@ -9,6 +10,14 @@ import { AllJourneysPage } from "@/features/journeys/AllJourneysPage";
 import { StepRouter } from "@/features/steps/StepRouter";
 import { BooksPage } from "@/features/books/BooksPage";
 import { NotFoundPage } from "@/features/notfound/NotFoundPage";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+  return null;
+}
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -30,6 +39,7 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <BreathingBackground />
       <Header />
       <AnimatedRoutes />

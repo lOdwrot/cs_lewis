@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
@@ -50,11 +51,25 @@ export function JourneyDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: journey, isLoading: loading } = useJourneyQuery(slug!);
   const isStepComplete = useProgressStore((s) => s.isStepComplete);
+  const stepRefs = useRef<Map<string, HTMLElement>>(new Map());
 
   const steps = journey?.steps ?? [];
   const allComplete =
     steps.length > 0 && steps.every((s) => isStepComplete(s.documentId));
   const totalTime = steps.reduce((sum, s) => sum + (s.estimatedTime ?? 0), 0);
+
+  useEffect(() => {
+    if (loading || !journey) return;
+    const journeySteps = journey.steps ?? [];
+    const anyComplete = journeySteps.some((s) => isStepComplete(s.documentId));
+    if (!anyComplete) return;
+    const firstIncomplete = journeySteps.find((s) => !isStepComplete(s.documentId));
+    if (!firstIncomplete) return;
+    const el = stepRefs.current.get(firstIncomplete.documentId);
+    if (el) {
+      setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "center" }), 500);
+    }
+  }, [journey, loading]);
 
   return (
     <PageTransition>
@@ -114,6 +129,10 @@ export function JourneyDetail() {
                       key={step.id}
                       variants={stepCardVariants}
                       style={{ transformOrigin: "bottom center" }}
+                      ref={(el) => {
+                        if (el) stepRefs.current.set(step.documentId, el);
+                        else stepRefs.current.delete(step.documentId);
+                      }}
                     >
                       <div className={styles.stepCard}>
                         <MotionLink
