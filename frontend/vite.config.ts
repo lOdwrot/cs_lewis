@@ -21,6 +21,6 @@ export default defineConfig(({ mode }) => {
     },
     envDir: path.resolve(__dirname, '..'),
     server: { proxy },
-    preview: { proxy },
+    preview: { proxy, host: '0.0.0.0', port: process.env.PORT ? Number(process.env.PORT) : 4173 },
   }
 })
