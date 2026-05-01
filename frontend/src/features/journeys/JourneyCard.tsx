@@ -128,6 +128,15 @@ export function JourneyCard({ journey }: Props) {
               {DIFFICULTY_LABEL[journey.difficulty]}
             </div>
           )}
+          {journey.tags && journey.tags.length > 0 && (
+            <div className={styles.tags}>
+              {journey.tags.map((tag) => (
+                <span key={tag} className={styles.tag}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
           <p className={styles.description}>{journey.description}</p>
           {totalSteps > 0 && (
             <div className={styles.progress}>

@@ -46,6 +46,9 @@
       "type": "enumeration",
       "enum": ["easy", "medium", "hard"],
       "required": false
+    },
+    "tags": {
+      "type": "json"
     }
   }
 }

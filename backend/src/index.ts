@@ -464,6 +464,7 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
       description:
         "Podążaj śladami odkrycia przez Lewisa mitu jako naczynia dla prawdy — od nordyckich sag po Narnię.",
       difficulty: "easy" as const,
+      tags: ["mitologia", "wyobraźnia", "Narnia"],
       stepTitles: [
         "Narodziny Mitu",
         "Sehnsucht: Ból Radości",
@@ -476,6 +477,7 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
       description:
         "Głęboka analiza Wielkiej Wojny Idei między Lewisem a Owenem Barfieldem na temat logiki i wyobraźni.",
       difficulty: "medium" as const,
+      tags: ["filozofia", "apologetyka", "Inklingowie"],
       stepTitles: [
         "Wielka Wojna Idei",
         "Rozmowy Oksfordzkie",
@@ -488,6 +490,7 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
       description:
         "Śledząc ostatnie kroki intelektualnego i duchowego nawrócenia Lewisa — od oksfordzkich ścieżek do wiary chrześcijańskiej.",
       difficulty: "hard" as const,
+      tags: ["nawrócenie", "wiara", "cierpienie"],
       stepTitles: ["Nocne Nawrócenie", "Problem Bólu", "Quiz: Wiara i Rozum"],
     },
   ];
@@ -506,6 +509,7 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
         slug: jData.slug,
         description: jData.description,
         difficulty: jData.difficulty,
+        tags: jData.tags,
         steps: stepIds,
       } as never,
     });

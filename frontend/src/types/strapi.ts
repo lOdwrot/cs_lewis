@@ -78,6 +78,7 @@ export interface Journey {
   description: string;
   image: StrapiImage | null;
   difficulty?: Difficulty;
+  tags?: string[];
   steps?: Step[];
 }
 
