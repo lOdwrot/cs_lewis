@@ -7,15 +7,10 @@
   position: relative; // particle anchor
   display: flex;
   flex-direction: column;
-  height: 440px; // uniform across all cards
-
-  &:hover .coverFront {
-    border-color: rgba($gold, 0.55);
-    box-shadow:
-      2px 6px 24px rgba(0, 0, 0, 0.55),
-      0 0 32px rgba($gold, 0.18),
-      inset 0 0 60px rgba(0, 0, 0, 0.45);
-  }
+  // Locked dimensions — cards never resize with the viewport
+  width: 320px;
+  height: 440px;
+  flex: 0 0 auto;
 }
 
 // ─── Book body ──────────────────────────────────────────────────────────────
@@ -23,49 +18,15 @@
   position: relative;
   flex: 1;
   height: 440px;
-
-  // Page stack — right edge
-  &::before {
-    content: '';
-    position: absolute;
-    right: -5px;
-    top: 4px;
-    bottom: 0;
-    width: 5px;
-    background: repeating-linear-gradient(
-      to bottom,
-      #ede8df 0px,
-      #ede8df 1px,
-      #cec9be 1px,
-      #cec9be 2px
-    );
-    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.18);
-  }
-
-  // Page stack — bottom edge
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 4px;
-    right: 0;
-    height: 5px;
-    background: repeating-linear-gradient(
-      to right,
-      #ede8df 0px,
-      #ede8df 1px,
-      #cec9be 1px,
-      #cec9be 2px
-    );
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
-  }
 }
 
 // ─── Inner pages (parchment glow, always behind cover) ─────────────────────
 .pages {
   position: absolute;
   inset: 0;
-  background: $parchment;
+  // Transparent — old_book.png has alpha at the corners and we want the page
+  // backdrop to show through, not an opaque dark block
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,39 +57,15 @@
   inset: 0;
 }
 
-// ─── Front face — aged leather binding ─────────────────────────────────────
+// ─── Front face — old leather book image ──────────────────────────────────
 .coverFront {
   position: absolute;
   inset: 0;
   display: flex;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  background:
-    // Dark vignette around the edges
-    radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(0, 0, 0, 0.55) 100%),
-    // Mottling — irregular highlights and shadows for worn-leather look
-    radial-gradient(ellipse at 28% 22%, rgba(255, 220, 170, 0.06) 0%, transparent 55%),
-    radial-gradient(ellipse at 72% 68%, rgba(0, 0, 0, 0.28) 0%, transparent 55%),
-    radial-gradient(ellipse at 18% 78%, rgba(255, 220, 170, 0.05) 0%, transparent 50%),
-    radial-gradient(ellipse at 82% 30%, rgba(0, 0, 0, 0.22) 0%, transparent 50%),
-    // Base leather gradient
-    linear-gradient(135deg, #3a2415 0%, #5a3a24 35%, #4d2f1c 60%, #2e1c10 100%);
-  border: 1px solid rgba(0, 0, 0, 0.7);
-  box-shadow:
-    1px 3px 16px rgba(0, 0, 0, 0.55),
-    0 1px 4px rgba(0, 0, 0, 0.4),
-    inset 0 0 60px rgba(0, 0, 0, 0.45);
-  transition: border-color $transition-mid, box-shadow $transition-mid;
-
-  // Fine leather grain
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='1' height='1' fill='rgba(255,220,170,0.03)'/%3E%3Crect x='2' y='2' width='1' height='1' fill='rgba(0,0,0,0.08)'/%3E%3C/svg%3E");
-    pointer-events: none;
-    mix-blend-mode: overlay;
-  }
+  background: url('/old_book.png') no-repeat center / 100% 100%;
+  transition: box-shadow $transition-mid;
 }
 
 // ─── Back face (plain white page) ───────────────────────────────────────────
@@ -144,36 +81,6 @@
   box-shadow: inset 4px 0 16px rgba(0, 0, 0, 0.4), inset 0 0 40px rgba(0, 0, 0, 0.25);
 }
 
-// ─── Spine — dark leather with raised bands ─────────────────────────────────
-.spine {
-  width: 32px;
-  flex-shrink: 0;
-  position: relative;
-  background:
-    // Horizontal grooves separating raised bands (~5 bands across 440px)
-    repeating-linear-gradient(
-      to bottom,
-      transparent 0px,
-      transparent 78px,
-      rgba(0, 0, 0, 0.85) 80px,
-      rgba(0, 0, 0, 0.85) 84px,
-      rgba(255, 220, 170, 0.08) 85px,
-      transparent 88px
-    ),
-    // Rounded leather: dark edges, lighter center to suggest curvature
-    linear-gradient(
-      to right,
-      #1a0d05 0%,
-      #2e1c10 18%,
-      #4a2e1c 50%,
-      #2e1c10 82%,
-      #1a0d05 100%
-    );
-  box-shadow:
-    inset -2px 0 6px rgba(0, 0, 0, 0.6),
-    inset 2px 0 4px rgba(0, 0, 0, 0.4);
-}
-
 // ─── Cover face (content) ───────────────────────────────────────────────────
 .face {
   flex: 1;
@@ -182,52 +89,39 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 2.25rem 1.75rem 2rem;
-
-  // Outer gold rectangular line
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 12px;
-    border: 1px solid rgba($gold, 0.55);
-    box-shadow: 0 0 6px rgba($gold, 0.18);
-    pointer-events: none;
-  }
-
-  // Inner gold rectangular line — together with ::before forms the double frame
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 17px;
-    border: 1px solid rgba($gold, 0.45);
-    pointer-events: none;
-  }
+  // Asymmetric padding shifts content right of the spine and inside the
+  // image's painted gold frame
+  padding: 3rem 2rem 2.5rem 3.25rem;
 }
 
 .iconWrap {
   position: relative;
   z-index: 1;
-  width: 76px;
-  height: 76px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  background: rgba($gold, 0.1);
-  border: 1px solid rgba($gold, 0.4);
+  background: radial-gradient(circle at 35% 30%, rgba(#f1d68f, 0.18), rgba(0, 0, 0, 0.25) 70%);
+  border: 1px solid rgba(#e8c878, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 0 12px rgba($gold, 0.14), inset 0 0 6px rgba($gold, 0.08);
-  transition: box-shadow $transition-mid, background $transition-mid;
+  margin-bottom: 1.25rem;
+  box-shadow:
+    0 0 14px rgba($gold, 0.18),
+    inset 0 0 8px rgba(0, 0, 0, 0.45);
+  transition: box-shadow $transition-mid, border-color $transition-mid;
 
   .scene:hover & {
-    background: rgba($gold, 0.16);
-    box-shadow: 0 0 20px rgba($gold, 0.22), inset 0 0 8px rgba($gold, 0.12);
+    border-color: rgba(#f1d68f, 0.85);
+    box-shadow:
+      0 0 24px rgba($gold, 0.32),
+      inset 0 0 10px rgba(0, 0, 0, 0.4);
   }
 }
 
 .image {
-  width: 76px;
-  height: 76px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -245,26 +139,35 @@
 .title {
   position: relative;
   z-index: 1;
-  font-family: $font-serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: $gold-light;
-  margin-bottom: 0.75rem;
-  letter-spacing: 0.04em;
-  line-height: 1.25;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 12px rgba($gold, 0.25);
+  font-family: $font-display;
+  font-size: 1.65rem;
+  font-weight: 700;
+  // Aged-brass gold reads warmer against the leather than $gold-light
+  color: #e8c878;
+  margin-bottom: 0.85rem;
+  letter-spacing: 0.12em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  // Engraved relief: dark recess + soft gold rim-light
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.85),
+    0 2px 3px rgba(0, 0, 0, 0.6),
+    0 0 14px rgba($gold, 0.35),
+    0 0 28px rgba(255, 200, 110, 0.18);
 }
 
 .description {
   position: relative;
   z-index: 1;
-  font-family: $font-sans;
-  font-size: 0.9rem;
-  color: rgba($on-surface, 0.78);
+  font-family: $font-serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  // Warm parchment cream picks up the leather better than cool grey
+  color: #d8c8a0;
   line-height: 1.65;
   margin-bottom: 1.75rem;
   flex: 1;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
   // Clamp to 4 lines so layout stays locked at fixed height
   display: -webkit-box;
   -webkit-line-clamp: 4;
@@ -277,21 +180,22 @@
   z-index: 1;
   margin-top: auto;
   width: 100%;
-  padding: 0.625rem 1rem;
-  border: 1px solid rgba($gold, 0.55);
-  color: $gold-light;
-  font-family: $font-sans;
-  font-size: 0.8125rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(#e8c878, 0.5);
+  color: #f1d68f;
+  font-family: $font-display;
+  font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.32);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
   transition: background $transition-fast, color $transition-fast, border-color $transition-fast;
 
   .scene:hover & {
-    background: rgba($gold, 0.18);
-    border-color: $gold;
-    color: $gold-light;
+    background: rgba($gold, 0.22);
+    border-color: rgba(#f1d68f, 0.85);
+    color: #ffe7a8;
   }
 }
 

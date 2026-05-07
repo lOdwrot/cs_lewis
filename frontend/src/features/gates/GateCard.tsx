@@ -10,11 +10,11 @@ import {
 } from "framer-motion";
 
 const GLOW_OFF =
-  "0 0 0 1px rgba(212,175,55,0), 0 10px 50px rgba(212,175,55,0), 0 0 80px rgba(212,175,55,0)";
+  "0 10px 50px rgba(212,175,55,0), 0 0 80px rgba(212,175,55,0)";
 const GLOW_LO =
-  "0 0 0 1px rgba(212,175,55,0.55), 0 10px 50px rgba(212,175,55,0.42), 0 0 90px rgba(212,175,55,0.22)";
+  "0 10px 50px rgba(212,175,55,0.42), 0 0 90px rgba(212,175,55,0.22)";
 const GLOW_HI =
-  "0 0 0 1px rgba(212,175,55,0.85), 0 14px 70px rgba(212,175,55,0.62), 0 0 130px rgba(212,175,55,0.38)";
+  "0 14px 70px rgba(212,175,55,0.62), 0 0 130px rgba(212,175,55,0.38)";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import type { Gate } from "@/types/strapi";
@@ -198,9 +198,8 @@ export function GateCard({ gate }: Props) {
             animate={phase !== "idle" ? { rotateY: -180 } : { rotateY: 0 }}
             transition={{ duration: 1.0, ease: [0.4, 0, 0.15, 1] }}
           >
-            {/* Front face — ivory/gold cover */}
+            {/* Front face — old leather book image */}
             <div className={styles.coverFront}>
-              <div className={styles.spine} />
               <div className={styles.face}>
                 {/* Icon floats when the card is hovered */}
                 <motion.div
