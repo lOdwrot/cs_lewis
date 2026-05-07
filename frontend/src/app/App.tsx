@@ -10,6 +10,7 @@ import { JourneyDetail } from "@/features/journeys/JourneyDetail";
 import { AllJourneysPage } from "@/features/journeys/AllJourneysPage";
 import { StepRouter } from "@/features/steps/StepRouter";
 import { BooksPage } from "@/features/books/BooksPage";
+import { EncyclopediaPage } from "@/features/encyclopedia/EncyclopediaPage";
 import { NotFoundPage } from "@/features/notfound/NotFoundPage";
 
 function ScrollToTop() {
@@ -32,6 +33,7 @@ function AnimatedRoutes() {
         <Route path="/journey/:slug" element={<JourneyDetail />} />
         <Route path="/step/:id" element={<StepRouter />} />
         <Route path="/books" element={<BooksPage />} />
+        <Route path="/encyclopedia" element={<EncyclopediaPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AnimatePresence>

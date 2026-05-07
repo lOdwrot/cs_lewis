@@ -4,6 +4,66 @@
   max-width: $max-content;
   margin: 0 auto;
   padding: 5rem 2rem 6rem;
+  position: relative;
+  isolation: isolate;
+}
+
+.bookBackdrop {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  // Span the full viewport width regardless of the 1200px page max-width.
+  width: 100vw;
+  max-width: none;
+  height: auto;
+  filter: brightness(0.85) contrast(1.05) saturate(0.9);
+  opacity: 0.35;
+  pointer-events: none;
+  user-select: none;
+  z-index: -1;
+  // Fade outer edges and the bottom so the book dissolves into the parchment background.
+  -webkit-mask-image:
+    radial-gradient(
+      ellipse 70% 95% at 50% 30%,
+      #000 0%,
+      rgba(0, 0, 0, 0.85) 30%,
+      rgba(0, 0, 0, 0.45) 60%,
+      rgba(0, 0, 0, 0.15) 82%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      #000 5%,
+      rgba(0, 0, 0, 0.75) 35%,
+      rgba(0, 0, 0, 0.3) 70%,
+      transparent 95%
+    );
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(
+      ellipse 70% 95% at 50% 30%,
+      #000 0%,
+      rgba(0, 0, 0, 0.85) 30%,
+      rgba(0, 0, 0, 0.45) 60%,
+      rgba(0, 0, 0, 0.15) 82%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      #000 5%,
+      rgba(0, 0, 0, 0.75) 35%,
+      rgba(0, 0, 0, 0.3) 70%,
+      transparent 95%
+    );
+  mask-composite: intersect;
+}
+
+@media (max-width: 700px) {
+  .bookBackdrop {
+    width: 130vw;
+    opacity: 0.22;
+  }
 }
 
 .hero {
@@ -31,15 +91,6 @@
   background: $gold-dark;
   margin: 0 auto 1.75rem;
   transform-origin: center;
-}
-
-.heroSubtitle {
-  font-family: $font-serif;
-  font-size: 1.1rem;
-  font-style: italic;
-  color: $on-surface-variant;
-  line-height: 1.75;
-  margin-bottom: 2.25rem;
 }
 
 .sectionLabel {

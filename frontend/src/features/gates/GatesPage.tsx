@@ -1,44 +1,12 @@
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { SEO } from "@/components/SEO";
-import { GateCard } from "./GateCard";
-import { GatesLoadingSkeleton } from "./GatesLoadingSkeleton";
+import { GatesGrid } from "./GatesGrid";
 import { useGatesQuery } from "@/hooks/queries";
 import styles from "./GatesPage.module.scss";
 
-const gridVariants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.22,
-      delayChildren: 0.65,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: {
-    opacity: 0,
-    y: 90,
-    rotateX: 28,
-    scale: 0.88,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-    rotateX: 0,
-    scale: 1,
-    transition: {
-      type: "spring" as const,
-      stiffness: 160,
-      damping: 18,
-      mass: 0.9,
-    },
-  },
-};
-
 export function GatesPage() {
-  const { data: gates, isLoading: loading } = useGatesQuery();
+  const { data: gates, isLoading } = useGatesQuery();
 
   return (
     <PageTransition>
@@ -48,6 +16,12 @@ export function GatesPage() {
         path="/portal"
       />
       <main className={styles.page}>
+        <img
+          src="/open_book.png"
+          alt=""
+          aria-hidden="true"
+          className={styles.bookBackdrop}
+        />
         {/* Hero */}
         <section className={styles.hero}>
           <motion.h1
@@ -64,15 +38,6 @@ export function GatesPage() {
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           />
-          <motion.p
-            className={styles.heroSubtitle}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.3 }}
-          >
-            Eseje, analizy i komentarze ukazujące myśl C.S. Lewisa jako spójną
-            całość, w której wyobraźnia, rozum i wiara wzajemnie się przenikają
-          </motion.p>
         </section>
 
         {/* Section label */}
@@ -85,24 +50,7 @@ export function GatesPage() {
           Wybierz Swoją Drogę
         </motion.p>
 
-        {/* Gates Grid */}
-        {loading ? (
-          <GatesLoadingSkeleton />
-        ) : (
-          <motion.div
-            className={styles.grid}
-            style={{ perspective: 1200 }}
-            variants={gridVariants}
-            initial="hidden"
-            animate="show"
-          >
-            {(gates ?? []).map((gate) => (
-              <motion.div key={gate.id} variants={cardVariants} style={{ transformOrigin: "bottom center" }}>
-                <GateCard gate={gate} />
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
+        <GatesGrid gates={gates} loading={isLoading} />
       </main>
     </PageTransition>
   );

@@ -106,3 +106,30 @@ export interface Book {
   image: StrapiImage | null;
   redirectUrl: string;
 }
+
+export interface HomePage {
+  id: number;
+  documentId: string;
+  title: string;
+  subtitle: string | null;
+  content: string | null;
+  backgroundImage: StrapiImage | null;
+  ctaLabel: string | null;
+  gatesSectionTitle: string | null;
+  gates: Gate[];
+}
+
+export interface Term {
+  id: number;
+  documentId: string;
+  name: string;
+  description: string;
+}
+
+export interface EncyclopediaPage {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string | null;
+  backgroundImage: StrapiImage | null;
+}

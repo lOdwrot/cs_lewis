@@ -3,9 +3,12 @@ import { getGates, getGate } from '@/services/gates.service'
 import { getJourney, getJourneys } from '@/services/journeys.service'
 import { getStep } from '@/services/steps.service'
 import { getBooks } from '@/services/books.service'
+import { getHomePage } from '@/services/home-page.service'
+import { getEncyclopediaPage, getTerms } from '@/services/encyclopedia.service'
 import type { Difficulty } from '@/types/strapi'
 
 const PAGE_SIZE = 6
+const TERMS_PAGE_SIZE = 20
 
 export const useGatesQuery = () =>
   useQuery({ queryKey: ['gates'], queryFn: getGates })
@@ -22,11 +25,29 @@ export const useStepQuery = (id: string) =>
 export const useBooksQuery = () =>
   useQuery({ queryKey: ['books'], queryFn: getBooks })
 
+export const useHomePageQuery = () =>
+  useQuery({ queryKey: ['home-page'], queryFn: getHomePage })
+
 export const useJourneysInfiniteQuery = (search: string, difficulties: Difficulty[]) =>
   useInfiniteQuery({
     queryKey: ['journeys', { search, difficulties }],
     queryFn: ({ pageParam }) =>
       getJourneys({ page: pageParam, pageSize: PAGE_SIZE, search, difficulties }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pagination.page < lastPage.pagination.pageCount
+        ? lastPage.pagination.page + 1
+        : undefined,
+  })
+
+export const useEncyclopediaPageQuery = () =>
+  useQuery({ queryKey: ['encyclopedia-page'], queryFn: getEncyclopediaPage })
+
+export const useTermsInfiniteQuery = (search: string) =>
+  useInfiniteQuery({
+    queryKey: ['terms', { search }],
+    queryFn: ({ pageParam }) =>
+      getTerms({ page: pageParam, pageSize: TERMS_PAGE_SIZE, search }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.pagination.page < lastPage.pagination.pageCount

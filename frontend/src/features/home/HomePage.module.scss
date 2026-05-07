@@ -5,6 +5,73 @@
   margin: 0 auto;
   padding: 6rem 2rem 6rem;
   text-align: center;
+  position: relative;
+  isolation: isolate;
+}
+
+.portrait {
+  position: absolute;
+  // Sit flush with the top of <main> (just below the sticky header).
+  top: 0;
+  // Break out of the 720px centered container and align to the viewport's right edge.
+  // 360px = half of .page max-width; 50vw = half the viewport.
+  // min(0px, ...) keeps it pinned to the page edge on narrow viewports.
+  right: min(0px, calc(360px - 50vw));
+  width: clamp(500px, 68vw, 1180px);
+  height: auto;
+  max-width: none;
+  filter: grayscale(100%) sepia(28%) contrast(1.05) brightness(0.65);
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+  z-index: -1;
+  // Two-layer mask combined via intersect:
+  //  1. Radial — softens the left and outer edges into the dark background.
+  //  2. Linear bottom fade — dissolves the lower half so the photo melts into the page.
+  -webkit-mask-image:
+    radial-gradient(
+      ellipse 75% 85% at 65% 40%,
+      #000 0%,
+      rgba(0, 0, 0, 0.92) 25%,
+      rgba(0, 0, 0, 0.6) 55%,
+      rgba(0, 0, 0, 0.22) 78%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 35%,
+      rgba(0, 0, 0, 0.7) 55%,
+      rgba(0, 0, 0, 0.25) 78%,
+      transparent 95%
+    );
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(
+      ellipse 75% 85% at 65% 40%,
+      #000 0%,
+      rgba(0, 0, 0, 0.92) 25%,
+      rgba(0, 0, 0, 0.6) 55%,
+      rgba(0, 0, 0, 0.22) 78%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 35%,
+      rgba(0, 0, 0, 0.7) 55%,
+      rgba(0, 0, 0, 0.25) 78%,
+      transparent 95%
+    );
+  mask-composite: intersect;
+}
+
+@media (max-width: 700px) {
+  .portrait {
+    right: -2rem;
+    width: 90%;
+    opacity: 0.3;
+  }
 }
 
 .title {
@@ -16,6 +83,7 @@
   color: $gold-dark;
   margin-bottom: 1.5rem;
   text-transform: uppercase;
+  position: relative;
 }
 
 .divider {
@@ -24,6 +92,15 @@
   background: $gold-dark;
   margin: 0 auto 2rem;
   transform-origin: center;
+}
+
+.subtitle {
+  font-family: $font-serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: $on-surface-variant;
+  line-height: 1.75;
+  margin-bottom: 2.25rem;
 }
 
 .body {
@@ -45,14 +122,71 @@
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: $gold-dark;
+  background: transparent;
   padding: 0.85rem 1.75rem;
   border: 1px solid $gold-dark;
   border-radius: 2px;
   text-decoration: none;
+  cursor: pointer;
   transition: background-color 0.25s ease, color 0.25s ease;
 
   &:hover {
     background-color: $gold-dark;
     color: white;
   }
+}
+
+.gatesSection {
+  // Break out of the 720px page max-width so the grid is centred against the
+  // viewport, not against the narrow text column above.
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-top: 6rem;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.gatesInner {
+  max-width: $max-content;
+  margin: 0 auto;
+}
+
+.gatesSectionTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin: 0 auto 3rem;
+  font-family: $font-serif;
+  font-weight: 400;
+  font-size: 0.95rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: $gold-dark;
+}
+
+.titleRule {
+  display: inline-block;
+  width: clamp(40px, 8vw, 96px);
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba($gold-dark, 0.85),
+    transparent
+  );
+}
+
+.titleFleur {
+  font-size: 0.85rem;
+  letter-spacing: 0;
+  color: rgba($gold-dark, 0.85);
+  line-height: 1;
+}
+
+.titleText {
+  // Compensate for letter-spacing pushing text off-centre relative to gap.
+  padding-left: 0.42em;
 }
