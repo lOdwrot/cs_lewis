@@ -4,6 +4,8 @@
   max-width: $max-content;
   margin: 0 auto;
   padding: 5rem 2rem 7rem;
+  position: relative;
+  isolation: isolate;
 }
 
 .hero {

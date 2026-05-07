@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { SEO } from "@/components/SEO";
 import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
 import {
@@ -72,24 +73,19 @@ export function EncyclopediaPage() {
   const description = page?.description ?? "";
 
   return (
-    <PageTransition>
-      <SEO
-        title={title}
-        description={
-          description ||
-          "Słownik pojęć, postaci i miejsc kluczowych dla zrozumienia myśli C.S. Lewisa."
-        }
-        path="/encyclopedia"
-      />
-      <main className={styles.page}>
-        <img
-          src={backgroundSrc}
-          alt={backgroundAlt}
-          aria-hidden={backgroundAlt ? undefined : true}
-          className={styles.bookBackdrop}
+    <>
+      <PageBackdrop src={backgroundSrc} alt={backgroundAlt} />
+      <PageTransition>
+        <SEO
+          title={title}
+          description={
+            description ||
+            "Słownik pojęć, postaci i miejsc kluczowych dla zrozumienia myśli C.S. Lewisa."
+          }
+          path="/encyclopedia"
         />
-
-        <section className={styles.hero}>
+        <main className={styles.page}>
+          <section className={styles.hero}>
           <motion.h1
             className={styles.heroTitle}
             initial={{ opacity: 0, y: 20 }}
@@ -195,5 +191,6 @@ export function EncyclopediaPage() {
         )}
       </main>
     </PageTransition>
+    </>
   );
 }

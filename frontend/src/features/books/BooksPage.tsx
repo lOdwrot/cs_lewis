@@ -1,7 +1,12 @@
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { FadeInView } from "@/components/animations/FadeInView";
 import { SEO } from "@/components/SEO";
+import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
+import { useBooksPageQuery, useBooksQuery } from "@/hooks/queries";
+import { strapiImageUrl } from "@/services/api";
+import styles from "./BooksPage.module.scss";
 
 const gridVariants = {
   hidden: {},
@@ -20,50 +25,62 @@ const cardVariants = {
     transition: { type: "spring" as const, stiffness: 160, damping: 18, mass: 0.9 },
   },
 };
-import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
-import { useBooksQuery } from "@/hooks/queries";
-import { strapiImageUrl } from "@/services/api";
-import styles from "./BooksPage.module.scss";
 
 export function BooksPage() {
+  const { data: page } = useBooksPageQuery();
   const { data: books, isLoading: loading } = useBooksQuery();
 
+  const title = page?.title ?? "Półka Uczonego";
+  const seoDescription =
+    page?.seoDescription ??
+    "Odkryj najważniejsze książki C.S. Lewisa — od Narni po apologetykę i filozofię chrześcijańską.";
+  const heroLabel = page?.heroLabel ?? "Starannie Dobrana Kolekcja";
+  const heroDescription =
+    page?.heroDescription ??
+    "„Czytamy, by wiedzieć, że nie jesteśmy sami.” Odkryj najważniejsze dzieła C.S. Lewisa, gdzie rozum spotyka wyobraźnię w dążeniu do wiecznych prawd.";
+  const buyLabel = page?.buyLabel ?? "Kup lub Wypożycz";
+  const motto = page?.motto ?? "Sapientia et Veritas";
+
+  const backgroundSrc = page?.backgroundImage
+    ? strapiImageUrl(page.backgroundImage.url)
+    : null;
+  const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
+
   return (
-    <PageTransition>
-      <SEO
-        title="Półka Uczonego"
-        description="Odkryj najważniejsze książki C.S. Lewisa — od Narni po apologetykę i filozofię chrześcijańską."
-        path="/books"
-      />
-      <main className={styles.page}>
-        {/* Hero */}
-        <section className={styles.hero}>
-          <motion.span
-            className={styles.heroLabel}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            Starannie Dobrana Kolekcja
-          </motion.span>
+    <>
+      <PageBackdrop src={backgroundSrc} alt={backgroundAlt} />
+      <PageTransition>
+        <SEO title={title} description={seoDescription} path="/books" />
+        <main className={styles.page}>
+          <section className={styles.hero}>
+          {heroLabel && (
+            <motion.span
+              className={styles.heroLabel}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              {heroLabel}
+            </motion.span>
+          )}
           <motion.h1
             className={styles.heroTitle}
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.1 }}
           >
-            Półka Uczonego
+            {title}
           </motion.h1>
-          <motion.p
-            className={styles.heroDesc}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.18 }}
-          >
-            „Czytamy, by wiedzieć, że nie jesteśmy sami." Odkryj najważniejsze
-            dzieła C.S. Lewisa, gdzie rozum spotyka wyobraźnię w dążeniu do
-            wiecznych prawd.
-          </motion.p>
+          {heroDescription && (
+            <motion.p
+              className={styles.heroDesc}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.18 }}
+            >
+              {heroDescription}
+            </motion.p>
+          )}
           <motion.div
             className={styles.heroDivider}
             initial={{ opacity: 0 }}
@@ -74,7 +91,6 @@ export function BooksPage() {
           </motion.div>
         </section>
 
-        {/* Grid */}
         {loading ? (
           <GatesLoadingSkeleton />
         ) : (
@@ -120,7 +136,7 @@ export function BooksPage() {
                       rel="noopener noreferrer"
                       className={styles.bookLink}
                     >
-                      <span>Kup lub Wypożycz</span>
+                      <span>{buyLabel}</span>
                       <span
                         className="material-symbols-outlined"
                         style={{ fontSize: "1rem" }}
@@ -135,14 +151,16 @@ export function BooksPage() {
           </motion.div>
         )}
 
-        {/* Motto */}
-        <FadeInView delay={0.3}>
-          <div className={styles.motto}>
-            <div className={styles.mottoDivider} />
-            <p className={styles.mottoText}>Sapientia et Veritas</p>
-          </div>
-        </FadeInView>
+        {motto && (
+          <FadeInView delay={0.3}>
+            <div className={styles.motto}>
+              <div className={styles.mottoDivider} />
+              <p className={styles.mottoText}>{motto}</p>
+            </div>
+          </FadeInView>
+        )}
       </main>
     </PageTransition>
+    </>
   );
 }

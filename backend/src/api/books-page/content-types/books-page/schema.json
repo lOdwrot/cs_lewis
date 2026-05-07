@@ -1,0 +1,41 @@
+{
+  "kind": "singleType",
+  "collectionName": "books_pages",
+  "info": {
+    "singularName": "books-page",
+    "pluralName": "books-pages",
+    "displayName": "Books Page",
+    "description": "Editable content for the public Półka Uczonego page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "seoDescription": {
+      "type": "text"
+    },
+    "heroLabel": {
+      "type": "string"
+    },
+    "heroDescription": {
+      "type": "text"
+    },
+    "buyLabel": {
+      "type": "string"
+    },
+    "motto": {
+      "type": "string"
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

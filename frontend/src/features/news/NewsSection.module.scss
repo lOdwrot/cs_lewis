@@ -1,0 +1,31 @@
+@use '@/styles/variables' as *;
+
+.section {
+  // Match GatesPage full-width breakout: escape the 720px page container
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-top: 6rem;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.inner {
+  max-width: $max-prose;
+  margin: 0 auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: left;
+}
+
+.empty {
+  font-family: $font-serif;
+  font-style: italic;
+  color: $on-surface-variant;
+  padding: 2rem 0;
+}

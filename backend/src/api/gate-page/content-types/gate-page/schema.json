@@ -1,0 +1,37 @@
+{
+  "kind": "singleType",
+  "collectionName": "gate_pages",
+  "info": {
+    "singularName": "gate-page",
+    "pluralName": "gate-pages",
+    "displayName": "Gate Page",
+    "description": "Editable content for the public Wielki Portal page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "dividerText": {
+      "type": "string"
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "gates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::gate.gate"
+    }
+  }
+}

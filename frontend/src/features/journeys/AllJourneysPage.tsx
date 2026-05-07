@@ -1,19 +1,14 @@
 import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { SEO } from "@/components/SEO";
 import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
-import { useJourneysInfiniteQuery } from "@/hooks/queries";
+import { useJourneysInfiniteQuery, useJourneysPageQuery } from "@/hooks/queries";
+import { strapiImageUrl } from "@/services/api";
 import type { Difficulty } from "@/types/strapi";
 import styles from "./AllJourneysPage.module.scss";
-
-const DIFFICULTY_FILTERS: { value: Difficulty; label: string; icon: string }[] =
-  [
-    { value: "easy", label: "Łatwa", icon: "eco" },
-    { value: "medium", label: "Średnia", icon: "bolt" },
-    { value: "hard", label: "Trudna", icon: "local_fire_department" },
-  ];
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
@@ -26,11 +21,39 @@ const cardVariants = {
 };
 
 export function AllJourneysPage() {
+  const { data: page } = useJourneysPageQuery();
+
+  const title = page?.title ?? "Wszystkie Przygody";
+  const seoDescription =
+    page?.seoDescription ??
+    "Przeglądaj wszystkie podróże z myślą C.S. Lewisa — filtruj według poziomu trudności i znajdź swoją drogę.";
+  const heroLabel = page?.heroLabel ?? "Odkryj";
+  const heroDescription =
+    page?.heroDescription ??
+    "Przeglądaj wszystkie podróże przez świat myśli C.S. Lewisa";
+  const searchPlaceholder = page?.searchPlaceholder ?? "Szukaj przygody…";
+  const filterLabel =
+    page?.filterLabel ?? "Filtruj po poziomie trudności przygody";
+  const clearFiltersLabel = page?.clearFiltersLabel ?? "Wyczyść";
+  const emptyMessage =
+    page?.emptyMessage ?? "Nie znaleziono przygód dla podanych kryteriów.";
+  const endMessage = page?.endMessage ?? "Wszystkie przygody załadowane";
+
+  const difficultyFilters: { value: Difficulty; label: string; icon: string }[] =
+    [
+      { value: "easy", label: page?.easyLabel ?? "Łatwa", icon: "eco" },
+      { value: "medium", label: page?.mediumLabel ?? "Średnia", icon: "bolt" },
+      {
+        value: "hard",
+        label: page?.hardLabel ?? "Trudna",
+        icon: "local_fire_department",
+      },
+    ];
+
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [difficulties, setDifficulties] = useState<Difficulty[]>([]);
 
-  // ── Debounce ────────────────────────────────────────────────────────────
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const handleSearchChange = (value: string) => {
     setSearch(value);
@@ -38,7 +61,6 @@ export function AllJourneysPage() {
     debounceRef.current = setTimeout(() => setDebouncedSearch(value.trim()), 400);
   };
 
-  // ── Data ─────────────────────────────────────────────────────────────────
   const {
     data,
     isLoading,
@@ -51,7 +73,6 @@ export function AllJourneysPage() {
   const totalCount = data?.pages[0]?.pagination.total ?? null;
   const loading = isLoading || isFetchingNextPage;
 
-  // ── Intersection Observer sentinel ──────────────────────────────────────
   const observerRef = useRef<IntersectionObserver | null>(null);
   const sentinelRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -70,30 +91,31 @@ export function AllJourneysPage() {
 
   const isEmpty = !isLoading && journeys.length === 0;
 
+  const backgroundSrc = page?.backgroundImage
+    ? strapiImageUrl(page.backgroundImage.url)
+    : null;
+  const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
+
   return (
-    <PageTransition>
-      <SEO
-        title="Wszystkie Przygody"
-        description="Przeglądaj wszystkie podróże z myślą C.S. Lewisa — filtruj według poziomu trudności i znajdź swoją drogę."
-        path="/journeys"
-      />
-      <main className={styles.page}>
-        {/* ── Hero ── */}
-        <motion.header
+    <>
+      <PageBackdrop src={backgroundSrc} alt={backgroundAlt} />
+      <PageTransition>
+        <SEO title={title} description={seoDescription} path="/journeys" />
+        <main className={styles.page}>
+          <motion.header
           className={styles.hero}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45 }}
         >
-          <span className={styles.heroLabel}>Odkryj</span>
-          <h1 className={styles.heroTitle}>Wszystkie Przygody</h1>
-          <p className={styles.heroDesc}>
-            Przeglądaj wszystkie podróże przez świat myśli C.S.&nbsp;Lewisa
-          </p>
+          {heroLabel && <span className={styles.heroLabel}>{heroLabel}</span>}
+          <h1 className={styles.heroTitle}>{title}</h1>
+          {heroDescription && (
+            <p className={styles.heroDesc}>{heroDescription}</p>
+          )}
           <div className={styles.divider} />
         </motion.header>
 
-        {/* ── Search ── */}
         <div className={styles.searchWrap}>
           <span className={`material-symbols-outlined ${styles.searchIcon}`}>
             search
@@ -101,7 +123,7 @@ export function AllJourneysPage() {
           <input
             className={styles.searchInput}
             type="search"
-            placeholder="Szukaj przygody…"
+            placeholder={searchPlaceholder}
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
             autoComplete="off"
@@ -118,13 +140,10 @@ export function AllJourneysPage() {
           )}
         </div>
 
-        {/* ── Filters ── */}
         <div className={styles.filterSection}>
-          <span className={styles.filterLabel}>
-            Filtruj po poziomie trudności przygody
-          </span>
+          <span className={styles.filterLabel}>{filterLabel}</span>
           <div className={styles.filterBar}>
-            {DIFFICULTY_FILTERS.map((f) => (
+            {difficultyFilters.map((f) => (
               <button
                 key={f.value}
                 className={`${styles.filterTag} ${styles[f.value]} ${
@@ -155,12 +174,11 @@ export function AllJourneysPage() {
               disabled={difficulties.length === 0}
             >
               <span className="material-symbols-outlined">close</span>
-              Wyczyść
+              {clearFiltersLabel}
             </button>
           </div>
         </div>
 
-        {/* ── Result count ── */}
         {totalCount !== null && (
           <p className={styles.resultCount}>
             {totalCount === 0
@@ -169,11 +187,10 @@ export function AllJourneysPage() {
           </p>
         )}
 
-        {/* ── Grid ── */}
         {isEmpty ? (
           <div className={styles.empty}>
             <span className="material-symbols-outlined">explore_off</span>
-            <p>Nie znaleziono przygód dla podanych kryteriów.</p>
+            <p>{emptyMessage}</p>
           </div>
         ) : (
           <motion.div className={styles.grid} style={{ perspective: 1200 }}>
@@ -193,22 +210,20 @@ export function AllJourneysPage() {
           </motion.div>
         )}
 
-        {/* ── Loader ── */}
         {loading && <GatesLoadingSkeleton />}
 
-        {/* ── Sentinel for infinite scroll ── */}
         {!loading && hasNextPage && (
           <div ref={sentinelRef} className={styles.sentinel} />
         )}
 
-        {/* ── End of list ── */}
         {!hasNextPage && journeys.length > 0 && (
           <p className={styles.endMessage}>
             <span className="material-symbols-outlined">auto_stories</span>
-            Wszystkie przygody załadowane
+            {endMessage}
           </p>
         )}
       </main>
     </PageTransition>
+    </>
   );
 }

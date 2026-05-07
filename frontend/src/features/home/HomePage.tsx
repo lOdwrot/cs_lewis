@@ -3,19 +3,19 @@ import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { SEO } from "@/components/SEO";
 import { GatesGrid } from "@/features/gates/GatesGrid";
+import { NewsSection } from "@/features/news/NewsSection";
 import { useHomePageQuery } from "@/hooks/queries";
 import { strapiImageUrl } from "@/services/api";
 import styles from "./HomePage.module.scss";
 
 export function HomePage() {
   const { data: home, isLoading } = useHomePageQuery();
+  const news = home?.news;
   const gatesSectionRef = useRef<HTMLElement | null>(null);
+  const newsSectionRef = useRef<HTMLElement | null>(null);
 
-  const scrollToGates = () => {
-    gatesSectionRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+  const scrollTo = (ref: React.RefObject<HTMLElement | null>) => () => {
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const portraitSrc = home?.backgroundImage
@@ -74,20 +74,31 @@ export function HomePage() {
           </motion.p>
         )}
 
-        {home?.ctaLabel && (
+        {(home?.ctaLabel || home?.newsButtonLabel) && (
           <motion.div
             className={styles.cta}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.35 }}
           >
-            <button
-              type="button"
-              onClick={scrollToGates}
-              className={styles.ctaLink}
-            >
-              {home.ctaLabel}
-            </button>
+            {home?.ctaLabel && (
+              <button
+                type="button"
+                onClick={scrollTo(gatesSectionRef)}
+                className={styles.ctaLink}
+              >
+                {home.ctaLabel}
+              </button>
+            )}
+            {home?.newsButtonLabel && (news?.length ?? 0) > 0 && (
+              <button
+                type="button"
+                onClick={scrollTo(newsSectionRef)}
+                className={styles.ctaLink}
+              >
+                {home.newsButtonLabel}
+              </button>
+            )}
           </motion.div>
         )}
 
@@ -118,6 +129,14 @@ export function HomePage() {
               <GatesGrid gates={home?.gates} loading={isLoading} />
             </div>
           </section>
+        )}
+
+        {(news?.length ?? 0) > 0 && (
+          <NewsSection
+            ref={newsSectionRef}
+            title={home?.newsSectionTitle}
+            news={news}
+          />
         )}
       </main>
     </PageTransition>

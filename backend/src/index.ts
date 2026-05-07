@@ -8,9 +8,13 @@ export default {
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     await setPublicPermissions(strapi);
     await seedIfEmpty(strapi);
+    await seedNewsIfEmpty(strapi);
     await seedHomePageIfMissing(strapi);
     await seedTermsIfEmpty(strapi);
     await seedEncyclopediaPageIfMissing(strapi);
+    await seedGatePageIfMissing(strapi);
+    await seedJourneysPageIfMissing(strapi);
+    await seedBooksPageIfMissing(strapi);
   },
 };
 
@@ -27,10 +31,14 @@ async function setPublicPermissions(strapi: Core.Strapi) {
     "api::step.step",
     "api::book.book",
     "api::term.term",
+    "api::news.news",
   ];
   const singleTypes = [
     "api::home-page.home-page",
     "api::encyclopedia-page.encyclopedia-page",
+    "api::gate-page.gate-page",
+    "api::journeys-page.journeys-page",
+    "api::books-page.books-page",
   ];
   const contentTypes = [
     ...collectionTypes.flatMap((ct) =>
@@ -603,6 +611,13 @@ async function seedHomePageIfMissing(strapi: Core.Strapi) {
     documentId: g.documentId,
   }));
 
+  const newsItems = await strapi.db
+    .query("api::news.news")
+    .findMany({ orderBy: { createdAt: "asc" } });
+  const newsRelations = newsItems.map((n: { documentId: string }) => ({
+    documentId: n.documentId,
+  }));
+
   const file = await uploadImageOnce(strapi, {
     filename: "levis.png",
     alternativeText: "C.S. Lewis",
@@ -615,8 +630,11 @@ async function seedHomePageIfMissing(strapi: Core.Strapi) {
     content:
       "Lewis nie oddzielał opowieści od argumentu ani argumentu od wiary. Uważał, że wyobraźnia przygotowuje grunt dla rozumu, rozum domaga się prawdy, a wiara nie niszczy żadnego z nich. Ta strona proponuje lekturę Lewisa właśnie w tym duchu — poprzez teksty, które prowadzą różnymi drogami ku tym samym pytaniom.",
     ctaLabel: "Wybierz bramę",
+    newsButtonLabel: "Nowości",
     gatesSectionTitle: "Trzy Bramy",
+    newsSectionTitle: "Nowości",
     gates: gateRelations,
+    news: newsRelations,
   };
   if (file?.id) {
     data.backgroundImage = file.id;
@@ -731,6 +749,99 @@ async function uploadImageOnce(
   return file;
 }
 
+async function seedGatePageIfMissing(strapi: Core.Strapi) {
+  const existing = await strapi.db
+    .query("api::gate-page.gate-page")
+    .findOne({});
+  if (existing) return;
+
+  const gates = await strapi.db
+    .query("api::gate.gate")
+    .findMany({ orderBy: { order: "asc" } });
+  const gateRelations = gates.map((g: { documentId: string }) => ({
+    documentId: g.documentId,
+  }));
+
+  const file = await uploadImageOnce(strapi, {
+    filename: "open_book.png",
+    alternativeText: "Otwarta księga",
+  });
+
+  const data: Record<string, unknown> = {
+    title: "Wielki Portal",
+    description:
+      "Odkryj myśl C.S. Lewisa przez interaktywne podróże przez Wyobraźnię, Rozum i Wiarę. Eseje, podcasty i quizy.",
+    dividerText: "Wybierz Swoją Drogę",
+    gates: gateRelations,
+  };
+  if (file?.id) {
+    data.backgroundImage = file.id;
+  }
+
+  const doc = await strapi.documents("api::gate-page.gate-page").create({
+    data: data as never,
+  });
+  await publishDoc(strapi, "api::gate-page.gate-page", doc.documentId);
+
+  strapi.log.info("✅ Seedowanie strony bram zakończone.");
+}
+
+async function seedJourneysPageIfMissing(strapi: Core.Strapi) {
+  const existing = await strapi.db
+    .query("api::journeys-page.journeys-page")
+    .findOne({});
+  if (existing) return;
+
+  const data: Record<string, unknown> = {
+    title: "Wszystkie Przygody",
+    seoDescription:
+      "Przeglądaj wszystkie podróże z myślą C.S. Lewisa — filtruj według poziomu trudności i znajdź swoją drogę.",
+    heroLabel: "Odkryj",
+    heroDescription:
+      "Przeglądaj wszystkie podróże przez świat myśli C.S. Lewisa",
+    searchPlaceholder: "Szukaj przygody…",
+    filterLabel: "Filtruj po poziomie trudności przygody",
+    easyLabel: "Łatwa",
+    mediumLabel: "Średnia",
+    hardLabel: "Trudna",
+    clearFiltersLabel: "Wyczyść",
+    emptyMessage: "Nie znaleziono przygód dla podanych kryteriów.",
+    endMessage: "Wszystkie przygody załadowane",
+  };
+
+  const doc = await strapi
+    .documents("api::journeys-page.journeys-page")
+    .create({ data: data as never });
+  await publishDoc(strapi, "api::journeys-page.journeys-page", doc.documentId);
+
+  strapi.log.info("✅ Seedowanie strony przygód zakończone.");
+}
+
+async function seedBooksPageIfMissing(strapi: Core.Strapi) {
+  const existing = await strapi.db
+    .query("api::books-page.books-page")
+    .findOne({});
+  if (existing) return;
+
+  const data: Record<string, unknown> = {
+    title: "Półka Uczonego",
+    seoDescription:
+      "Odkryj najważniejsze książki C.S. Lewisa — od Narni po apologetykę i filozofię chrześcijańską.",
+    heroLabel: "Starannie Dobrana Kolekcja",
+    heroDescription:
+      "„Czytamy, by wiedzieć, że nie jesteśmy sami.” Odkryj najważniejsze dzieła C.S. Lewisa, gdzie rozum spotyka wyobraźnię w dążeniu do wiecznych prawd.",
+    buyLabel: "Kup lub Wypożycz",
+    motto: "Sapientia et Veritas",
+  };
+
+  const doc = await strapi
+    .documents("api::books-page.books-page")
+    .create({ data: data as never });
+  await publishDoc(strapi, "api::books-page.books-page", doc.documentId);
+
+  strapi.log.info("✅ Seedowanie strony książek zakończone.");
+}
+
 async function seedEncyclopediaPageIfMissing(strapi: Core.Strapi) {
   const existing = await strapi.db
     .query("api::encyclopedia-page.encyclopedia-page")
@@ -761,4 +872,51 @@ async function seedEncyclopediaPageIfMissing(strapi: Core.Strapi) {
   );
 
   strapi.log.info("✅ Seedowanie strony encyklopedii zakończone.");
+}
+
+const NEWS_SEED: { title: string; content: string }[] = [
+  {
+    title: "Konferencja „C. S. Lewis. Wyobraźnia, rozum i wiara”",
+    content: `Fundacja Prodoteo wraz z Instytutem Filozofii Uniwersytetu Ignatianum w Krakowie i Instytutem Filozofii Uniwersytetu Zielonogórskiego zapraszają na konferencję naukową poświęconą myśli C. S. Lewisa.
+
+Łącząc wyobraźnię literacką, refleksję filozoficzną oraz głębię teologiczną, Clive Staples Lewis wypracował styl myślenia i pisania, który przekracza granice dyscyplin i trafia zarówno do środowiska akademickiego, jak i szerokiego kręgu odbiorców. Konferencja ma na celu prezentację szerokiego pola badań obejmującego analizę jego dzieł literackich oraz refleksję filozoficzną i teologiczną — a także ich wzajemne powiązania.
+
+W centrum dyskusji znajdą się m.in. rola wyobraźni w poznaniu i komunikowaniu prawdy, relacja między mitem a rzeczywistością, teizmem a nauką oraz idee natury i nadnatury.
+
+**Organizatorzy:** Fundacja Prodoteo, Instytut Filozofii Uniwersytetu Ignatianum w Krakowie, Instytut Filozofii Uniwersytetu Zielonogórskiego.
+
+[Strona konferencji →](https://lewis.prodoteo.pl/)`,
+  },
+  {
+    title: "Nowe polskie wydanie „Listów Starszego Diabła”",
+    content: `Wydawnictwo Esprit zapowiada wznowienie *Listów Starszego Diabła* w nowym przekładzie, opatrzone wstępem polskiego tłumacza i przypisami osadzającymi tekst w realiach wojennej Anglii.
+
+Tom zawiera również *Toast Starszego Diabła* — późniejszy esej Lewisa, w którym Krętacz powraca, by zabrać głos podczas dorocznej kolacji absolwentów Piekielnej Akademii. Razem dają one pełny obraz tego, jak Lewis postrzegał subtelne mechanizmy pokus dnia codziennego.
+
+Premiera planowana jest na jesień bieżącego roku.`,
+  },
+  {
+    title: "Spacer śladami Inklingów w Oksfordzie",
+    content: `Magdalen College ogłosił letni cykl oprowadzań tematycznych „In the Footsteps of the Inklings” — spacerów prowadzących uczestników szlakiem ulubionych miejsc Lewisa, Tolkiena, Williamsa i Barfielda.
+
+Trasa obejmuje **Addison's Walk**, gdzie nocą 19 września 1931 roku padły argumenty, które przekonały Lewisa, że Ewangelia jest „prawdziwym mitem”, a także pub **Eagle and Child** — wtorkowe miejsce spotkań grupy w latach 30. i 40. XX wieku.
+
+Oprowadzania prowadzone są w języku angielskim przez badaczy literatury związanych z uniwersytetem.`,
+  },
+];
+
+async function seedNewsIfEmpty(strapi: Core.Strapi) {
+  const count = await strapi.db.query("api::news.news").count({});
+  if (count > 0) return;
+
+  strapi.log.info("🌱 Sianie nowości…");
+
+  for (const item of NEWS_SEED) {
+    const doc = await strapi
+      .documents("api::news.news")
+      .create({ data: item as never });
+    await publishDoc(strapi, "api::news.news", doc.documentId);
+  }
+
+  strapi.log.info(`✅ Nowości: zasiano ${NEWS_SEED.length} wpisów.`);
 }

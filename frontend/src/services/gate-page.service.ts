@@ -1,16 +1,14 @@
 import { api } from "./api";
-import type { HomePage, StrapiResponse } from "@/types/strapi";
+import type { GatePage, StrapiResponse } from "@/types/strapi";
 
-export async function getHomePage(): Promise<HomePage> {
-  const res = await api.get<StrapiResponse<HomePage>>("/home-page", {
+export async function getGatePage(): Promise<GatePage> {
+  const res = await api.get<StrapiResponse<GatePage>>("/gate-page", {
     params: {
       "populate[backgroundImage][fields][0]": "url",
       "populate[backgroundImage][fields][1]": "alternativeText",
       "populate[gates][populate][image][fields][0]": "url",
       "populate[gates][populate][image][fields][1]": "alternativeText",
       "populate[gates][sort]": "order:asc",
-      "populate[news][fields][0]": "title",
-      "populate[news][fields][1]": "content",
     },
   });
   return res.data.data;

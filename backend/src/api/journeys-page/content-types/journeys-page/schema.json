@@ -1,0 +1,59 @@
+{
+  "kind": "singleType",
+  "collectionName": "journeys_pages",
+  "info": {
+    "singularName": "journeys-page",
+    "pluralName": "journeys-pages",
+    "displayName": "Journeys Page",
+    "description": "Editable content for the public Wszystkie Przygody page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "seoDescription": {
+      "type": "text"
+    },
+    "heroLabel": {
+      "type": "string"
+    },
+    "heroDescription": {
+      "type": "text"
+    },
+    "searchPlaceholder": {
+      "type": "string"
+    },
+    "filterLabel": {
+      "type": "string"
+    },
+    "easyLabel": {
+      "type": "string"
+    },
+    "mediumLabel": {
+      "type": "string"
+    },
+    "hardLabel": {
+      "type": "string"
+    },
+    "clearFiltersLabel": {
+      "type": "string"
+    },
+    "emptyMessage": {
+      "type": "text"
+    },
+    "endMessage": {
+      "type": "string"
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

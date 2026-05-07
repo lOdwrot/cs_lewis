@@ -1,36 +1,50 @@
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { SEO } from "@/components/SEO";
 import { GatesGrid } from "./GatesGrid";
-import { useGatesQuery } from "@/hooks/queries";
+import { useGatePageQuery, useGatesQuery } from "@/hooks/queries";
+import { strapiImageUrl } from "@/services/api";
 import styles from "./GatesPage.module.scss";
 
 export function GatesPage() {
-  const { data: gates, isLoading } = useGatesQuery();
+  const { data: page, isLoading: pageLoading } = useGatePageQuery();
+  const { data: allGates, isLoading: gatesLoading } = useGatesQuery();
+
+  const title = page?.title ?? "Wielki Portal";
+  const description = page?.description ?? "";
+  const dividerText = page?.dividerText ?? "Wybierz Swoją Drogę";
+
+  const curatedGates = page?.gates && page.gates.length > 0 ? page.gates : null;
+  const gates = curatedGates ?? allGates;
+  const isLoading = pageLoading || (curatedGates ? false : gatesLoading);
+
+  const backgroundSrc = page?.backgroundImage
+    ? strapiImageUrl(page.backgroundImage.url)
+    : "/open_book.png";
+  const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
 
   return (
-    <PageTransition>
-      <SEO
-        title="Wielki Portal"
-        description="Odkryj myśl C.S. Lewisa przez interaktywne podróże przez Wyobraźnię, Rozum i Wiarę. Eseje, podcasty i quizy."
-        path="/portal"
-      />
-      <main className={styles.page}>
-        <img
-          src="/open_book.png"
-          alt=""
-          aria-hidden="true"
-          className={styles.bookBackdrop}
+    <>
+      <PageBackdrop src={backgroundSrc} alt={backgroundAlt} />
+      <PageTransition>
+        <SEO
+          title={title}
+          description={
+            description ||
+            "Odkryj myśl C.S. Lewisa przez interaktywne podróże przez Wyobraźnię, Rozum i Wiarę. Eseje, podcasty i quizy."
+          }
+          path="/portal"
         />
-        {/* Hero */}
-        <section className={styles.hero}>
+        <main className={styles.page}>
+          <section className={styles.hero}>
           <motion.h1
             className={styles.heroTitle}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Wielki Portal
+            {title}
           </motion.h1>
           <motion.div
             className={styles.heroDivider}
@@ -38,20 +52,32 @@ export function GatesPage() {
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           />
+          {description && (
+            <motion.p
+              className={styles.heroDesc}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.25 }}
+            >
+              {description}
+            </motion.p>
+          )}
         </section>
 
-        {/* Section label */}
-        <motion.p
-          className={styles.sectionLabel}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.55 }}
-        >
-          Wybierz Swoją Drogę
-        </motion.p>
+        {dividerText && (
+          <motion.p
+            className={styles.sectionLabel}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.55 }}
+          >
+            {dividerText}
+          </motion.p>
+        )}
 
         <GatesGrid gates={gates} loading={isLoading} />
       </main>
     </PageTransition>
+    </>
   );
 }

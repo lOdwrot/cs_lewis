@@ -4,6 +4,9 @@ import { getJourney, getJourneys } from '@/services/journeys.service'
 import { getStep } from '@/services/steps.service'
 import { getBooks } from '@/services/books.service'
 import { getHomePage } from '@/services/home-page.service'
+import { getGatePage } from '@/services/gate-page.service'
+import { getJourneysPage } from '@/services/journeys-page.service'
+import { getBooksPage } from '@/services/books-page.service'
 import { getEncyclopediaPage, getTerms } from '@/services/encyclopedia.service'
 import type { Difficulty } from '@/types/strapi'
 
@@ -27,6 +30,15 @@ export const useBooksQuery = () =>
 
 export const useHomePageQuery = () =>
   useQuery({ queryKey: ['home-page'], queryFn: getHomePage })
+
+export const useGatePageQuery = () =>
+  useQuery({ queryKey: ['gate-page'], queryFn: getGatePage })
+
+export const useJourneysPageQuery = () =>
+  useQuery({ queryKey: ['journeys-page'], queryFn: getJourneysPage })
+
+export const useBooksPageQuery = () =>
+  useQuery({ queryKey: ['books-page'], queryFn: getBooksPage })
 
 export const useJourneysInfiniteQuery = (search: string, difficulties: Difficulty[]) =>
   useInfiniteQuery({

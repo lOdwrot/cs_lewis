@@ -31,13 +31,24 @@
     "ctaLabel": {
       "type": "string"
     },
+    "newsButtonLabel": {
+      "type": "string"
+    },
     "gatesSectionTitle": {
+      "type": "string"
+    },
+    "newsSectionTitle": {
       "type": "string"
     },
     "gates": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::gate.gate"
+    },
+    "news": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::news.news"
     }
   }
 }

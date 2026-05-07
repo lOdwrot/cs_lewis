@@ -115,8 +115,18 @@ export interface HomePage {
   content: string | null;
   backgroundImage: StrapiImage | null;
   ctaLabel: string | null;
+  newsButtonLabel: string | null;
   gatesSectionTitle: string | null;
+  newsSectionTitle: string | null;
   gates: Gate[];
+  news: News[];
+}
+
+export interface News {
+  id: number;
+  documentId: string;
+  title: string;
+  content: string;
 }
 
 export interface Term {
@@ -131,5 +141,45 @@ export interface EncyclopediaPage {
   documentId: string;
   title: string;
   description: string | null;
+  backgroundImage: StrapiImage | null;
+}
+
+export interface GatePage {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string | null;
+  dividerText: string | null;
+  backgroundImage: StrapiImage | null;
+  gates: Gate[];
+}
+
+export interface JourneysPage {
+  id: number;
+  documentId: string;
+  title: string;
+  seoDescription: string | null;
+  heroLabel: string | null;
+  heroDescription: string | null;
+  searchPlaceholder: string | null;
+  filterLabel: string | null;
+  easyLabel: string | null;
+  mediumLabel: string | null;
+  hardLabel: string | null;
+  clearFiltersLabel: string | null;
+  emptyMessage: string | null;
+  endMessage: string | null;
+  backgroundImage: StrapiImage | null;
+}
+
+export interface BooksPage {
+  id: number;
+  documentId: string;
+  title: string;
+  seoDescription: string | null;
+  heroLabel: string | null;
+  heroDescription: string | null;
+  buyLabel: string | null;
+  motto: string | null;
   backgroundImage: StrapiImage | null;
 }

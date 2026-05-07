@@ -459,6 +459,41 @@ export interface ApiBookBook extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBooksPageBooksPage extends Struct.SingleTypeSchema {
+  collectionName: 'books_pages';
+  info: {
+    description: 'Editable content for the public P\u00F3\u0142ka Uczonego page';
+    displayName: 'Books Page';
+    pluralName: 'books-pages';
+    singularName: 'books-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    backgroundImage: Schema.Attribute.Media<'images'>;
+    buyLabel: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    heroDescription: Schema.Attribute.Text;
+    heroLabel: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::books-page.books-page'
+    > &
+      Schema.Attribute.Private;
+    motto: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    seoDescription: Schema.Attribute.Text;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiEncyclopediaPageEncyclopediaPage
   extends Struct.SingleTypeSchema {
   collectionName: 'encyclopedia_pages';
@@ -481,6 +516,39 @@ export interface ApiEncyclopediaPageEncyclopediaPage
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::encyclopedia-page.encyclopedia-page'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiGatePageGatePage extends Struct.SingleTypeSchema {
+  collectionName: 'gate_pages';
+  info: {
+    description: 'Editable content for the public Wielki Portal page';
+    displayName: 'Gate Page';
+    pluralName: 'gate-pages';
+    singularName: 'gate-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    backgroundImage: Schema.Attribute.Media<'images'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    dividerText: Schema.Attribute.String;
+    gates: Schema.Attribute.Relation<'oneToMany', 'api::gate.gate'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::gate-page.gate-page'
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
@@ -550,6 +618,9 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
       'api::home-page.home-page'
     > &
       Schema.Attribute.Private;
+    news: Schema.Attribute.Relation<'oneToMany', 'api::news.news'>;
+    newsButtonLabel: Schema.Attribute.String;
+    newsSectionTitle: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     subtitle: Schema.Attribute.Text;
     title: Schema.Attribute.String & Schema.Attribute.Required;
@@ -588,6 +659,74 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     steps: Schema.Attribute.Relation<'manyToMany', 'api::step.step'>;
     tags: Schema.Attribute.JSON;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiJourneysPageJourneysPage extends Struct.SingleTypeSchema {
+  collectionName: 'journeys_pages';
+  info: {
+    description: 'Editable content for the public Wszystkie Przygody page';
+    displayName: 'Journeys Page';
+    pluralName: 'journeys-pages';
+    singularName: 'journeys-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    backgroundImage: Schema.Attribute.Media<'images'>;
+    clearFiltersLabel: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    easyLabel: Schema.Attribute.String;
+    emptyMessage: Schema.Attribute.Text;
+    endMessage: Schema.Attribute.String;
+    filterLabel: Schema.Attribute.String;
+    hardLabel: Schema.Attribute.String;
+    heroDescription: Schema.Attribute.Text;
+    heroLabel: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::journeys-page.journeys-page'
+    > &
+      Schema.Attribute.Private;
+    mediumLabel: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    searchPlaceholder: Schema.Attribute.String;
+    seoDescription: Schema.Attribute.Text;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiNewsNews extends Struct.CollectionTypeSchema {
+  collectionName: 'news_items';
+  info: {
+    description: 'News items shown on the home page';
+    displayName: 'News';
+    pluralName: 'news-items';
+    singularName: 'news';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    content: Schema.Attribute.RichText & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::news.news'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1171,10 +1310,14 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::book.book': ApiBookBook;
+      'api::books-page.books-page': ApiBooksPageBooksPage;
       'api::encyclopedia-page.encyclopedia-page': ApiEncyclopediaPageEncyclopediaPage;
+      'api::gate-page.gate-page': ApiGatePageGatePage;
       'api::gate.gate': ApiGateGate;
       'api::home-page.home-page': ApiHomePageHomePage;
       'api::journey.journey': ApiJourneyJourney;
+      'api::journeys-page.journeys-page': ApiJourneysPageJourneysPage;
+      'api::news.news': ApiNewsNews;
       'api::step.step': ApiStepStep;
       'api::term.term': ApiTermTerm;
       'plugin::content-releases.release': PluginContentReleasesRelease;
