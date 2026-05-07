@@ -1,20 +1,12 @@
-import { useMemo, useState, useEffect, useRef } from "react";
+import { useMemo, useState, useRef } from "react";
 import {
   motion,
   AnimatePresence,
   useMotionValue,
   useSpring,
   useTransform,
-  useAnimationControls,
   animate,
 } from "framer-motion";
-
-const GLOW_OFF =
-  "0 10px 50px rgba(212,175,55,0), 0 0 80px rgba(212,175,55,0)";
-const GLOW_LO =
-  "0 10px 50px rgba(212,175,55,0.42), 0 0 90px rgba(212,175,55,0.22)";
-const GLOW_HI =
-  "0 14px 70px rgba(212,175,55,0.62), 0 0 130px rgba(212,175,55,0.38)";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import type { Gate } from "@/types/strapi";
@@ -73,26 +65,11 @@ export function GateCard({ gate }: Props) {
   const [isHovered, setIsHovered] = useState(false);
   const sceneRef = useRef<HTMLDivElement>(null);
   const particles = useMemo(() => makeParticles(38), []);
-  const glowControls = useAnimationControls();
 
   // Motion values for the portal-suck — driven imperatively on exit
   const portalX = useMotionValue(0);
   const portalY = useMotionValue(0);
   const portalScale = useMotionValue(1);
-
-  useEffect(() => {
-    if (isHovered && phase === "idle") {
-      glowControls.start({
-        boxShadow: [GLOW_LO, GLOW_HI, GLOW_LO],
-        transition: { duration: 1.6, repeat: Infinity, ease: "easeInOut" },
-      });
-    } else {
-      glowControls.start({
-        boxShadow: GLOW_OFF,
-        transition: { duration: 0.4, ease: "easeOut" },
-      });
-    }
-  }, [isHovered, phase, glowControls]);
 
   // ── Cursor-tracked tilt ─────────────────────────────────────────────────
   const rawX = useMotionValue(0);
@@ -151,8 +128,6 @@ export function GateCard({ gate }: Props) {
       <motion.div
         ref={sceneRef}
         className={styles.scene}
-        animate={glowControls}
-        initial={{ boxShadow: GLOW_OFF }}
         style={{
           x: portalX,
           y: portalY,
