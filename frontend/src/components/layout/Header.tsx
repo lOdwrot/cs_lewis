@@ -5,7 +5,7 @@ import styles from "./Header.module.scss";
 
 const navLinks = [
   { to: "/portal", label: "Wielki Portal" },
-  { to: "/journeys", label: "Wszystkie Przygody" },
+  { to: "/journeys", label: "Przygody" },
   { to: "/library", label: "Biblioteka" },
   { to: "/biography", label: "Życiorys" },
   { to: "/encyclopedia", label: "Encyklopedia" },
@@ -32,7 +32,11 @@ const itemVariants = {
   open: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: 0.08 + i * 0.07, duration: 0.3, ease: "easeOut" as const },
+    transition: {
+      delay: 0.08 + i * 0.07,
+      duration: 0.3,
+      ease: "easeOut" as const,
+    },
   }),
 };
 

@@ -77,6 +77,9 @@
   padding: 1.5rem;
   transition: border-color $transition-mid;
   height: 100%;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 
   &:hover {
     border-color: rgba($gold, 0.6);
@@ -154,7 +157,7 @@
     transition: transform $transition-fast;
   }
 
-  &:hover {
+  .card:hover & {
     color: $gold;
 
     span {

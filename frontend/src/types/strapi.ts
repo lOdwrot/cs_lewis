@@ -65,6 +65,7 @@ export interface Gate {
   slug: string;
   description: string;
   image: StrapiImage | null;
+  backgroundImage: StrapiImage | null;
   enterButtonLabel: string | null;
   iconCharacter: string | null;
   journeys?: Journey[];

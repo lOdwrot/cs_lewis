@@ -106,6 +106,24 @@ async function seedIfEmpty(strapi: Core.Strapi) {
     "wizja-mitopoetyczna": pikaArt?.id,
   };
 
+  const gateBg1 = await uploadImageOnce(strapi, {
+    filename: "poke-1-bg.jpg",
+    alternativeText: "Tło bramy Wyobraźni",
+  });
+  const gateBg2 = await uploadImageOnce(strapi, {
+    filename: "poke-2-bg.jpg",
+    alternativeText: "Tło bramy Rozumu",
+  });
+  const gateBg3 = await uploadImageOnce(strapi, {
+    filename: "poke-3-bg.jpg",
+    alternativeText: "Tło bramy Wiary",
+  });
+  const gateBackgroundBySlug: Record<string, number | undefined> = {
+    wyobraznia: gateBg1?.id,
+    rozum: gateBg2?.id,
+    wiara: gateBg3?.id,
+  };
+
   // ── Books ────────────────────────────────────────────────────────────────
   const books = [
     {
@@ -606,16 +624,20 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
       .filter(Boolean)
       .map((documentId) => ({ documentId }));
 
+    const data: Record<string, unknown> = {
+      title: gData.title,
+      slug: gData.slug,
+      description: gData.description,
+      enterButtonLabel: gData.enterButtonLabel,
+      iconCharacter: gData.iconCharacter,
+      order: gData.order,
+      journeys: journeyIds,
+    };
+    const backgroundId = gateBackgroundBySlug[gData.slug];
+    if (backgroundId) data.backgroundImage = backgroundId;
+
     const doc = await strapi.documents("api::gate.gate").create({
-      data: {
-        title: gData.title,
-        slug: gData.slug,
-        description: gData.description,
-        enterButtonLabel: gData.enterButtonLabel,
-        iconCharacter: gData.iconCharacter,
-        order: gData.order,
-        journeys: journeyIds,
-      } as never,
+      data: data as never,
     });
     await publishDoc(strapi, "api::gate.gate", doc.documentId);
   }
@@ -678,47 +700,170 @@ async function seedHomePageIfMissing(strapi: Core.Strapi) {
 }
 
 const TERMS_SEED: { name: string; description: string }[] = [
-  { name: `Addison's Walk`, description: `Ścieżka w ogrodzie Magdalen College w Oksfordzie, miejsce nocnej rozmowy Lewisa z Tolkienem i Dysonem (19 września 1931), która doprowadziła go do uznania chrześcijaństwa za prawdziwy mit.` },
-  { name: `Apologetyka`, description: `Racjonalna obrona wiary chrześcijańskiej. Lewis był jednym z najbardziej wpływowych apologetów XX wieku — jego radiowe pogadanki z czasów wojny stały się podstawą Chrześcijaństwa po prostu.` },
-  { name: `Argument z Rozumu`, description: `Krytyka naturalizmu rozwinięta przez Lewisa w Cudach: jeśli umysł jest jedynie produktem irracjonalnych procesów, nie może być wiarygodnym narzędziem poznania prawdy.` },
-  { name: `Aslan`, description: `Wielki Lew, władca Narnii, jawnie alegoryczna postać Chrystusa. Pojawia się we wszystkich siedmiu tomach Kronik Narnii — stwarza świat, oddaje życie za Edmunda i powraca w nowej Narnii.` },
-  { name: `Boecjusz`, description: `Rzymski filozof z VI wieku, autor Pociechy filozofii. Jego myśl, łącząca platonizm z chrześcijaństwem, mocno wpłynęła na średniowieczną kosmologię, którą Lewis analizował w Odrzuconym obrazie.` },
-  { name: `Cair Paravel`, description: `Zamek królów i królowych Narnii nad Wschodnim Morzem. Symbolizuje przywróconą i odkupioną władzę — w przeciwieństwie do uzurpacji Białej Czarownicy.` },
-  { name: `Charles Williams`, description: `Pisarz, poeta i teolog mistyczny, członek Inklingów. Wywarł znaczący wpływ na Lewisa, zwłaszcza w Wielkim rozwodzie i koncepcji „współ-cierpienia”.` },
-  { name: `Chronologiczny snobizm`, description: `Termin ukuty przez Owena Barfielda i przejęty przez Lewisa: bezkrytyczne założenie, że to, co nowe, jest z konieczności lepsze od tego, co stare. Lewis uważał go za jedną z największych pułapek nowoczesności.` },
-  { name: `Chrześcijaństwo po prostu`, description: `Klasyczne dzieło apologetyczne Lewisa (1952), oparte na audycjach radiowych BBC z lat 1941–1944. Broni „trzonu” wiary chrześcijańskiej wspólnego wszystkim wyznaniom.` },
-  { name: `Cuda`, description: `Książka Lewisa z 1947 roku — filozoficzna obrona możliwości Bożej interwencji. Zawiera słynny Argument z Rozumu przeciw konsekwentnemu naturalizmowi.` },
-  { name: `Digory Kirke`, description: `Postać z Kronik Narnii — chłopiec, który jest świadkiem stworzenia Narnii w Siostrzeńcu Czarodzieja, a w Lwie, Czarownicy i starej szafie pojawia się jako stary profesor.` },
-  { name: `Dymna Góra`, description: `Mityczne miejsce z trylogii kosmicznej Lewisa, kojarzone z duchowym uciskiem i atakiem ciemnych mocy w Tej ohydnej sile.` },
-  { name: `Edmund Pevensie`, description: `Drugi z braci Pevensie. Jego zdrada wobec rodzeństwa i odkupienie przez ofiarę Aslana są centralną osią Lwa, Czarownicy i starej szafy.` },
-  { name: `Eldil`, description: `Anielska istota w trylogii kosmicznej Lewisa — pośrednicy między Maleldilem (Bogiem) a światami planet. Przypominają tradycyjne chrześcijańskie aniołów-władców.` },
-  { name: `Eustachy Klarencjusz Scrubb`, description: `Postać z Podróży „Wędrowca do Świtu” i kolejnych tomów. Jego przemiana ze zarozumiałego dziecka w lojalnego przyjaciela jest jednym z najbardziej alegorycznych wątków Kronik.` },
-  { name: `Fantazja`, description: `Lewisowska kategoria literacka — gatunek odwołujący się do prawdy poprzez nie-realistyczne obrazy. Lewis bronił fantazji przed zarzutem ucieczki od rzeczywistości w eseju O trzech drogach pisania dla dzieci.` },
-  { name: `Hugo Dyson`, description: `Anglista z Oksfordu, członek Inklingów. Wraz z Tolkienem uczestniczył w słynnej rozmowie na Addison's Walk, która przyczyniła się do nawrócenia Lewisa.` },
-  { name: `Inklingowie`, description: `Nieformalna grupa literacka spotykająca się w Oksfordzie w latach 30.–60. XX wieku, zwłaszcza w pubie Eagle and Child. Należeli do niej Lewis, Tolkien, Williams, Barfield i Dyson.` },
-  { name: `Joy Davidman`, description: `Amerykańska poetka i pisarka, żona C.S. Lewisa od 1956 roku. Jej śmierć na raka w 1960 roku skłoniła Lewisa do napisania Rozważań o żalu.` },
-  { name: `J.R.R. Tolkien`, description: `Filolog, autor Władcy Pierścieni i bliski przyjaciel Lewisa. To rozmowa z nim na Addison's Walk przekonała Lewisa, że Ewangelia jest „prawdziwym mitem”.` },
-  { name: `Kroniki Narnii`, description: `Siedmiotomowy cykl powieści fantasy (1950–1956): Siostrzeniec Czarodzieja, Lew Czarownica i stara szafa, Koń i jego chłopiec, Książę Kaspian, Podróż „Wędrowca do Świtu”, Srebrne krzesło, Ostatnia bitwa.` },
-  { name: `Lew, Czarownica i stara szafa`, description: `Pierwsza opublikowana powieść Kronik Narnii (1950). Czworo dzieci Pevensie wchodzi przez magiczną szafę do Narnii i pomaga Aslanowi pokonać Białą Czarownicę.` },
-  { name: `Listy Starszego Diabła`, description: `Satyryczna powieść Lewisa z 1942 roku, napisana jako seria listów starszego diabła Krętacza do młodszego siostrzeńca Piołuna. Przenikliwe studium pokus dnia codziennego.` },
-  { name: `Magdalen College`, description: `Kolegium Uniwersytetu Oksfordzkiego, w którym Lewis był wykładowcą literatury angielskiej w latach 1925–1954.` },
-  { name: `Maleldil`, description: `Imię Boga-Stwórcy w trylogii kosmicznej Lewisa. Maleldil-Młody odpowiada Chrystusowi; cała kosmologia trylogii jest przekładem chrześcijańskiej teologii na język mitu.` },
-  { name: `Malacandra`, description: `Mars w trylogii kosmicznej Lewisa — planeta, która nie zaznała upadku. Po raz pierwszy odwiedza ją Ransom w powieści Z milczącej planety.` },
-  { name: `Mit`, description: `Centralna kategoria w myśli Lewisa. Mit nie jest dla niego kłamstwem, lecz „prawdziwym, choć rozproszonym blaskiem Bożej prawdy”. W Ewangelii mit i fakt zbiegają się raz na zawsze.` },
-  { name: `Mitopoeia`, description: `Termin Tolkiena oznaczający „tworzenie mitów” — akt, w którym człowiek-pod-twórca uczestniczy w Bożym dziele stworzenia. Lewis przyjął tę kategorię jako klucz do rozumienia literatury.` },
-  { name: `Narnia`, description: `Wymyślona kraina rozmawiających zwierząt, stworzona przez Aslana w Siostrzeńcu Czarodzieja. Stanowi tło wszystkich siedmiu tomów Kronik Narnii.` },
-  { name: `Northernness`, description: `Lewisowskie określenie przeszywającej tęsknoty wzbudzonej mitologią nordycką i muzyką Wagnera, której doświadczył jako młodzieniec. Jeden z pierwszych przejawów Sehnsucht.` },
-  { name: `Owen Barfield`, description: `Filozof, prawnik, jeden z najbliższych przyjaciół Lewisa. Jego argumenty rozbiły młodzieńczy materializm Lewisa — Lewis nazywał ich spór „Wielką Wojną Idei”.` },
-  { name: `Perelandra`, description: `Drugi tom trylogii kosmicznej Lewisa (1943). Ransom udaje się na Wenus, by zapobiec drugiemu upadkowi w nowo stworzonym Edenie planetarnym.` },
-  { name: `Pielgrzymi powrót`, description: `Pierwsza powieść Lewisa po nawróceniu (1933). Alegoryczna narracja w stylu Bunyana, opisująca drogę Lewisa od ateizmu do chrześcijaństwa.` },
-  { name: `Problem Bólu`, description: `Książka Lewisa z 1940 roku, próba teologicznego ujęcia zła i cierpienia. Słynne zdanie: „Bóg krzyczy do nas przez nasze bóle: jest to jego megafon”.` },
-  { name: `Ransom`, description: `Bohater trylogii kosmicznej Lewisa, filolog z Cambridge — postać częściowo wzorowana na Tolkienie. W Tej ohydnej sile staje się przywódcą oporu wobec demonicznego N.I.C.E.` },
-  { name: `Rozważania o żalu`, description: `Surowa, autobiograficzna książka Lewisa z 1961 roku, napisana po śmierci Joy. Pierwotnie wydana pod pseudonimem N.W. Clerk. Rozbija starannie zbudowane argumenty Problemu Bólu.` },
-  { name: `Sehnsucht`, description: `Niemieckie słowo oznaczające tęsknotę, używane przez Lewisa do opisania przeszywającego pragnienia, które nie znajduje zaspokojenia w żadnym ziemskim przedmiocie. Według Lewisa to drogowskaz ku Bogu.` },
-  { name: `Trylemat Lewisa`, description: `Argument apologetyczny z Chrześcijaństwa po prostu: Jezus twierdził, że jest Bogiem, więc albo był Panem, albo Kłamcą, albo Szaleńcem. Nie można Go uznać za „dobrego nauczyciela moralności”.` },
-  { name: `Trylogia kosmiczna`, description: `Trzy powieści science-fiction Lewisa: Z milczącej planety (1938), Perelandra (1943), Ta ohydna siła (1945). Łączą gatunek z teologią i krytyką współczesnego scjentyzmu.` },
-  { name: `Waga chwały`, description: `Słynne kazanie Lewisa wygłoszone w Oksfordzie w 1941 roku. Zawiera tezę, że nasze pragnienia nie są zbyt silne, lecz zbyt słabe — „zbyt łatwo nas zadowolić”.` },
-  { name: `Zaskoczony radością`, description: `Autobiografia duchowa Lewisa z 1955 roku. Opisuje drogę od ateizmu do wiary chrześcijańskiej, a „radość” jest niemieckim Sehnsucht — przeszywającą tęsknotą, która okazała się drogowskazem ku Bogu.` },
+  {
+    name: `Addison's Walk`,
+    description: `Ścieżka w ogrodzie Magdalen College w Oksfordzie, miejsce nocnej rozmowy Lewisa z Tolkienem i Dysonem (19 września 1931), która doprowadziła go do uznania chrześcijaństwa za prawdziwy mit.`,
+  },
+  {
+    name: `Apologetyka`,
+    description: `Racjonalna obrona wiary chrześcijańskiej. Lewis był jednym z najbardziej wpływowych apologetów XX wieku — jego radiowe pogadanki z czasów wojny stały się podstawą Chrześcijaństwa po prostu.`,
+  },
+  {
+    name: `Argument z Rozumu`,
+    description: `Krytyka naturalizmu rozwinięta przez Lewisa w Cudach: jeśli umysł jest jedynie produktem irracjonalnych procesów, nie może być wiarygodnym narzędziem poznania prawdy.`,
+  },
+  {
+    name: `Aslan`,
+    description: `Wielki Lew, władca Narnii, jawnie alegoryczna postać Chrystusa. Pojawia się we wszystkich siedmiu tomach Kronik Narnii — stwarza świat, oddaje życie za Edmunda i powraca w nowej Narnii.`,
+  },
+  {
+    name: `Boecjusz`,
+    description: `Rzymski filozof z VI wieku, autor Pociechy filozofii. Jego myśl, łącząca platonizm z chrześcijaństwem, mocno wpłynęła na średniowieczną kosmologię, którą Lewis analizował w Odrzuconym obrazie.`,
+  },
+  {
+    name: `Cair Paravel`,
+    description: `Zamek królów i królowych Narnii nad Wschodnim Morzem. Symbolizuje przywróconą i odkupioną władzę — w przeciwieństwie do uzurpacji Białej Czarownicy.`,
+  },
+  {
+    name: `Charles Williams`,
+    description: `Pisarz, poeta i teolog mistyczny, członek Inklingów. Wywarł znaczący wpływ na Lewisa, zwłaszcza w Wielkim rozwodzie i koncepcji „współ-cierpienia”.`,
+  },
+  {
+    name: `Chronologiczny snobizm`,
+    description: `Termin ukuty przez Owena Barfielda i przejęty przez Lewisa: bezkrytyczne założenie, że to, co nowe, jest z konieczności lepsze od tego, co stare. Lewis uważał go za jedną z największych pułapek nowoczesności.`,
+  },
+  {
+    name: `Chrześcijaństwo po prostu`,
+    description: `Klasyczne dzieło apologetyczne Lewisa (1952), oparte na audycjach radiowych BBC z lat 1941–1944. Broni „trzonu” wiary chrześcijańskiej wspólnego wszystkim wyznaniom.`,
+  },
+  {
+    name: `Cuda`,
+    description: `Książka Lewisa z 1947 roku — filozoficzna obrona możliwości Bożej interwencji. Zawiera słynny Argument z Rozumu przeciw konsekwentnemu naturalizmowi.`,
+  },
+  {
+    name: `Digory Kirke`,
+    description: `Postać z Kronik Narnii — chłopiec, który jest świadkiem stworzenia Narnii w Siostrzeńcu Czarodzieja, a w Lwie, Czarownicy i starej szafie pojawia się jako stary profesor.`,
+  },
+  {
+    name: `Dymna Góra`,
+    description: `Mityczne miejsce z trylogii kosmicznej Lewisa, kojarzone z duchowym uciskiem i atakiem ciemnych mocy w Tej ohydnej sile.`,
+  },
+  {
+    name: `Edmund Pevensie`,
+    description: `Drugi z braci Pevensie. Jego zdrada wobec rodzeństwa i odkupienie przez ofiarę Aslana są centralną osią Lwa, Czarownicy i starej szafy.`,
+  },
+  {
+    name: `Eldil`,
+    description: `Anielska istota w trylogii kosmicznej Lewisa — pośrednicy między Maleldilem (Bogiem) a światami planet. Przypominają tradycyjne chrześcijańskie aniołów-władców.`,
+  },
+  {
+    name: `Eustachy Klarencjusz Scrubb`,
+    description: `Postać z Podróży „Wędrowca do Świtu” i kolejnych tomów. Jego przemiana ze zarozumiałego dziecka w lojalnego przyjaciela jest jednym z najbardziej alegorycznych wątków Kronik.`,
+  },
+  {
+    name: `Fantazja`,
+    description: `Lewisowska kategoria literacka — gatunek odwołujący się do prawdy poprzez nie-realistyczne obrazy. Lewis bronił fantazji przed zarzutem ucieczki od rzeczywistości w eseju O trzech drogach pisania dla dzieci.`,
+  },
+  {
+    name: `Hugo Dyson`,
+    description: `Anglista z Oksfordu, członek Inklingów. Wraz z Tolkienem uczestniczył w słynnej rozmowie na Addison's Walk, która przyczyniła się do nawrócenia Lewisa.`,
+  },
+  {
+    name: `Inklingowie`,
+    description: `Nieformalna grupa literacka spotykająca się w Oksfordzie w latach 30.–60. XX wieku, zwłaszcza w pubie Eagle and Child. Należeli do niej Lewis, Tolkien, Williams, Barfield i Dyson.`,
+  },
+  {
+    name: `Joy Davidman`,
+    description: `Amerykańska poetka i pisarka, żona C.S. Lewisa od 1956 roku. Jej śmierć na raka w 1960 roku skłoniła Lewisa do napisania Rozważań o żalu.`,
+  },
+  {
+    name: `J.R.R. Tolkien`,
+    description: `Filolog, autor Władcy Pierścieni i bliski przyjaciel Lewisa. To rozmowa z nim na Addison's Walk przekonała Lewisa, że Ewangelia jest „prawdziwym mitem”.`,
+  },
+  {
+    name: `Kroniki Narnii`,
+    description: `Siedmiotomowy cykl powieści fantasy (1950–1956): Siostrzeniec Czarodzieja, Lew Czarownica i stara szafa, Koń i jego chłopiec, Książę Kaspian, Podróż „Wędrowca do Świtu”, Srebrne krzesło, Ostatnia bitwa.`,
+  },
+  {
+    name: `Lew, Czarownica i stara szafa`,
+    description: `Pierwsza opublikowana powieść Kronik Narnii (1950). Czworo dzieci Pevensie wchodzi przez magiczną szafę do Narnii i pomaga Aslanowi pokonać Białą Czarownicę.`,
+  },
+  {
+    name: `Listy Starszego Diabła`,
+    description: `Satyryczna powieść Lewisa z 1942 roku, napisana jako seria listów starszego diabła Krętacza do młodszego siostrzeńca Piołuna. Przenikliwe studium pokus dnia codziennego.`,
+  },
+  {
+    name: `Magdalen College`,
+    description: `Kolegium Uniwersytetu Oksfordzkiego, w którym Lewis był wykładowcą literatury angielskiej w latach 1925–1954.`,
+  },
+  {
+    name: `Maleldil`,
+    description: `Imię Boga-Stwórcy w trylogii kosmicznej Lewisa. Maleldil-Młody odpowiada Chrystusowi; cała kosmologia trylogii jest przekładem chrześcijańskiej teologii na język mitu.`,
+  },
+  {
+    name: `Malacandra`,
+    description: `Mars w trylogii kosmicznej Lewisa — planeta, która nie zaznała upadku. Po raz pierwszy odwiedza ją Ransom w powieści Z milczącej planety.`,
+  },
+  {
+    name: `Mit`,
+    description: `Centralna kategoria w myśli Lewisa. Mit nie jest dla niego kłamstwem, lecz „prawdziwym, choć rozproszonym blaskiem Bożej prawdy”. W Ewangelii mit i fakt zbiegają się raz na zawsze.`,
+  },
+  {
+    name: `Mitopoeia`,
+    description: `Termin Tolkiena oznaczający „tworzenie mitów” — akt, w którym człowiek-pod-twórca uczestniczy w Bożym dziele stworzenia. Lewis przyjął tę kategorię jako klucz do rozumienia literatury.`,
+  },
+  {
+    name: `Narnia`,
+    description: `Wymyślona kraina rozmawiających zwierząt, stworzona przez Aslana w Siostrzeńcu Czarodzieja. Stanowi tło wszystkich siedmiu tomów Kronik Narnii.`,
+  },
+  {
+    name: `Northernness`,
+    description: `Lewisowskie określenie przeszywającej tęsknoty wzbudzonej mitologią nordycką i muzyką Wagnera, której doświadczył jako młodzieniec. Jeden z pierwszych przejawów Sehnsucht.`,
+  },
+  {
+    name: `Owen Barfield`,
+    description: `Filozof, prawnik, jeden z najbliższych przyjaciół Lewisa. Jego argumenty rozbiły młodzieńczy materializm Lewisa — Lewis nazywał ich spór „Wielką Wojną Idei”.`,
+  },
+  {
+    name: `Perelandra`,
+    description: `Drugi tom trylogii kosmicznej Lewisa (1943). Ransom udaje się na Wenus, by zapobiec drugiemu upadkowi w nowo stworzonym Edenie planetarnym.`,
+  },
+  {
+    name: `Pielgrzymi powrót`,
+    description: `Pierwsza powieść Lewisa po nawróceniu (1933). Alegoryczna narracja w stylu Bunyana, opisująca drogę Lewisa od ateizmu do chrześcijaństwa.`,
+  },
+  {
+    name: `Problem Bólu`,
+    description: `Książka Lewisa z 1940 roku, próba teologicznego ujęcia zła i cierpienia. Słynne zdanie: „Bóg krzyczy do nas przez nasze bóle: jest to jego megafon”.`,
+  },
+  {
+    name: `Ransom`,
+    description: `Bohater trylogii kosmicznej Lewisa, filolog z Cambridge — postać częściowo wzorowana na Tolkienie. W Tej ohydnej sile staje się przywódcą oporu wobec demonicznego N.I.C.E.`,
+  },
+  {
+    name: `Rozważania o żalu`,
+    description: `Surowa, autobiograficzna książka Lewisa z 1961 roku, napisana po śmierci Joy. Pierwotnie wydana pod pseudonimem N.W. Clerk. Rozbija starannie zbudowane argumenty Problemu Bólu.`,
+  },
+  {
+    name: `Sehnsucht`,
+    description: `Niemieckie słowo oznaczające tęsknotę, używane przez Lewisa do opisania przeszywającego pragnienia, które nie znajduje zaspokojenia w żadnym ziemskim przedmiocie. Według Lewisa to drogowskaz ku Bogu.`,
+  },
+  {
+    name: `Trylemat Lewisa`,
+    description: `Argument apologetyczny z Chrześcijaństwa po prostu: Jezus twierdził, że jest Bogiem, więc albo był Panem, albo Kłamcą, albo Szaleńcem. Nie można Go uznać za „dobrego nauczyciela moralności”.`,
+  },
+  {
+    name: `Trylogia kosmiczna`,
+    description: `Trzy powieści science-fiction Lewisa: Z milczącej planety (1938), Perelandra (1943), Ta ohydna siła (1945). Łączą gatunek z teologią i krytyką współczesnego scjentyzmu.`,
+  },
+  {
+    name: `Waga chwały`,
+    description: `Słynne kazanie Lewisa wygłoszone w Oksfordzie w 1941 roku. Zawiera tezę, że nasze pragnienia nie są zbyt silne, lecz zbyt słabe — „zbyt łatwo nas zadowolić”.`,
+  },
+  {
+    name: `Zaskoczony radością`,
+    description: `Autobiografia duchowa Lewisa z 1955 roku. Opisuje drogę od ateizmu do wiary chrześcijańskiej, a „radość” jest niemieckim Sehnsucht — przeszywającą tęsknotą, która okazała się drogowskazem ku Bogu.`,
+  },
 ];
 
 async function seedTermsIfEmpty(strapi: Core.Strapi) {
@@ -753,6 +898,15 @@ async function uploadImageOnce(
   }
 
   const stats = fs.statSync(filePath);
+  const ext = path.extname(filename).toLowerCase();
+  const mimetype =
+    ext === ".jpg" || ext === ".jpeg"
+      ? "image/jpeg"
+      : ext === ".webp"
+        ? "image/webp"
+        : ext === ".gif"
+          ? "image/gif"
+          : "image/png";
 
   const uploaded = await strapi
     .plugin("upload")
@@ -768,7 +922,7 @@ async function uploadImageOnce(
       files: {
         filepath: filePath,
         originalFilename: filename,
-        mimetype: "image/png",
+        mimetype,
         size: stats.size,
       },
     });
@@ -1138,7 +1292,7 @@ Mimo krytyki, trylemat pozostaje jednym z najczęściej cytowanych argumentów a
     title: "Wpływ Boecjusza na średniowieczną kosmologię Lewisa",
     slug: "wplyw-boecjusza-na-sredniowieczna-kosmologie-lewisa",
     description:
-      "Jak rzymski filozof z VI wieku ukształtował obraz uporządkowanego kosmosu, który Lewis odtworzył w „Odrzuconym obrazie\".",
+      'Jak rzymski filozof z VI wieku ukształtował obraz uporządkowanego kosmosu, który Lewis odtworzył w „Odrzuconym obrazie".',
     content: `## „Odrzucony obraz" — niedoceniona książka Lewisa
 
 Wydana pośmiertnie w 1964 roku *The Discarded Image: An Introduction to Medieval and Renaissance Literature* jest być może najgłębszym dziełem Lewisa-akademika. To wykład o świecie umysłowym, w którym tworzyli Dante, Chaucer i Spenser — świecie z bardzo określoną kosmologią.
@@ -1219,9 +1373,7 @@ async function seedArticlesIfEmpty(strapi: Core.Strapi) {
     await publishDoc(strapi, "api::article.article", doc.documentId);
   }
 
-  strapi.log.info(
-    `✅ Biblioteka: zasiano ${ARTICLES_SEED.length} artykułów.`,
-  );
+  strapi.log.info(`✅ Biblioteka: zasiano ${ARTICLES_SEED.length} artykułów.`);
 }
 
 async function seedLibraryPageIfMissing(strapi: Core.Strapi) {
@@ -1297,7 +1449,7 @@ async function seedBiographyPageIfMissing(strapi: Core.Strapi) {
     {
       year: "1950",
       title: "Narodziny Narnii",
-      description: `Publikacja „Lwa, Czarownicy i starej szafy” otworzyła światu drzwi Narnii. Cykl połączył miłość Lewisa do średniowiecznej alegorii z dziecięcą wrażliwością na cud, definiując jego literackie dziedzictwo.`,
+      description: `Publikacja „Lwa, Czarownicy i starej szafy” otworzyła światu drzwi Narnii. Cykl połączył miłość Lewisa do średniowiecznej alegorii z dziecięcą wrażliwością na cud, definiując jego literackie dziedzictwo. Pierwsze ziarno opowieści zakiełkowało już w młodości, gdy w głowie Lewisa pojawił się obraz fauna z parasolką idącego przez ośnieżony las — wizja, która dojrzewała przez dekady, zanim znalazła swoje miejsce na kartach powieści. Na siedem tomów Kronik Narnii, ukończonych w ciągu zaledwie kilku lat, złożyły się nie tylko echa mitologii nordyckiej, greckiej i celtyckiej, ale także głęboka chrześcijańska symbolika, którą sam autor wolał nazywać „suppositions” niż alegorią. Postać Aslana — lwa, który składa siebie w ofierze i powraca — stała się jedną z najbardziej rozpoznawalnych figur literatury XX wieku, czytaną zarówno przez dzieci szukających przygody, jak i teologów analizujących jej duchowe warstwy. Cykl, początkowo przyjęty z mieszanymi reakcjami krytyki, w kolejnych dekadach rozszedł się w ponad stu milionach egzemplarzy w niemal pięćdziesięciu językach, inspirując pokolenia czytelników, filmowców i pisarzy fantasy.`,
       ...sharedImage,
     },
     {

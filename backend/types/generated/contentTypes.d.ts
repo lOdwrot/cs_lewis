@@ -635,6 +635,7 @@ export interface ApiGateGate extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    backgroundImage: Schema.Attribute.Media<'images'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

@@ -128,7 +128,10 @@ export function BooksPage() {
                 variants={cardVariants}
                 style={{ transformOrigin: "bottom center" }}
               >
-                <motion.article
+                <motion.a
+                  href={book.redirectUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={styles.card}
                   whileHover={{ y: -4 }}
                   transition={{ type: "spring", stiffness: 280, damping: 22 }}
@@ -151,12 +154,7 @@ export function BooksPage() {
                   <div className={styles.body}>
                     <h2 className={styles.bookTitle}>{book.title}</h2>
                     <p className={styles.bookDesc}>{book.description}</p>
-                    <a
-                      href={book.redirectUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.bookLink}
-                    >
+                    <div className={styles.bookLink}>
                       <span>{buyLabel}</span>
                       <span
                         className="material-symbols-outlined"
@@ -164,9 +162,9 @@ export function BooksPage() {
                       >
                         open_in_new
                       </span>
-                    </a>
+                    </div>
                   </div>
-                </motion.article>
+                </motion.a>
               </motion.div>
             ))}
           </motion.div>

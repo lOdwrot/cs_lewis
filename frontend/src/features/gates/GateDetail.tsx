@@ -1,11 +1,13 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { SEO } from "@/components/SEO";
 import { PageError } from "@/components/ui/PageError";
 import { GatesLoadingSkeleton } from "./GatesLoadingSkeleton";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
 import { useGateQuery } from "@/hooks/queries";
+import { strapiImageUrl } from "@/services/api";
 import styles from "./GateDetail.module.scss";
 
 const gridVariants = {
@@ -37,8 +39,15 @@ export function GateDetail() {
 
   if (isError) return <PageError onRefresh={() => refetch()} />;
 
+  const backgroundSrc = gate?.backgroundImage
+    ? strapiImageUrl(gate.backgroundImage.url)
+    : null;
+  const backgroundAlt = gate?.backgroundImage?.alternativeText ?? "";
+
   return (
-    <PageTransition>
+    <>
+      <PageBackdrop src={backgroundSrc} alt={backgroundAlt} />
+      <PageTransition>
       <SEO
         title={gate ? gate.title : "Brama"}
         description={gate?.description ?? undefined}
@@ -105,5 +114,6 @@ export function GateDetail() {
         )}
       </main>
     </PageTransition>
+    </>
   );
 }

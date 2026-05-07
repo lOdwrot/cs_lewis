@@ -14,6 +14,8 @@ export async function getGate(slug: string): Promise<Gate> {
       "filters[slug][$eq]": slug,
       "populate[image][fields][0]": "url",
       "populate[image][fields][1]": "alternativeText",
+      "populate[backgroundImage][fields][0]": "url",
+      "populate[backgroundImage][fields][1]": "alternativeText",
       "populate[journeys][populate][image][fields][0]": "url",
       "populate[journeys][populate][image][fields][1]": "alternativeText",
       "populate[journeys][populate][steps][fields][0]": "documentId",
