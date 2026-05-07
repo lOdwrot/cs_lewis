@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_home_nav_links",
+  "info": {
+    "displayName": "Nav Link",
+    "icon": "link",
+    "description": "Configurable button on the home page hero — can scroll to a section on the home page or navigate to a root page"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "target": {
+      "type": "enumeration",
+      "required": true,
+      "default": "gates-section",
+      "enum": [
+        "gates-section",
+        "news-section",
+        "home",
+        "portal",
+        "journeys",
+        "library",
+        "biography",
+        "encyclopedia",
+        "books"
+      ]
+    }
+  }
+}

@@ -15,6 +15,33 @@ export interface BiographyEvent extends Struct.ComponentSchema {
   };
 }
 
+export interface HomeNavLink extends Struct.ComponentSchema {
+  collectionName: 'components_home_nav_links';
+  info: {
+    description: 'Configurable button on the home page hero \u2014 can scroll to a section on the home page or navigate to a root page';
+    displayName: 'Nav Link';
+    icon: 'link';
+  };
+  attributes: {
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    target: Schema.Attribute.Enumeration<
+      [
+        'gates-section',
+        'news-section',
+        'home',
+        'portal',
+        'journeys',
+        'library',
+        'biography',
+        'encyclopedia',
+        'books',
+      ]
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'gates-section'>;
+  };
+}
+
 export interface StepPodcastContent extends Struct.ComponentSchema {
   collectionName: 'components_step_podcast_contents';
   info: {
@@ -58,6 +85,7 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'biography.event': BiographyEvent;
+      'home.nav-link': HomeNavLink;
       'step.podcast-content': StepPodcastContent;
       'step.quiz-content': StepQuizContent;
       'step.text-content': StepTextContent;

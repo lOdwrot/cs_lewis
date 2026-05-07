@@ -11,6 +11,8 @@ export async function getHomePage(): Promise<HomePage> {
       "populate[gates][sort]": "order:asc",
       "populate[news][fields][0]": "title",
       "populate[news][fields][1]": "content",
+      "populate[navLinks][fields][0]": "label",
+      "populate[navLinks][fields][1]": "target",
     },
   });
   return res.data.data;

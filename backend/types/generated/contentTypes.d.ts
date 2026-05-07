@@ -674,7 +674,6 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    ctaLabel: Schema.Attribute.String;
     gates: Schema.Attribute.Relation<'oneToMany', 'api::gate.gate'>;
     gatesSectionTitle: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -683,8 +682,8 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
       'api::home-page.home-page'
     > &
       Schema.Attribute.Private;
+    navLinks: Schema.Attribute.Component<'home.nav-link', true>;
     news: Schema.Attribute.Relation<'oneToMany', 'api::news.news'>;
-    newsButtonLabel: Schema.Attribute.String;
     newsSectionTitle: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     subtitle: Schema.Attribute.Text;

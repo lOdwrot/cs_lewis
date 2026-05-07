@@ -28,11 +28,10 @@
       "required": false,
       "allowedTypes": ["images"]
     },
-    "ctaLabel": {
-      "type": "string"
-    },
-    "newsButtonLabel": {
-      "type": "string"
+    "navLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "home.nav-link"
     },
     "gatesSectionTitle": {
       "type": "string"

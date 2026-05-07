@@ -647,11 +647,31 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
   );
 }
 
+const DEFAULT_NAV_LINKS = [
+  { label: "Wybierz bramę", target: "gates-section" },
+  { label: "Nowości", target: "news-section" },
+  { label: "Życiorys", target: "biography" },
+];
+
 async function seedHomePageIfMissing(strapi: Core.Strapi) {
   const existing = await strapi.db
     .query("api::home-page.home-page")
-    .findOne({});
-  if (existing) return;
+    .findOne({ populate: ["navLinks"] });
+  if (existing) {
+    if (!existing.navLinks || existing.navLinks.length === 0) {
+      await strapi.documents("api::home-page.home-page").update({
+        documentId: existing.documentId,
+        data: { navLinks: DEFAULT_NAV_LINKS } as never,
+      });
+      await publishDoc(
+        strapi,
+        "api::home-page.home-page",
+        existing.documentId,
+      );
+      strapi.log.info("✅ Backfilled navLinks on existing home page.");
+    }
+    return;
+  }
 
   // Pick up all gates (ordered) so the home page starts with the same lineup
   // as /portal. Editors can prune or reorder them in the admin afterwards.
@@ -680,12 +700,11 @@ async function seedHomePageIfMissing(strapi: Core.Strapi) {
       "Eseje, analizy i komentarze ukazujące myśl C.S. Lewisa jako spójną całość, w której wyobraźnia, rozum i wiara wzajemnie się przenikają",
     content:
       "Lewis nie oddzielał opowieści od argumentu ani argumentu od wiary. Uważał, że wyobraźnia przygotowuje grunt dla rozumu, rozum domaga się prawdy, a wiara nie niszczy żadnego z nich. Ta strona proponuje lekturę Lewisa właśnie w tym duchu — poprzez teksty, które prowadzą różnymi drogami ku tym samym pytaniom.",
-    ctaLabel: "Wybierz bramę",
-    newsButtonLabel: "Nowości",
     gatesSectionTitle: "Trzy Bramy",
     newsSectionTitle: "Nowości",
     gates: gateRelations,
     news: newsRelations,
+    navLinks: DEFAULT_NAV_LINKS,
   };
   if (file?.id) {
     data.backgroundImage = file.id;

@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { SEO } from "@/components/SEO";
@@ -8,10 +9,22 @@ import { GatesGrid } from "@/features/gates/GatesGrid";
 import { NewsSection } from "@/features/news/NewsSection";
 import { useHomePageQuery } from "@/hooks/queries";
 import { strapiImageUrl } from "@/services/api";
+import type { HomeNavLink, HomeNavLinkTarget } from "@/types/strapi";
 import styles from "./HomePage.module.scss";
+
+const PAGE_PATHS: Partial<Record<HomeNavLinkTarget, string>> = {
+  home: "/",
+  portal: "/portal",
+  journeys: "/journeys",
+  library: "/library",
+  biography: "/biography",
+  encyclopedia: "/encyclopedia",
+  books: "/books",
+};
 
 export function HomePage() {
   const { data: home, isLoading, isError, refetch } = useHomePageQuery();
+  const navigate = useNavigate();
   const gatesSectionRef = useRef<HTMLElement | null>(null);
   const newsSectionRef = useRef<HTMLElement | null>(null);
   const { scrollY } = useScroll();
@@ -20,10 +33,33 @@ export function HomePage() {
   if (isLoading) return <PageLoading />;
   if (isError || !home) return <PageError onRefresh={() => refetch()} />;
   const news = home?.news;
+  const navLinks = home?.navLinks ?? [];
 
-  const scrollTo = (ref: React.RefObject<HTMLElement | null>) => () => {
+  const scrollTo = (ref: React.RefObject<HTMLElement | null>) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  const handleNavLink = (link: HomeNavLink) => () => {
+    if (link.target === "gates-section") {
+      scrollTo(gatesSectionRef);
+      return;
+    }
+    if (link.target === "news-section") {
+      scrollTo(newsSectionRef);
+      return;
+    }
+    const path = PAGE_PATHS[link.target];
+    if (path) navigate(path);
+  };
+
+  const isLinkVisible = (link: HomeNavLink) => {
+    if (link.target === "news-section") return (news?.length ?? 0) > 0;
+    if (link.target === "gates-section")
+      return (home?.gates?.length ?? 0) > 0;
+    return Boolean(PAGE_PATHS[link.target]);
+  };
+
+  const visibleNavLinks = navLinks.filter(isLinkVisible);
 
   const portraitSrc = home?.backgroundImage
     ? strapiImageUrl(home.backgroundImage.url)
@@ -92,31 +128,23 @@ export function HomePage() {
           </motion.p>
         )}
 
-        {(home?.ctaLabel || home?.newsButtonLabel) && (
+        {visibleNavLinks.length > 0 && (
           <motion.div
             className={styles.cta}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.35 }}
           >
-            {home?.ctaLabel && (
+            {visibleNavLinks.map((link) => (
               <button
+                key={link.id}
                 type="button"
-                onClick={scrollTo(gatesSectionRef)}
+                onClick={handleNavLink(link)}
                 className={styles.ctaLink}
               >
-                {home.ctaLabel}
+                {link.label}
               </button>
-            )}
-            {home?.newsButtonLabel && (news?.length ?? 0) > 0 && (
-              <button
-                type="button"
-                onClick={scrollTo(newsSectionRef)}
-                className={styles.ctaLink}
-              >
-                {home.newsButtonLabel}
-              </button>
-            )}
+            ))}
           </motion.div>
         )}
 

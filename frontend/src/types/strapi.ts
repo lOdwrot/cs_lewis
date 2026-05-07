@@ -108,6 +108,23 @@ export interface Book {
   redirectUrl: string;
 }
 
+export type HomeNavLinkTarget =
+  | "gates-section"
+  | "news-section"
+  | "home"
+  | "portal"
+  | "journeys"
+  | "library"
+  | "biography"
+  | "encyclopedia"
+  | "books";
+
+export interface HomeNavLink {
+  id: number;
+  label: string;
+  target: HomeNavLinkTarget;
+}
+
 export interface HomePage {
   id: number;
   documentId: string;
@@ -115,12 +132,11 @@ export interface HomePage {
   subtitle: string | null;
   content: string | null;
   backgroundImage: StrapiImage | null;
-  ctaLabel: string | null;
-  newsButtonLabel: string | null;
   gatesSectionTitle: string | null;
   newsSectionTitle: string | null;
   gates: Gate[];
   news: News[];
+  navLinks: HomeNavLink[];
 }
 
 export interface News {
