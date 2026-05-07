@@ -35,7 +35,7 @@ export function BiographyPage() {
 
   const backgroundSrc = page?.backgroundImage
     ? strapiImageUrl(page.backgroundImage.url)
-    : "/old_book.png";
+    : "/old_book.webp";
   const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
 
   const title = page?.title ?? "Życiorys";

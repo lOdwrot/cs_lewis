@@ -24,7 +24,7 @@ export function ArticleDetail() {
 
   const backgroundSrc = page?.backgroundImage
     ? strapiImageUrl(page.backgroundImage.url)
-    : "/old_book.png";
+    : "/old_book.webp";
   const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
 
   if (isLoading) return <PageLoading />;

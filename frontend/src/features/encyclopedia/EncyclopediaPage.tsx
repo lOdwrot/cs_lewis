@@ -84,7 +84,7 @@ export function EncyclopediaPage() {
 
   const backgroundSrc = page?.backgroundImage
     ? strapiImageUrl(page.backgroundImage.url)
-    : "/open_book.png";
+    : "/open_book.webp";
   const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
 
   const title = page?.title ?? "Encyklopedia";

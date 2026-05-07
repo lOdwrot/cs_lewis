@@ -91,11 +91,11 @@ async function seedIfEmpty(strapi: Core.Strapi) {
   strapi.log.info("🌱 Sianie przykładowych danych C.S. Lewisa…");
 
   const pikaArt = await uploadImageOnce(strapi, {
-    filename: "pika-art.png",
+    filename: "pika-art.webp",
     alternativeText: "Pika art",
   });
   const pokeSign = await uploadImageOnce(strapi, {
-    filename: "poke-sign.png",
+    filename: "poke-sign.webp",
     alternativeText: "Drogowskaz",
   });
 
@@ -114,14 +114,9 @@ async function seedIfEmpty(strapi: Core.Strapi) {
     filename: "poke-2-bg.jpg",
     alternativeText: "Tło bramy Rozumu",
   });
-  const gateBg3 = await uploadImageOnce(strapi, {
-    filename: "poke-3-bg.jpg",
-    alternativeText: "Tło bramy Wiary",
-  });
   const gateBackgroundBySlug: Record<string, number | undefined> = {
     wyobraznia: gateBg1?.id,
     rozum: gateBg2?.id,
-    wiara: gateBg3?.id,
   };
 
   // ── Books ────────────────────────────────────────────────────────────────
@@ -690,7 +685,7 @@ async function seedHomePageIfMissing(strapi: Core.Strapi) {
   }));
 
   const file = await uploadImageOnce(strapi, {
-    filename: "levis.png",
+    filename: "levis.webp",
     alternativeText: "C.S. Lewis",
   });
 
@@ -965,7 +960,7 @@ async function seedGatePageIfMissing(strapi: Core.Strapi) {
   }));
 
   const file = await uploadImageOnce(strapi, {
-    filename: "open_book.png",
+    filename: "open_book.webp",
     alternativeText: "Otwarta księga",
   });
 
@@ -995,7 +990,7 @@ async function seedJourneysPageIfMissing(strapi: Core.Strapi) {
   if (existing) return;
 
   const file = await uploadImageOnce(strapi, {
-    filename: "poke-sign.png",
+    filename: "poke-sign.webp",
     alternativeText: "Drogowskaz",
   });
 
@@ -1059,7 +1054,7 @@ async function seedEncyclopediaPageIfMissing(strapi: Core.Strapi) {
   if (existing) return;
 
   const file = await uploadImageOnce(strapi, {
-    filename: "open_book.png",
+    filename: "open_book.webp",
     alternativeText: "Otwarta księga",
   });
 
@@ -1087,7 +1082,7 @@ async function seedEncyclopediaPageIfMissing(strapi: Core.Strapi) {
 const NEWS_SEED: { title: string; content: string }[] = [
   {
     title: "Konferencja „C. S. Lewis. Wyobraźnia, rozum i wiara”",
-    content: `![Plakat konferencji „C. S. Lewis. Wyobraźnia, rozum i wiara”](/conference_image.png)
+    content: `![Plakat konferencji „C. S. Lewis. Wyobraźnia, rozum i wiara”](/conference_image.webp)
 
 Fundacja Prodoteo wraz z Instytutem Filozofii Uniwersytetu Ignatianum w Krakowie i Instytutem Filozofii Uniwersytetu Zielonogórskiego zapraszają na konferencję naukową poświęconą myśli C. S. Lewisa.
 
@@ -1404,7 +1399,7 @@ async function seedLibraryPageIfMissing(strapi: Core.Strapi) {
   if (existing) return;
 
   const file = await uploadImageOnce(strapi, {
-    filename: "old_book.png",
+    filename: "old_book.webp",
     alternativeText: "Stara księga",
   });
 
@@ -1432,12 +1427,12 @@ async function seedBiographyPageIfMissing(strapi: Core.Strapi) {
   if (existing) return;
 
   const backgroundFile = await uploadImageOnce(strapi, {
-    filename: "old_book.png",
+    filename: "old_book.webp",
     alternativeText: "Stara księga",
   });
 
   const eventImage = await uploadImageOnce(strapi, {
-    filename: "levis.png",
+    filename: "levis.webp",
     alternativeText: "C.S. Lewis",
   });
   const sharedImage = eventImage?.id ? { image: eventImage.id } : {};

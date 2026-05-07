@@ -43,7 +43,7 @@ export function GatesPage() {
 
   const backgroundSrc = page?.backgroundImage
     ? strapiImageUrl(page.backgroundImage.url)
-    : "/open_book.png";
+    : "/open_book.webp";
   const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
 
   return (
