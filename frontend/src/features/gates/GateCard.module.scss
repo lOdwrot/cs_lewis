@@ -20,6 +20,24 @@
   height: 440px;
 }
 
+// ─── Golden aura — rectangular halo radiating outward on hover ────────────
+.aura {
+  position: absolute;
+  // Tighter inset for a smaller, closer halo
+  inset: -14px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 240, 180, 0.95) 0%,
+    rgba(255, 215, 110, 0.7) 25%,
+    rgba(212, 175, 55, 0.4) 55%,
+    rgba(212, 175, 55, 0.12) 80%,
+    transparent 100%
+  );
+  filter: blur(14px);
+  pointer-events: none;
+  // Sits behind .pages and .cover by virtue of being the first child of .book
+}
+
 // ─── Inner pages (parchment glow, always behind cover) ─────────────────────
 .pages {
   position: absolute;
@@ -90,8 +108,8 @@
   align-items: center;
   text-align: center;
   // Asymmetric padding shifts content right of the spine and inside the
-  // image's painted gold frame
-  padding: 3rem 2rem 2.5rem 3.25rem;
+  // image's painted gold frame; extra top padding lowers the content block
+  padding: 4.25rem 1.75rem 2.5rem 3.75rem;
 }
 
 .iconWrap {

@@ -78,8 +78,8 @@ export function GateCard({ gate }: Props) {
   const springX = useSpring(rawX, { stiffness: 180, damping: 24 });
   const springY = useSpring(rawY, { stiffness: 180, damping: 24 });
   // Map normalised cursor offset (−0.5 … 0.5) to rotation degrees
-  const rotateX = useTransform(springY, [-0.5, 0.5], [9, -9]);
-  const rotateY = useTransform(springX, [-0.5, 0.5], [-9, 9]);
+  const rotateX = useTransform(springY, [-0.5, 0.5], [4.5, -4.5]);
+  const rotateY = useTransform(springX, [-0.5, 0.5], [-4.5, 4.5]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (phase !== "idle") return;
@@ -150,6 +150,19 @@ export function GateCard({ gate }: Props) {
           whileHover={phase === "idle" ? { y: -6 } : {}}
           transition={{ type: "spring", stiffness: 280, damping: 22 }}
         >
+          {/* Golden aura — radiates from within the book on hover, masked by
+              the book silhouette so it hugs the leather instead of the rect */}
+          <motion.div
+            className={styles.aura}
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={
+              isHovered && phase === "idle"
+                ? { opacity: 1, scale: 1.05 }
+                : { opacity: 0, scale: 0.92 }
+            }
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          />
+
           {/* Inner pages — revealed when cover swings open */}
           <div className={styles.pages}>
             <motion.div
