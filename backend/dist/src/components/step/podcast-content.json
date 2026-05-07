@@ -1,0 +1,23 @@
+{
+    "collectionName": "components_step_podcast_contents",
+    "info": {
+        "displayName": "Podcast Content",
+        "icon": "headphones",
+        "description": "Audio URL and optional transcript"
+    },
+    "options": {},
+    "attributes": {
+        "audioUrl": {
+            "type": "string"
+        },
+        "audioFile": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": ["audios"]
+        },
+        "transcript": {
+            "type": "richtext"
+        }
+    }
+}
