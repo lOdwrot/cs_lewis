@@ -1,18 +1,23 @@
-// Design tokens
+// Design tokens — dark-academia palette inspired by CS Lewis moodboard
 $gold: #D4AF37;
-$gold-dark: #735c00;
+$gold-dark: #a8842a;        // brighter than legacy #735c00 so text reads on dark surfaces
 $gold-light: #ffe088;
-$gold-dim: #e9c349;
-$parchment: #FDFBF7;
-$surface: #fcf9f5;
-$surface-container: #f0ede9;
-$surface-container-low: #f6f3ef;
-$surface-container-high: #eae8e4;
-$on-surface: #1c1c1a;
-$on-surface-variant: #4d4635;
-$secondary: #5f5e5e;
-$outline: #7f7663;
-$outline-variant: #d0c5af;
+$gold-dim: #b89968;         // brassy mid-tone for low-alpha decorative use
+
+// Surfaces — deep navy-teal with a green undertone, layered light-to-light
+$parchment: #070d11;              // body background
+$surface: #14222a;
+$surface-container: #1c2c33;
+$surface-container-low: #15232a;
+$surface-container-high: #2a3a44;
+
+// Text on dark surfaces
+$on-surface: #ebe1c8;             // primary cream
+$on-surface-variant: #b8a988;     // muted parchment
+
+$secondary: #8a9285;              // sage
+$outline: #7a7561;                // dim olive
+$outline-variant: #2f3f45;        // subtle dark border
 
 $font-serif: 'Newsreader', Georgia, serif;
 $font-sans: 'Work Sans', system-ui, sans-serif;

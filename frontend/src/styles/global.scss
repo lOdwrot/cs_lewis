@@ -10,25 +10,25 @@
 
 @layer base {
   :root {
-    --background: 40 30% 98%;
-    --foreground: 60 5% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 60 5% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 60 5% 10%;
-    --primary: 44 100% 22%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 37%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 40 15% 92%;
-    --muted-foreground: 44 20% 40%;
-    --accent: 40 60% 52%;
-    --accent-foreground: 44 100% 10%;
-    --destructive: 0 72% 41%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 44 30% 80%;
-    --input: 44 30% 88%;
-    --ring: 44 80% 42%;
+    --background: 200 40% 9%;
+    --foreground: 40 40% 86%;
+    --card: 200 30% 12%;
+    --card-foreground: 40 40% 86%;
+    --popover: 200 30% 12%;
+    --popover-foreground: 40 40% 86%;
+    --primary: 44 65% 53%;
+    --primary-foreground: 200 40% 9%;
+    --secondary: 95 6% 55%;
+    --secondary-foreground: 40 40% 86%;
+    --muted: 200 20% 18%;
+    --muted-foreground: 40 24% 62%;
+    --accent: 44 50% 45%;
+    --accent-foreground: 40 40% 92%;
+    --destructive: 0 60% 50%;
+    --destructive-foreground: 40 40% 92%;
+    --border: 200 18% 22%;
+    --input: 200 18% 22%;
+    --ring: 44 60% 50%;
     --radius: 0.125rem;
   }
 }
@@ -55,8 +55,8 @@ body {
 }
 
 ::selection {
-  background-color: rgba($gold-light, 0.6);
-  color: $on-surface;
+  background-color: rgba($gold-light, 0.55);
+  color: $parchment;
 }
 
 // Scrollbar

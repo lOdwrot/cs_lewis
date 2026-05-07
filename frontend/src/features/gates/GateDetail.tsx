@@ -42,7 +42,7 @@ export function GateDetail() {
         path={`/gate/${slug}`}
       />
       <main className={styles.page}>
-        <Link to="/" className={styles.backLink}>
+        <Link to="/portal" className={styles.backLink}>
           <span className="material-symbols-outlined">arrow_back</span>
           Wielki Portal
         </Link>

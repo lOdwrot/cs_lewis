@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { BreathingBackground } from "@/components/animations/BreathingBackground";
+import { HomePage } from "@/features/home/HomePage";
 import { GatesPage } from "@/features/gates/GatesPage";
 import { GateDetail } from "@/features/gates/GateDetail";
 import { JourneyDetail } from "@/features/journeys/JourneyDetail";
@@ -24,7 +25,8 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<GatesPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/portal" element={<GatesPage />} />
         <Route path="/gate/:slug" element={<GateDetail />} />
         <Route path="/journeys" element={<AllJourneysPage />} />
         <Route path="/journey/:slug" element={<JourneyDetail />} />

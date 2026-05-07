@@ -43,9 +43,9 @@ export function GatesPage() {
   return (
     <PageTransition>
       <SEO
-        title="C.S. Lewis: Trzy Drogi do Prawdy"
+        title="Wielki Portal"
         description="Odkryj myśl C.S. Lewisa przez interaktywne podróże przez Wyobraźnię, Rozum i Wiarę. Eseje, podcasty i quizy."
-        path="/"
+        path="/portal"
       />
       <main className={styles.page}>
         {/* Hero */}
@@ -56,7 +56,7 @@ export function GatesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            C.S. Lewis: Trzy Drogi do Prawdy
+            Wielki Portal
           </motion.h1>
           <motion.div
             className={styles.heroDivider}
@@ -72,18 +72,6 @@ export function GatesPage() {
           >
             Eseje, analizy i komentarze ukazujące myśl C.S. Lewisa jako spójną
             całość, w której wyobraźnia, rozum i wiara wzajemnie się przenikają
-          </motion.p>
-          <motion.p
-            className={styles.heroBody}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.45 }}
-          >
-            Lewis nie oddzielał opowieści od argumentu ani argumentu od wiary.
-            Uważał, że wyobraźnia przygotowuje grunt dla rozumu, rozum domaga
-            się prawdy, a wiara nie niszczy żadnego z nich. Ta strona proponuje
-            lekturę Lewisa właśnie w tym duchu — poprzez teksty, które prowadzą
-            różnymi drogami ku tym samym pytaniom.
           </motion.p>
         </section>
 

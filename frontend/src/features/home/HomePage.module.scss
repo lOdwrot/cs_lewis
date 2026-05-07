@@ -1,0 +1,58 @@
+@use '@/styles/variables' as *;
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 6rem 2rem 6rem;
+  text-align: center;
+}
+
+.title {
+  font-family: $font-serif;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  line-height: 1.15;
+  color: $gold-dark;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.divider {
+  width: 3rem;
+  height: 1px;
+  background: $gold-dark;
+  margin: 0 auto 2rem;
+  transform-origin: center;
+}
+
+.body {
+  font-family: $font-sans;
+  font-size: 1.05rem;
+  color: $secondary;
+  line-height: 1.9;
+}
+
+.cta {
+  margin-top: 3rem;
+}
+
+.ctaLink {
+  display: inline-block;
+  font-family: $font-sans;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: $gold-dark;
+  padding: 0.85rem 1.75rem;
+  border: 1px solid $gold-dark;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background-color 0.25s ease, color 0.25s ease;
+
+  &:hover {
+    background-color: $gold-dark;
+    color: white;
+  }
+}

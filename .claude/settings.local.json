@@ -14,7 +14,9 @@
       "Read(//tmp/**)",
       "mcp__Claude_Preview__preview_start",
       "Bash(curl -s \"http://localhost:1337/api/steps/lmom5a8hx0p3wasrq1izqmnj?populate%5Bimage%5D%5Bfields%5D%5B0%5D=url&populate%5Bimage%5D%5Bfields%5D%5B1%5D=alternativeText&populate%5Bcontent%5D=*\")",
-      "Bash(curl -s \"http://localhost:1337/api/steps/lmom5a8hx0p3wasrq1izqmnj\")"
+      "Bash(curl -s \"http://localhost:1337/api/steps/lmom5a8hx0p3wasrq1izqmnj\")",
+      "Bash(grep -iE \"#fff|#000|white|black|#[a-fA-F0-9]{3,6}\\\\b\")",
+      "Bash(npx vite *)"
     ]
   }
 }

@@ -18,10 +18,10 @@ export function BreathingBackground() {
   }, [rawX, rawY]);
 
   const background = useTransform([x, y], ([cx, cy]: number[]) =>
-    `radial-gradient(ellipse at ${10 + cx * 25}% ${10 + cy * 25}%, rgba(212, 175, 55, 0.09) 0%, transparent 55%),
-     radial-gradient(ellipse at ${90 - cx * 25}% ${90 - cy * 25}%, rgba(115, 92, 0, 0.07) 0%, transparent 55%),
-     radial-gradient(ellipse at ${50 + cx * 20}% ${5 + cy * 15}%, rgba(212, 175, 55, 0.05) 0%, transparent 45%),
-     #FDFBF7`
+    `radial-gradient(ellipse at ${10 + cx * 25}% ${10 + cy * 25}%, rgba(212, 175, 55, 0.06) 0%, transparent 55%),
+     radial-gradient(ellipse at ${90 - cx * 25}% ${90 - cy * 25}%, rgba(212, 175, 55, 0.035) 0%, transparent 55%),
+     radial-gradient(ellipse at ${50 + cx * 20}% ${5 + cy * 15}%, rgba(212, 175, 55, 0.03) 0%, transparent 45%),
+     #050a0d`
   );
 
   return <motion.div className={styles.root} style={{ background }} aria-hidden />;

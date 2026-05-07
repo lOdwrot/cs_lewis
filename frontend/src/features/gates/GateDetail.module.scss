@@ -96,10 +96,10 @@
   }
 
   &.easy {
-    color: #2d7a2d;
-    border-color: rgba(74, 172, 74, 0.35);
-    background: rgba(74, 172, 74, 0.06);
-    span { color: #3a963a; }
+    color: #87d287;
+    border-color: rgba(74, 172, 74, 0.45);
+    background: rgba(74, 172, 74, 0.10);
+    span { color: #9ee29e; }
     &.active, &:hover {
       background: rgba(74, 172, 74, 0.18);
       border-color: rgba(74, 172, 74, 0.7);
@@ -107,10 +107,10 @@
   }
 
   &.medium {
-    color: #a86000;
-    border-color: rgba(230, 150, 30, 0.35);
-    background: rgba(230, 150, 30, 0.06);
-    span { color: #c07000; }
+    color: #e8a558;
+    border-color: rgba(230, 150, 30, 0.45);
+    background: rgba(230, 150, 30, 0.10);
+    span { color: #f0b66e; }
     &.active, &:hover {
       background: rgba(230, 150, 30, 0.18);
       border-color: rgba(230, 150, 30, 0.7);
@@ -118,10 +118,10 @@
   }
 
   &.hard {
-    color: #b02020;
-    border-color: rgba(220, 60, 60, 0.35);
-    background: rgba(220, 60, 60, 0.06);
-    span { color: #c83030; }
+    color: #ed6868;
+    border-color: rgba(220, 60, 60, 0.45);
+    background: rgba(220, 60, 60, 0.10);
+    span { color: #f48484; }
     &.active, &:hover {
       background: rgba(220, 60, 60, 0.18);
       border-color: rgba(220, 60, 60, 0.7);

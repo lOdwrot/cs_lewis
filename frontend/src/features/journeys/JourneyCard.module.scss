@@ -3,7 +3,7 @@
 .card {
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: $surface-container;
   border: 1px solid rgba($gold, 0.2);
   overflow: hidden;
   text-decoration: none;
@@ -141,21 +141,21 @@
   }
 
   &.easy {
-    background: rgba(74, 172, 74, 0.12);
-    color: #2d7a2d;
-    span { color: #3a963a; }
+    background: rgba(74, 172, 74, 0.16);
+    color: #87d287;
+    span { color: #9ee29e; }
   }
 
   &.medium {
-    background: rgba(230, 150, 30, 0.12);
-    color: #a86000;
-    span { color: #c07000; }
+    background: rgba(230, 150, 30, 0.16);
+    color: #e8a558;
+    span { color: #f0b66e; }
   }
 
   &.hard {
-    background: rgba(220, 60, 60, 0.12);
-    color: #b02020;
-    span { color: #c83030; }
+    background: rgba(220, 60, 60, 0.16);
+    color: #ed6868;
+    span { color: #f48484; }
   }
 }
 

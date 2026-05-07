@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Header.module.scss";
 
 const navLinks = [
-  { to: "/", label: "Wielki Portal", end: true },
+  { to: "/portal", label: "Wielki Portal" },
   { to: "/journeys", label: "Wszystkie Przygody" },
   { to: "/books", label: "Książki" },
 ];
@@ -59,11 +59,10 @@ export function Header() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
           >
-            {navLinks.map(({ to, label, end }) => (
+            {navLinks.map(({ to, label }) => (
               <NavLink
                 key={to}
                 to={to}
-                end={end}
                 className={({ isActive }) =>
                   `${styles.navLink} ${isActive ? styles.active : ""}`
                 }
@@ -96,11 +95,10 @@ export function Header() {
             animate="open"
             exit="closed"
           >
-            {navLinks.map(({ to, label, end }, i) => (
+            {navLinks.map(({ to, label }, i) => (
               <motion.div key={to} custom={i} variants={itemVariants}>
                 <NavLink
                   to={to}
-                  end={end}
                   className={({ isActive }) =>
                     `${styles.mobileNavLink} ${isActive ? styles.active : ""}`
                   }

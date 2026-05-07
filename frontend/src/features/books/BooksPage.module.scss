@@ -70,7 +70,7 @@
 .card {
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: $surface-container;
   border: 1px solid rgba($gold, 0.2);
   padding: 1.5rem;
   transition: border-color $transition-mid;

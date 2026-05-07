@@ -240,7 +240,7 @@ export function JourneyDetail() {
                     Wszystkie etapy zostały ukończone
                   </p>
                   <Link
-                    to="/"
+                    to="/portal"
                     className={styles.journeyCompleteBtn}
                     onClick={() => window.scrollTo({ top: 0 })}
                   >
