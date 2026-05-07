@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { strapiImageUrl } from "@/services/api";
 import type { News } from "@/types/strapi";
 import styles from "./NewsCard.module.scss";
 
@@ -32,6 +33,14 @@ export function NewsCard({ news }: Props) {
               >
                 {children}
               </a>
+            ),
+            img: ({ src, alt, ...rest }) => (
+              <img
+                src={strapiImageUrl(typeof src === "string" ? src : "")}
+                alt={alt ?? ""}
+                className={styles.image}
+                {...rest}
+              />
             ),
           }}
         >

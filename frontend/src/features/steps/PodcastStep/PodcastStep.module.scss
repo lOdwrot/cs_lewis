@@ -44,6 +44,35 @@
   }
 }
 
+.sidebarTitle {
+  font-family: $font-serif;
+  font-size: 1.125rem;
+  color: $on-surface;
+}
+
+.sidebarMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: $gold-dark;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-top: 1rem;
+
+  span { font-size: 1rem; }
+}
+
+.sidebarDone {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #4ade80;
+  font-size: 0.8125rem;
+  margin-top: 1rem;
+
+  span { font-size: 1rem; }
+}
+
 .backLink {
   display: inline-flex;
   align-items: center;

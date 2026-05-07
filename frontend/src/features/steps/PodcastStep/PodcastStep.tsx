@@ -45,33 +45,10 @@ export function PodcastStep({ step }: Props) {
             <div className={styles.bar} />
             <h3>Teraz Odtwarzane</h3>
           </div>
-          <p
-            style={{
-              fontFamily: "'Newsreader', serif",
-              fontSize: "1.125rem",
-              color: "#1c1c1a",
-            }}
-          >
-            {step.title}
-          </p>
+          <p className={styles.sidebarTitle}>{step.title}</p>
           {step.estimatedTime && (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                color: "#a08840",
-                fontSize: "0.8125rem",
-                fontWeight: 500,
-                marginTop: "1rem",
-              }}
-            >
-              <span
-                className="material-symbols-outlined"
-                style={{ fontSize: "1rem" }}
-              >
-                schedule
-              </span>
+            <div className={styles.sidebarMeta}>
+              <span className="material-symbols-outlined">schedule</span>
               {step.estimatedTime} min
             </div>
           )}
@@ -79,21 +56,9 @@ export function PodcastStep({ step }: Props) {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.35rem",
-                color: "#16a34a",
-                fontSize: "0.8125rem",
-                marginTop: "1rem",
-              }}
+              className={styles.sidebarDone}
             >
-              <span
-                className="material-symbols-outlined"
-                style={{ fontSize: "1rem" }}
-              >
-                check_circle
-              </span>
+              <span className="material-symbols-outlined">check_circle</span>
               Ukończono
             </motion.div>
           )}

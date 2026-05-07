@@ -1087,7 +1087,9 @@ async function seedEncyclopediaPageIfMissing(strapi: Core.Strapi) {
 const NEWS_SEED: { title: string; content: string }[] = [
   {
     title: "Konferencja „C. S. Lewis. Wyobraźnia, rozum i wiara”",
-    content: `Fundacja Prodoteo wraz z Instytutem Filozofii Uniwersytetu Ignatianum w Krakowie i Instytutem Filozofii Uniwersytetu Zielonogórskiego zapraszają na konferencję naukową poświęconą myśli C. S. Lewisa.
+    content: `![Plakat konferencji „C. S. Lewis. Wyobraźnia, rozum i wiara”](/conference_image.png)
+
+Fundacja Prodoteo wraz z Instytutem Filozofii Uniwersytetu Ignatianum w Krakowie i Instytutem Filozofii Uniwersytetu Zielonogórskiego zapraszają na konferencję naukową poświęconą myśli C. S. Lewisa.
 
 Łącząc wyobraźnię literacką, refleksję filozoficzną oraz głębię teologiczną, Clive Staples Lewis wypracował styl myślenia i pisania, który przekracza granice dyscyplin i trafia zarówno do środowiska akademickiego, jak i szerokiego kręgu odbiorców. Konferencja ma na celu prezentację szerokiego pola badań obejmującego analizę jego dzieł literackich oraz refleksję filozoficzną i teologiczną — a także ich wzajemne powiązania.
 
