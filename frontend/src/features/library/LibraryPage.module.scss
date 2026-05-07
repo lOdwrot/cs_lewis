@@ -1,0 +1,217 @@
+@use '@/styles/variables' as *;
+
+.page {
+  max-width: $max-prose;
+  margin: 0 auto;
+  padding: 5rem 2rem 8rem;
+  position: relative;
+  isolation: isolate;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.heroTitle {
+  font-family: $font-serif;
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  line-height: 1.15;
+  color: $gold-dark;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+}
+
+.heroDivider {
+  width: 3rem;
+  height: 1px;
+  background: $gold-dark;
+  margin: 0 auto 1.5rem;
+  transform-origin: center;
+}
+
+.heroDesc {
+  font-family: $font-serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: $on-surface-variant;
+  line-height: 1.75;
+}
+
+.searchWrap {
+  position: relative;
+  max-width: 560px;
+  margin: 0 auto 1.75rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: $gold-dark;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.875rem 3rem 0.875rem 2.75rem;
+  font-family: $font-sans;
+  font-size: 0.9375rem;
+  color: $on-surface;
+  background: $surface-container-low;
+  border: 1.5px solid rgba($gold, 0.25);
+  border-radius: 999px;
+  outline: none;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+  appearance: none;
+
+  &::placeholder { color: $outline; }
+
+  &:focus {
+    border-color: rgba($gold, 0.65);
+    box-shadow: 0 0 0 3px rgba($gold, 0.1);
+  }
+
+  &::-webkit-search-cancel-button { display: none; }
+}
+
+.searchClear {
+  position: absolute;
+  right: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $outline;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 50%;
+  transition: color $transition-fast;
+
+  span { font-size: 1.1rem; }
+
+  &:hover { color: $gold; }
+}
+
+.resultCount {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: $secondary;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.5rem;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.entry {
+  position: relative;
+}
+
+.entryLink {
+  display: block;
+  position: relative;
+  padding: 1.5rem 3rem 1.5rem 1.75rem;
+  background: rgba($surface-container, 0.55);
+  border: 1px solid rgba($gold, 0.18);
+  border-left: 3px solid rgba($gold, 0.6);
+  border-radius: 6px;
+  backdrop-filter: blur(2px);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color $transition-fast, background $transition-fast,
+    transform $transition-fast;
+
+  &:hover {
+    border-color: rgba($gold, 0.45);
+    border-left-color: $gold;
+    background: rgba($surface-container, 0.78);
+    transform: translateX(2px);
+
+    .entryArrow {
+      opacity: 1;
+      transform: translate(2px, -50%);
+    }
+
+    .entryName { color: $gold-light; }
+  }
+}
+
+.entryName {
+  font-family: $font-serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: $gold-light;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.5rem;
+  transition: color $transition-fast;
+}
+
+.entryDesc {
+  font-family: $font-sans;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: $on-surface-variant;
+  margin: 0;
+}
+
+.entryArrow {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $gold-dark;
+  opacity: 0.5;
+  transition: opacity $transition-fast, transform $transition-fast;
+
+  span { font-size: 1.25rem; }
+}
+
+.empty {
+  text-align: center;
+  padding: 5rem 0;
+  color: $secondary;
+
+  span {
+    font-size: 3rem;
+    color: rgba($gold, 0.35);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  p { font-size: 0.9375rem; }
+}
+
+.sentinel { height: 1px; }
+
+.endMessage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2.5rem 0 0;
+  font-size: 0.8125rem;
+  color: rgba($secondary, 0.6);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  span {
+    font-size: 1.1rem;
+    color: rgba($gold, 0.5);
+  }
+}

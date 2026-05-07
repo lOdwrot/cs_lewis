@@ -172,6 +172,23 @@ export interface JourneysPage {
   backgroundImage: StrapiImage | null;
 }
 
+export interface Article {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  description: string | null;
+  content: string;
+}
+
+export interface LibraryPage {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string | null;
+  backgroundImage: StrapiImage | null;
+}
+
 export interface BooksPage {
   id: number;
   documentId: string;

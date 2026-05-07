@@ -15,6 +15,8 @@ export default {
     await seedGatePageIfMissing(strapi);
     await seedJourneysPageIfMissing(strapi);
     await seedBooksPageIfMissing(strapi);
+    await seedArticlesIfEmpty(strapi);
+    await seedLibraryPageIfMissing(strapi);
   },
 };
 
@@ -32,6 +34,7 @@ async function setPublicPermissions(strapi: Core.Strapi) {
     "api::book.book",
     "api::term.term",
     "api::news.news",
+    "api::article.article",
   ];
   const singleTypes = [
     "api::home-page.home-page",
@@ -39,6 +42,7 @@ async function setPublicPermissions(strapi: Core.Strapi) {
     "api::gate-page.gate-page",
     "api::journeys-page.journeys-page",
     "api::books-page.books-page",
+    "api::library-page.library-page",
   ];
   const contentTypes = [
     ...collectionTypes.flatMap((ct) =>
@@ -919,4 +923,298 @@ async function seedNewsIfEmpty(strapi: Core.Strapi) {
   }
 
   strapi.log.info(`✅ Nowości: zasiano ${NEWS_SEED.length} wpisów.`);
+}
+
+const ARTICLES_SEED: {
+  title: string;
+  slug: string;
+  description: string;
+  content: string;
+}[] = [
+  {
+    title: "Argument z Rozumu w „Cudach”",
+    slug: "argument-z-rozumu-w-cudach",
+    description:
+      "Analiza krytyki naturalizmu, którą Lewis rozwinął w trzecim rozdziale Cudów — być może najmocniejsza linia jego apologetyki.",
+    content: `## Co właściwie dowodzi Lewis?
+
+W trzecim rozdziale *Cudów* Lewis stawia tezę pozornie skromną: jeśli **naturalizm** jest prawdą, to żadne nasze przekonanie — łącznie z samym przekonaniem o naturalizmie — nie jest racjonalnie uzasadnione.
+
+Argument można streścić w trzech krokach:
+
+1. Naturalizm głosi, że każdy proces w świecie — łącznie z procesami umysłowymi — jest produktem ślepych, nieracjonalnych przyczyn fizycznych.
+2. Gdyby moje przekonania były wyłącznie produktem takich przyczyn, byłyby *spowodowane*, ale nie *wnioskowane*.
+3. Poznanie wymaga relacji wnioskowania — przekonanie musi być wytworem racji, a nie tylko przyczyn.
+
+> „Wnioskowanie nie jest zdarzeniem. Nawet w największym pośpiechu nigdy nie *zdarza się*, by ktoś wyciągnął wniosek."
+
+### Krytyka Anscombe i druga wersja
+
+W lutym 1948 roku Elizabeth Anscombe na posiedzeniu Socratic Club przedstawiła ostrą krytykę pierwszej wersji argumentu. Lewis przyjął zarzuty i — wbrew popularnemu mitowi — nie zarzucił apologetyki, lecz **przepisał cały rozdział**, wprowadzając rozróżnienie między *przyczyną* a *podstawą*.
+
+Druga wersja jest subtelniejsza. Lewis nie twierdzi, że naturalizm logicznie się sam obala, lecz że nie potrafi wyjaśnić, *jak w ogóle możliwe jest poznanie*.
+
+### Dlaczego to wciąż się liczy
+
+Współcześni filozofowie — Alvin Plantinga w *Where the Conflict Really Lies*, Thomas Nagel w *Mind and Cosmos* — kontynuują linię argumentacji Lewisa pod nazwą **Evolutionary Argument Against Naturalism**. To, co Lewis postawił w 1947 roku, dziś jest jednym z najbardziej żywych sporów w filozofii umysłu.`,
+  },
+  {
+    title: "Czym jest „Sehnsucht”?",
+    slug: "czym-jest-sehnsucht",
+    description:
+      "Drogowskaz, nie cel — Lewisowska tęsknota jako klucz do jego biografii i apologetyki.",
+    content: `## Słowo, którego nie ma w polskim
+
+Niemieckie *Sehnsucht* tłumaczy się zwykle jako „tęsknotę" lub „pragnienie", ale żadne polskie słowo nie oddaje pełnego ładunku tego pojęcia. Lewis używa go w *Zaskoczony radością*, aby opisać przeszywające, gorzko-słodkie poczucie braku, które od dzieciństwa nawiedzało go w niespodziewanych momentach.
+
+> „Pragnienie czegoś, co nigdy nie pojawiło się w naszym doświadczeniu."
+
+### Trzy doświadczenia z dzieciństwa
+
+W autobiografii Lewis wskazuje trzy konkretne momenty, w których po raz pierwszy poczuł Sehnsucht:
+
+1. Wspomnienie zabawkowego ogrodu zbudowanego przez brata na pokrywce blaszanego pudełka.
+2. Wiersz Beatrix Potter „Squirrel Nutkin" — i nagłe, niewytłumaczalne wzruszenie obrazem Jesieni.
+3. Słowa „Balder the beautiful is dead, is dead" w Longfellowie — i nagła wizja **Północności**, mitologii nordyckiej.
+
+### Dlaczego to nie jest po prostu nostalgia
+
+Lewis odróżnia Sehnsucht od trzech podobnych stanów:
+- **Nostalgia** odnosi się do realnej przeszłości.
+- **Pożądanie** ma realny przedmiot, który można zdobyć.
+- **Sentyment** wzrusza się tym, co już doświadczone.
+
+Sehnsucht — twierdzi Lewis — jest pragnieniem, dla którego *świat nie ma odpowiedzi*. Każda próba zaspokojenia go (przez sztukę, miłość, naturę) kończy się odkryciem, że nie tego się szukało.
+
+### Wniosek apologetyczny
+
+W eseju *Waga chwały* Lewis stawia argument: skoro każdemu naturalnemu pragnieniu odpowiada naturalny przedmiot (głodowi — pokarm, pragnieniu — woda), to być może istnieje pragnienie, które nie znajduje zaspokojenia w żadnym ziemskim przedmiocie, *ponieważ* jego przedmiot leży poza tym światem.
+
+> „Jeśli odkrywam w sobie pragnienie, którego żadne doświadczenie tego świata nie może zaspokoić, najbardziej prawdopodobnym wyjaśnieniem jest to, że zostałem stworzony dla innego świata."`,
+  },
+  {
+    title: "Inklingowie — krąg, który zmienił literaturę",
+    slug: "inklingowie-krag-ktory-zmienil-literature",
+    description:
+      "Wtorkowe poranki w Eagle and Child — jak nieformalne spotkania kilku oksfordzkich akademików dały światu Narnię i Śródziemie.",
+    content: `## Pochodzenie nazwy
+
+Słowo *Inkling* pierwotnie oznaczało członka studenckiego klubu literackiego prowadzonego w latach 30. przez Edwarda Tangye Leana w University College. Po jego rozwiązaniu Lewis przejął nazwę dla swojej własnej grupy — kalambur na *ink* (atrament) i *inkling* (przeczucie).
+
+### Kim byli
+
+Kanonicznie wymienia się pięciu głównych członków:
+
+- **C. S. Lewis** — gospodarz, prowadzący spotkania w swoim pokoju w Magdalen College.
+- **J. R. R. Tolkien** — czytał kolejne rozdziały *Władcy Pierścieni* na głos przed grupą.
+- **Charles Williams** — poeta i teolog mistyczny, dołączył w 1939 po przeprowadzce Oxford University Press do Oksfordu.
+- **Owen Barfield** — filozof i prawnik, autor *Poetic Diction*; przyjaciel Lewisa od czasów studenckich.
+- **Warren „Warnie" Lewis** — starszy brat C. S., historyk amatorskiego siedemnastowiecznego dworu francuskiego.
+
+W spotkaniach uczestniczyli też okazjonalnie Hugo Dyson, Christopher Tolkien, Lord David Cecil i inni.
+
+### Jak wyglądały spotkania
+
+Były dwa stałe formaty:
+
+- **Czwartkowe wieczory** w pokoju Lewisa w Magdalen — czytanie na głos i krytyka rękopisów.
+- **Wtorkowe poranki** w pubie Eagle and Child (zwanym przez członków „The Bird and Baby") — luźniejsza rozmowa przy piwie.
+
+> „Kto byłby uczestnikiem Inklingów? Trzeba było być bardzo dobrym pisarzem, dobrym przyjacielem i — co najtrudniejsze — gotowym do bycia surowo skrytykowanym."
+
+### Co zawdzięczamy spotkaniom
+
+Bez Inklingów prawdopodobnie nie byłoby:
+- *Władcy Pierścieni* — Tolkien wielokrotnie groził rzuceniem pisania; tylko nacisk Lewisa go powstrzymał.
+- *Listów Starszego Diabła* — początkowy szkic został odczytany na czwartkowym spotkaniu.
+- Konwersji Lewisa na chrześcijaństwo — kluczowa rozmowa z Tolkienem i Dysonem na Addison's Walk we wrześniu 1931.
+
+Krąg zaczął się rozluźniać po śmierci Williamsa w 1945 i całkowicie rozpadł się około 1949 — ale jego owoce ukształtowały dwudziestowieczną literaturę fantastyczną.`,
+  },
+  {
+    title: "Lewis a Tolkien — przyjaźń i spór",
+    slug: "lewis-a-tolkien-przyjazn-i-spor",
+    description:
+      "Trzydzieści lat zażyłości, wzajemnego wpływu i powolnego oddalenia — co naprawdę dzieliło dwóch największych Inklingów.",
+    content: `## Pierwsze spotkanie
+
+11 maja 1926 roku Lewis i Tolkien spotkali się po raz pierwszy na herbatce w Merton College. Lewis zapisał później w dzienniku: „Mały, gładki, blady człowieczek, który mówi, że istnieją dobre i złe książki, ale w głębi serca jest faszystą językowym."
+
+Wzajemna fascynacja przyszła powoli, przez wspólną miłość do mitologii nordyckiej.
+
+### Wpływ Tolkiena na nawrócenie Lewisa
+
+19 września 1931 roku, podczas nocnego spaceru po Addison's Walk w Magdalen College, Tolkien i Hugo Dyson rozmawiali z Lewisem do trzeciej w nocy. Argument Tolkiena — że mit jest „prawdziwym kłamstwem", drogą prawdy a nie ucieczką od niej — przekroczył ostatnią barierę rozumową Lewisa.
+
+Dwanaście dni później Lewis napisał do Arthura Greevesa: „Właśnie przeszedłem od wiary w Boga do definitywnego wierzenia w Chrystusa."
+
+### Wpływ Lewisa na Tolkiena
+
+Bez nacisków Lewisa *Władca Pierścieni* prawdopodobnie nigdy nie ukazałby się drukiem. Tolkien wielokrotnie chciał porzucić pracę nad książką; Lewis konsekwentnie nakłaniał go do dalszego pisania i czytał kolejne rozdziały w trakcie ich powstawania.
+
+> „Tylko zachęta C. S. L. mogła doprowadzić mnie do końca." — Tolkien
+
+### Powolne oddalenie
+
+Trzy źródła napięcia:
+
+1. **Charles Williams** — Tolkien nigdy nie zaakceptował w pełni dołączenia Williamsa do Inklingów. Uważał jego mistyczne pisarstwo za „mętne i ekstrawaganckie".
+2. **Narnia** — Tolkien szczerze nie lubił *Lwa, Czarownicy i starej szafy*. Mieszanie mitologii (centaury, Bachus, Świętym Mikołaj) uważał za niespójne i niepoważne.
+3. **Małżeństwo z Joy** — Lewis poślubił rozwiedzioną Amerykankę w 1956. Tolkien jako rygorystyczny katolik nie aprobował tego małżeństwa i czuł się odsunięty.
+
+### Ostatnie lata
+
+Mimo wszystko, gdy Lewis zmarł 22 listopada 1963 (w dniu zabójstwa Kennedy'ego), Tolkien napisał do córki: „Dotąd czułem normalne uczucia człowieka w moim wieku — jak stare drzewo, które po kolei traci liście. To czuję teraz jak cios siekiery, który ścina korzenie."`,
+  },
+  {
+    title: "Trylemat: Pan, Kłamca czy Szaleniec?",
+    slug: "trylemat-pan-klamca-czy-szaleniec",
+    description:
+      "Najbardziej znany — i najbardziej krytykowany — argument apologetyczny Lewisa, w pełnej formie i z odpowiedziami na zarzuty.",
+    content: `## Sformułowanie z „Chrześcijaństwa po prostu"
+
+W rozdziale 3 księgi II Lewis przedstawia argument w słynnej, wyciętej później z transmisji radiowych formie:
+
+> „Próbuję tu zapobiec głupiemu twierdzeniu, które ludzie często wypowiadają o Nim: 'Jestem gotów przyjąć Jezusa jako wielkiego nauczyciela moralności, ale nie przyjmuję Jego twierdzenia, że jest Bogiem.' To jest jedna rzecz, której nie wolno powiedzieć. Człowiek, który był jedynie człowiekiem i mówił to, co mówił Jezus, nie byłby wielkim nauczycielem moralności. Byłby albo szaleńcem — na poziomie człowieka, który mówi, że jest jajkiem na miękko — albo byłby diabłem z piekła."
+
+### Struktura logiczna
+
+Argument ma postać disjunktywnego sylogizmu:
+
+1. Jezus twierdził o sobie, że jest Bogiem.
+2. Albo: (a) miał rację — wtedy jest **Panem**, (b) wiedział, że nie ma racji — wtedy jest **Kłamcą**, (c) nie miał racji, ale w to wierzył — wtedy jest **Szaleńcem**.
+3. Hipotezy (b) i (c) są niezgodne ze świadectwami o Jego nauczaniu i charakterze.
+4. Pozostaje (a): Jezus jest Panem.
+
+### Trzy główne zarzuty
+
+**Zarzut 1: Czwarta opcja — Legenda.**
+Najczęściej formułowany dziś. Może Jezus nigdy nie twierdził, że jest Bogiem — to późniejsi uczniowie włożyli te słowa w Jego usta. Lewis odpowiada w *Cudach* i innych pismach: krytyczna analiza tekstu Ewangelii wskazuje, że twierdzenia o boskości są wczesne i wielokrotnie poświadczone.
+
+**Zarzut 2: Mistyczne, nie literalne twierdzenia.**
+Może Jezus mówił o sobie jako Bogu w sensie mistycznym, jak nauczyciele wschodni — „każdy z nas jest Bogiem". Lewis: kontekst żydowskiego monoteizmu wyklucza tę interpretację. Stwierdzenie „Ja jestem" z Ewangelii Jana było rozumiane jednoznacznie jako bluźnierstwo.
+
+**Zarzut 3: Fałszywa dychotomia psychologiczna.**
+Współcześni psycholodzy zauważają, że człowiek może być w jakimś obszarze zaburzony i w innych zdrowy. Lewis uznałby ten zarzut, ale wskazałby, że nauczanie etyczne Jezusa — uznawane za doskonałe nawet przez krytyków — jest niezgodne z głęboką patologią konieczną do takiego mesjanistycznego urojenia.
+
+### Dlaczego argument wciąż żyje
+
+Mimo krytyki, trylemat pozostaje jednym z najczęściej cytowanych argumentów apologetycznych XX wieku. Filozofowie tacy jak William Lane Craig i Stephen Davis bronią go w zaktualizowanych formach, podczas gdy historycy biblijni jak N. T. Wright dostarczają mu współczesnego oparcia w badaniach nad świadomością mesjańską Jezusa.`,
+  },
+  {
+    title: "Wpływ Boecjusza na średniowieczną kosmologię Lewisa",
+    slug: "wplyw-boecjusza-na-sredniowieczna-kosmologie-lewisa",
+    description:
+      "Jak rzymski filozof z VI wieku ukształtował obraz uporządkowanego kosmosu, który Lewis odtworzył w „Odrzuconym obrazie\".",
+    content: `## „Odrzucony obraz" — niedoceniona książka Lewisa
+
+Wydana pośmiertnie w 1964 roku *The Discarded Image: An Introduction to Medieval and Renaissance Literature* jest być może najgłębszym dziełem Lewisa-akademika. To wykład o świecie umysłowym, w którym tworzyli Dante, Chaucer i Spenser — świecie z bardzo określoną kosmologią.
+
+### Pociecha filozofii — strukturalna mapa średniowiecza
+
+Boecjusz napisał *Pociechę filozofii* (524 n.e.) w więzieniu, oczekując egzekucji. Książka — dialog między Boecjuszem a alegoryczną Filozofią — stała się jednym z najczęściej kopiowanych tekstów średniowiecza.
+
+Kluczowe elementy boecjańskiej kosmologii:
+
+1. **Hierarchia bytu** — od czystej materii u dołu po Boga jako *Esse Ipsum* (Byt Sam w Sobie) u góry.
+2. **Koncentryczne sfery niebieskie** — Ziemia w centrum, otoczona sferami Księżyca, Merkurego, Wenus, Słońca, Marsa, Jowisza, Saturna i sfery gwiazd stałych.
+3. **Muzyka sfer** — każda obracająca się sfera wydaje ton niesłyszalny dla ludzkiego ucha.
+4. **Inteligencje poruszające** — każda sfera ma swojego anioła-rządcę.
+
+### Co Lewis z tego wyciąga
+
+Lewis nie głosi, że średniowieczna kosmologia jest naukowo prawdziwa. Twierdzi co innego: była **estetycznie i moralnie kompletna** w sposób, w jaki nasz wszechświat-pustynia z punktów świetlnych nie jest.
+
+> „Powinniśmy zrozumieć, że średniowieczny obraz kosmosu nie był po prostu kosmologią. Był poematem — i to być może największym z kiedykolwiek napisanych poematów."
+
+### Wcielenie obrazu w trylogię kosmiczną
+
+W *Z milczącej planety*, *Perelandrze* i *Tej ohydnej sile* Lewis świadomie odbudowuje boecjański kosmos w fikcji literackiej:
+
+- **Maleldil** = pierwszy poruszyciel, Bóg.
+- **Eldile** = anielskie inteligencje sfer, gdzie Marsem rządzi *Oyarsa* Malacandry, Wenus *Oyarsa* Perelandry.
+- **Hierarchia** zachowana — światy nie-upadłe są wyższe od Ziemi (zwanej *Cichą Planetą*, ponieważ utraciła kontakt z resztą kosmosu po upadku).
+
+Lewis nie zaprzecza nauce nowożytnej. Twierdzi jedynie, że średniowieczny obraz świata jest *jednocześnie* odrzucony i niezastąpiony — odpowiadał na pytania, których współczesna kosmologia nie próbuje już zadawać.`,
+  },
+  {
+    title: "Z czego śmieje się „Listy Starszego Diabła”",
+    slug: "z-czego-smieje-sie-listy-starszego-diabla",
+    description:
+      "Satyra teologiczna z 1942 roku — jak Lewis wykorzystał formę listów piekielnego biurokraty do zdiagnozowania duchowych chorób nowoczesności.",
+    content: `## Geneza pomysłu
+
+Listy powstały podczas niedzielnej Mszy w lipcu 1940 roku w kościele Holy Trinity w Headington. Lewis pisał później do brata: „Pomyślałem nagle, jakie efektowne byłyby listy nie ze świętych, lecz **z piekła** — listy starego diabła do nowicjusza."
+
+Pierwszy list ukazał się 2 maja 1941 w *The Guardian* (anglikańskim tygodniku, nie współczesnej brytyjskiej gazecie). Sukces był natychmiastowy — w 1942 zebrane listy ukazały się jako książka, która stała się największym bestsellerem Lewisa za jego życia.
+
+### Inwersja perspektywy
+
+Cały żart literacki polega na **odwróconej moralności**. Słowa „nasz Ojciec poniżej" oznaczają Szatana; „Wróg" — Boga. „Pacjent" — to dusza ludzka, którą diabeł próbuje zaprowadzić do piekła.
+
+Konsekwencja ta jest ścisła. Krętacz (Screwtape) gani siostrzeńca Piołuna (Wormwood) za każdą *moralną* porażkę z naszego punktu widzenia — i chwali za każdy *zły* sukces.
+
+### Diagnozy szczególnie celne
+
+**O modlitwie (List IV):**
+> „Kiedy zamierza modlić się za matkę, niech jego myśli zwrócą się ku jej duchowemu życiu — co oznacza myślenie o jej własnych grzechach, zwłaszcza tych, których ona nie dostrzega. Niech krytyka zastąpi modlitwę."
+
+**O Kościele (List II):**
+> „Jedna z naszych wielkich sojuszników w obecnej chwili jest Kościół sam w sobie. Nie myśl o wiecznym Kościele rozłożonym przez wieki i straszliwym jak armia ze sztandarami. Ten widok napełniłby naszego pacjenta przerażeniem. Każ mu raczej myśleć o lokalnej parafii."
+
+**O „epoce zmian" (List XXV):**
+> „Nasi filozofowie zauważyli niedawno, jak bardzo ludzie pragną nowości… To jest nasze największe narzędzie. Prawdziwa wartość Skrzydlatej Słówki jest w tym, że pacjent przestaje pytać 'czy jest prawdziwe?' i zaczyna pytać 'czy jest aktualne?'"
+
+### „Toast Starszego Diabła" — czytanie po latach
+
+W 1959 Lewis dopisał *Screwtape Proposes a Toast* — przemówienie Krętacza na corocznym bankiecie absolwentów Piekielnej Akademii. Tekst jest bardziej polityczny niż oryginał, atakuje uniformizację oświaty i kult egalitaryzmu („nikt nie powinien czuć się gorszy, więc nikt nie może być lepszy").
+
+Niektórzy krytycy uważają toast za zbyt bezpośrednio polemiczny. Inni — że jest najlepszą prozą Lewisa, ostatnim ostrym pióropuszem starego apologety przed śmiercią cztery lata później.`,
+  },
+];
+
+async function seedArticlesIfEmpty(strapi: Core.Strapi) {
+  const count = await strapi.db.query("api::article.article").count({});
+  if (count > 0) return;
+
+  strapi.log.info("🌱 Sianie artykułów biblioteki…");
+
+  for (const article of ARTICLES_SEED) {
+    const doc = await strapi
+      .documents("api::article.article")
+      .create({ data: article as never });
+    await publishDoc(strapi, "api::article.article", doc.documentId);
+  }
+
+  strapi.log.info(
+    `✅ Biblioteka: zasiano ${ARTICLES_SEED.length} artykułów.`,
+  );
+}
+
+async function seedLibraryPageIfMissing(strapi: Core.Strapi) {
+  const existing = await strapi.db
+    .query("api::library-page.library-page")
+    .findOne({});
+  if (existing) return;
+
+  const file = await uploadImageOnce(strapi, {
+    filename: "old_book.png",
+    alternativeText: "Stara księga",
+  });
+
+  const data: Record<string, unknown> = {
+    title: "Biblioteka",
+    description:
+      "Zbiór esejów, analiz i komentarzy poświęconych życiu i myśli C.S. Lewisa. Przeszukuj według tytułu lub przeglądaj listę alfabetycznie — każdy artykuł stanowi samodzielną lekturę.",
+  };
+  if (file?.id) {
+    data.backgroundImage = file.id;
+  }
+
+  const doc = await strapi.documents("api::library-page.library-page").create({
+    data: data as never,
+  });
+  await publishDoc(strapi, "api::library-page.library-page", doc.documentId);
+
+  strapi.log.info("✅ Seedowanie strony biblioteki zakończone.");
 }

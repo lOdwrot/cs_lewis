@@ -8,10 +8,16 @@ import { getGatePage } from '@/services/gate-page.service'
 import { getJourneysPage } from '@/services/journeys-page.service'
 import { getBooksPage } from '@/services/books-page.service'
 import { getEncyclopediaPage, getTerms } from '@/services/encyclopedia.service'
+import {
+  getArticle,
+  getArticles,
+  getLibraryPage,
+} from '@/services/library.service'
 import type { Difficulty } from '@/types/strapi'
 
 const PAGE_SIZE = 6
 const TERMS_PAGE_SIZE = 20
+const ARTICLES_PAGE_SIZE = 12
 
 export const useGatesQuery = () =>
   useQuery({ queryKey: ['gates'], queryFn: getGates })
@@ -65,4 +71,26 @@ export const useTermsInfiniteQuery = (search: string) =>
       lastPage.pagination.page < lastPage.pagination.pageCount
         ? lastPage.pagination.page + 1
         : undefined,
+  })
+
+export const useLibraryPageQuery = () =>
+  useQuery({ queryKey: ['library-page'], queryFn: getLibraryPage })
+
+export const useArticlesInfiniteQuery = (search: string) =>
+  useInfiniteQuery({
+    queryKey: ['articles', { search }],
+    queryFn: ({ pageParam }) =>
+      getArticles({ page: pageParam, pageSize: ARTICLES_PAGE_SIZE, search }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pagination.page < lastPage.pagination.pageCount
+        ? lastPage.pagination.page + 1
+        : undefined,
+  })
+
+export const useArticleQuery = (slug: string) =>
+  useQuery({
+    queryKey: ['article', slug],
+    queryFn: () => getArticle(slug),
+    enabled: !!slug,
   })

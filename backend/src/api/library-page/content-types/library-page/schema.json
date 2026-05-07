@@ -1,0 +1,29 @@
+{
+  "kind": "singleType",
+  "collectionName": "library_pages",
+  "info": {
+    "singularName": "library-page",
+    "pluralName": "library-pages",
+    "displayName": "Library Page",
+    "description": "Editable content for the public Biblioteka page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}
