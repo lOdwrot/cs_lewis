@@ -7,6 +7,7 @@ const navLinks = [
   { to: "/portal", label: "Wielki Portal" },
   { to: "/journeys", label: "Wszystkie Przygody" },
   { to: "/library", label: "Biblioteka" },
+  { to: "/biography", label: "Życiorys" },
   { to: "/encyclopedia", label: "Encyklopedia" },
   { to: "/books", label: "Książki" },
 ];

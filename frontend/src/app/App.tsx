@@ -13,6 +13,7 @@ import { BooksPage } from "@/features/books/BooksPage";
 import { EncyclopediaPage } from "@/features/encyclopedia/EncyclopediaPage";
 import { LibraryPage } from "@/features/library/LibraryPage";
 import { ArticleDetail } from "@/features/library/ArticleDetail";
+import { BiographyPage } from "@/features/biography/BiographyPage";
 import { NotFoundPage } from "@/features/notfound/NotFoundPage";
 
 function ScrollToTop() {
@@ -38,6 +39,7 @@ function AnimatedRoutes() {
         <Route path="/encyclopedia" element={<EncyclopediaPage />} />
         <Route path="/library" element={<LibraryPage />} />
         <Route path="/library/:slug" element={<ArticleDetail />} />
+        <Route path="/biography" element={<BiographyPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AnimatePresence>

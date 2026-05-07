@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_biography_events",
+  "info": {
+    "displayName": "Biography Event",
+    "icon": "calendar",
+    "description": "Single event in the CS Lewis biography timeline"
+  },
+  "options": {},
+  "attributes": {
+    "year": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

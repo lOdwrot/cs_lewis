@@ -17,6 +17,7 @@ export default {
     await seedBooksPageIfMissing(strapi);
     await seedArticlesIfEmpty(strapi);
     await seedLibraryPageIfMissing(strapi);
+    await seedBiographyPageIfMissing(strapi);
   },
 };
 
@@ -43,6 +44,7 @@ async function setPublicPermissions(strapi: Core.Strapi) {
     "api::journeys-page.journeys-page",
     "api::books-page.books-page",
     "api::library-page.library-page",
+    "api::biography-page.biography-page",
   ];
   const contentTypes = [
     ...collectionTypes.flatMap((ct) =>
@@ -1217,4 +1219,82 @@ async function seedLibraryPageIfMissing(strapi: Core.Strapi) {
   await publishDoc(strapi, "api::library-page.library-page", doc.documentId);
 
   strapi.log.info("✅ Seedowanie strony biblioteki zakończone.");
+}
+
+async function seedBiographyPageIfMissing(strapi: Core.Strapi) {
+  const existing = await strapi.db
+    .query("api::biography-page.biography-page" as never)
+    .findOne({});
+  if (existing) return;
+
+  const backgroundFile = await uploadImageOnce(strapi, {
+    filename: "old_book.png",
+    alternativeText: "Stara księga",
+  });
+
+  const eventImage = await uploadImageOnce(strapi, {
+    filename: "levis.png",
+    alternativeText: "C.S. Lewis",
+  });
+  const sharedImage = eventImage?.id ? { image: eventImage.id } : {};
+
+  const events: Record<string, unknown>[] = [
+    {
+      year: "1898",
+      title: "Narodziny w Belfaście",
+      description: `Clive Staples Lewis przyszedł na świat 29 listopada 1898 roku w Belfaście. Dzieciństwo spędzone w rodzinnym „Little Lea” wśród mglistych krajobrazów hrabstwa Down ukształtowało jego wczesną wyobraźnię i tęsknotę zwaną później „Joy”.`,
+      ...sharedImage,
+    },
+    {
+      year: "1917–1918",
+      title: "Oksford i Wielka Wojna",
+      description: `Lewis rozpoczął studia w University College w Oksfordzie, lecz został wkrótce powołany do Somerset Light Infantry. Ranny w bitwie pod Arras — doświadczenie wojny pogłębiło jego wczesny ateizm.`,
+      ...sharedImage,
+    },
+    {
+      year: "1925",
+      title: "Stypendysta Magdalen College",
+      description: `Wybrany na Fellowa i Tutora Literatury Angielskiej w Magdalen College w Oksfordzie. Przez niemal trzydzieści lat jego pokoje były miejscem dyskusji literackich i słynnych spotkań Inklingów.`,
+      ...sharedImage,
+    },
+    {
+      year: "1931",
+      title: "Nocne nawrócenie",
+      description: `Po nocnej rozmowie z J.R.R. Tolkienem i Hugo Dysonem na Addison's Walk Lewis nawrócił się na chrześcijaństwo. Sam określił siebie jako „najbardziej przygnębionego i niechętnego konwertytę w całej Anglii”.`,
+      ...sharedImage,
+    },
+    {
+      year: "1950",
+      title: "Narodziny Narnii",
+      description: `Publikacja „Lwa, Czarownicy i starej szafy” otworzyła światu drzwi Narnii. Cykl połączył miłość Lewisa do średniowiecznej alegorii z dziecięcą wrażliwością na cud, definiując jego literackie dziedzictwo.`,
+      ...sharedImage,
+    },
+    {
+      year: "1963",
+      title: "Śmierć w Oxfordzie",
+      description: `Lewis zmarł 22 listopada 1963 roku w swoim domu „The Kilns” w Headington pod Oksfordem — tego samego dnia co prezydent Kennedy. Pozostawił po sobie korpus dzieł, który nadal kształtuje współczesną literaturę i apologetykę.`,
+      ...sharedImage,
+    },
+  ];
+
+  const data: Record<string, unknown> = {
+    title: "Życiorys",
+    description:
+      "Linia czasu życia C.S. Lewisa — od dzieciństwa w Belfaście, przez doświadczenie wojny i lata w Oksfordzie, po nawrócenie i dzieła, które zdefiniowały jego epokę.",
+    events,
+  };
+  if (backgroundFile?.id) {
+    data.backgroundImage = backgroundFile.id;
+  }
+
+  const doc = (await strapi
+    .documents("api::biography-page.biography-page" as never)
+    .create({ data: data as never })) as { documentId: string };
+  await publishDoc(
+    strapi,
+    "api::biography-page.biography-page",
+    doc.documentId,
+  );
+
+  strapi.log.info("✅ Seedowanie strony życiorysu zakończone.");
 }

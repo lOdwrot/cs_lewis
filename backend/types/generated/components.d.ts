@@ -1,5 +1,20 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface BiographyEvent extends Struct.ComponentSchema {
+  collectionName: 'components_biography_events';
+  info: {
+    description: 'Single event in the CS Lewis biography timeline';
+    displayName: 'Biography Event';
+    icon: 'calendar';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    image: Schema.Attribute.Media<'images'>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    year: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface StepPodcastContent extends Struct.ComponentSchema {
   collectionName: 'components_step_podcast_contents';
   info: {
@@ -42,6 +57,7 @@ export interface StepTextContent extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'biography.event': BiographyEvent;
       'step.podcast-content': StepPodcastContent;
       'step.quiz-content': StepQuizContent;
       'step.text-content': StepTextContent;

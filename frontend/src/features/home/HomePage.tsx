@@ -20,7 +20,7 @@ export function HomePage() {
 
   const portraitSrc = home?.backgroundImage
     ? strapiImageUrl(home.backgroundImage.url)
-    : "/levis.png";
+    : undefined;
   const portraitAlt = home?.backgroundImage?.alternativeText ?? "";
 
   return (
@@ -31,12 +31,14 @@ export function HomePage() {
         path="/"
       />
       <main className={styles.page}>
-        <img
-          src={portraitSrc}
-          alt={portraitAlt}
-          aria-hidden={portraitAlt ? undefined : true}
-          className={styles.portrait}
-        />
+        {portraitSrc && (
+          <img
+            src={portraitSrc}
+            alt={portraitAlt}
+            aria-hidden={portraitAlt ? undefined : true}
+            className={styles.portrait}
+          />
+        )}
         {home?.title && (
           <motion.h1
             className={styles.title}

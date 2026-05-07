@@ -462,6 +462,38 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBiographyPageBiographyPage extends Struct.SingleTypeSchema {
+  collectionName: 'biography_pages';
+  info: {
+    description: 'Editable content for the public \u017Byciorys page';
+    displayName: 'Biography Page';
+    pluralName: 'biography-pages';
+    singularName: 'biography-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    backgroundImage: Schema.Attribute.Media<'images'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    events: Schema.Attribute.Component<'biography.event', true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::biography-page.biography-page'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiBookBook extends Struct.CollectionTypeSchema {
   collectionName: 'books';
   info: {
@@ -1373,6 +1405,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::article.article': ApiArticleArticle;
+      'api::biography-page.biography-page': ApiBiographyPageBiographyPage;
       'api::book.book': ApiBookBook;
       'api::books-page.books-page': ApiBooksPageBooksPage;
       'api::encyclopedia-page.encyclopedia-page': ApiEncyclopediaPageEncyclopediaPage;

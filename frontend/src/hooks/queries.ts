@@ -13,6 +13,7 @@ import {
   getArticles,
   getLibraryPage,
 } from '@/services/library.service'
+import { getBiographyPage } from '@/services/biography.service'
 import type { Difficulty } from '@/types/strapi'
 
 const PAGE_SIZE = 6
@@ -94,3 +95,6 @@ export const useArticleQuery = (slug: string) =>
     queryFn: () => getArticle(slug),
     enabled: !!slug,
   })
+
+export const useBiographyPageQuery = () =>
+  useQuery({ queryKey: ['biography-page'], queryFn: getBiographyPage })

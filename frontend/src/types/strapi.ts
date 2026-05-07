@@ -189,6 +189,23 @@ export interface LibraryPage {
   backgroundImage: StrapiImage | null;
 }
 
+export interface BiographyEvent {
+  id: number;
+  year: string;
+  title: string;
+  description: string | null;
+  image: StrapiImage | null;
+}
+
+export interface BiographyPage {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string | null;
+  backgroundImage: StrapiImage | null;
+  events: BiographyEvent[];
+}
+
 export interface BooksPage {
   id: number;
   documentId: string;
