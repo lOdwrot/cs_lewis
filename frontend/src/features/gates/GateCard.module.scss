@@ -42,13 +42,44 @@
 .pages {
   position: absolute;
   inset: 0;
-  // Transparent — old_book.png has alpha at the corners and we want the page
-  // backdrop to show through, not an opaque dark block
+  // Transparent base — corners of the closed cover still show the backdrop.
+  // The aged-paper texture lives on .pageSurface and fades in on open.
   background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+
+// ─── Aged-paper surface for the right page (visible when book opens) ─────
+.pageSurface {
+  position: absolute;
+  inset: 0;
+  // Layered gradients build aged parchment: brown stains, darker corner
+  // vignette, then the warm cream base
+  background:
+    radial-gradient(ellipse at 22% 28%, rgba(120, 80, 40, 0.18) 0%, transparent 45%),
+    radial-gradient(ellipse at 78% 72%, rgba(100, 65, 30, 0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 18%, rgba(140, 100, 55, 0.14) 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(60, 38, 15, 0.45) 100%),
+    linear-gradient(135deg, #ead6a6 0%, #d6c08a 55%, #b89e6a 100%);
+  // Spine fold lives on the LEFT edge — that's where the right page joins
+  // the binding when the book is open
+  box-shadow:
+    inset 6px 0 18px rgba(60, 40, 15, 0.55),
+    inset 0 0 50px rgba(60, 40, 15, 0.28);
+  pointer-events: none;
+
+  // Paper grain — fine speckle multiplied over the parchment
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect x='0' y='0' width='1' height='1' fill='rgba(110,80,40,0.18)'/%3E%3Crect x='3' y='2' width='1' height='1' fill='rgba(60,40,15,0.14)'/%3E%3Crect x='4' y='5' width='1' height='1' fill='rgba(140,110,70,0.12)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+    opacity: 0.85;
+    pointer-events: none;
+  }
 }
 
 .pagesGlow {
@@ -86,17 +117,35 @@
   transition: box-shadow $transition-mid;
 }
 
-// ─── Back face (plain white page) ───────────────────────────────────────────
+// ─── Back face — aged paper for the left page when the book opens ─────────
 .coverBack {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform: rotateY(180deg);
-  background: #1a2725;
-  border: 1px solid rgba($gold, 0.18);
-  // Soft inner shadow for paper depth
-  box-shadow: inset 4px 0 16px rgba(0, 0, 0, 0.4), inset 0 0 40px rgba(0, 0, 0, 0.25);
+  background:
+    radial-gradient(ellipse at 78% 30%, rgba(120, 80, 40, 0.18) 0%, transparent 45%),
+    radial-gradient(ellipse at 22% 70%, rgba(100, 65, 30, 0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 40% 18%, rgba(140, 100, 55, 0.14) 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(60, 38, 15, 0.45) 100%),
+    linear-gradient(135deg, #b89e6a 0%, #d6c08a 45%, #ead6a6 100%);
+  // Spine fold — source-left maps to render-right after the rotateY(180),
+  // i.e. the side where the left page meets the binding
+  box-shadow:
+    inset 6px 0 18px rgba(60, 40, 15, 0.55),
+    inset 0 0 50px rgba(60, 40, 15, 0.28);
+
+  // Paper grain
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect x='0' y='0' width='1' height='1' fill='rgba(110,80,40,0.18)'/%3E%3Crect x='3' y='2' width='1' height='1' fill='rgba(60,40,15,0.14)'/%3E%3Crect x='4' y='5' width='1' height='1' fill='rgba(140,110,70,0.12)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+    opacity: 0.85;
+    pointer-events: none;
+  }
 }
 
 // ─── Cover face (content) ───────────────────────────────────────────────────

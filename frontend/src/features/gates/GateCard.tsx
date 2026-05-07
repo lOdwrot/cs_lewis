@@ -165,6 +165,14 @@ export function GateCard({ gate }: Props) {
 
           {/* Inner pages — revealed when cover swings open */}
           <div className={styles.pages}>
+            {/* Aged-parchment surface — fades in only when the book opens so
+                the cover's transparent corners stay clean while closed */}
+            <motion.div
+              className={styles.pageSurface}
+              initial={{ opacity: 0 }}
+              animate={phase !== "idle" ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+            />
             <motion.div
               className={styles.pagesGlow}
               animate={

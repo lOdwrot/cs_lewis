@@ -31,14 +31,14 @@ export function HomePage() {
   const portraitAlt = home?.backgroundImage?.alternativeText ?? "";
 
   return (
-    <PageTransition>
-      <SEO
-        title={home?.title ?? "C.S. Lewis: Trzy Drogi do Prawdy"}
-        description={home?.subtitle ?? ""}
-        path="/"
-      />
-      <main className={styles.page}>
-        {portraitSrc && (
+    <>
+      {portraitSrc && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+        >
           <motion.img
             src={portraitSrc}
             alt={portraitAlt}
@@ -46,8 +46,16 @@ export function HomePage() {
             className={styles.portrait}
             style={{ y: portraitY }}
           />
-        )}
-        {home?.title && (
+        </motion.div>
+      )}
+      <PageTransition>
+        <SEO
+          title={home?.title ?? "C.S. Lewis: Trzy Drogi do Prawdy"}
+          description={home?.subtitle ?? ""}
+          path="/"
+        />
+        <main className={styles.page}>
+          {home?.title && (
           <motion.h1
             className={styles.title}
             initial={{ opacity: 0, y: 20 }}
@@ -148,7 +156,8 @@ export function HomePage() {
             news={news}
           />
         )}
-      </main>
-    </PageTransition>
+        </main>
+      </PageTransition>
+    </>
   );
 }
