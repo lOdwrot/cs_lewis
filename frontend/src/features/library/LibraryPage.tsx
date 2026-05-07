@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { SEO } from "@/components/SEO";
+import { PageError } from "@/components/ui/PageError";
 import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
 import {
   useArticlesInfiniteQuery,
@@ -23,7 +24,11 @@ const itemVariants = {
 };
 
 export function LibraryPage() {
-  const { data: page } = useLibraryPageQuery();
+  const {
+    data: page,
+    isError: pageError,
+    refetch: refetchPage,
+  } = useLibraryPageQuery();
 
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -44,6 +49,8 @@ export function LibraryPage() {
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
+    isError: articlesError,
+    refetch: refetchArticles,
   } = useArticlesInfiniteQuery(debouncedSearch);
 
   const articles = data?.pages.flatMap((p) => p.data) ?? [];
@@ -67,6 +74,17 @@ export function LibraryPage() {
   );
 
   const isEmpty = !isLoading && articles.length === 0;
+
+  if (pageError || articlesError) {
+    return (
+      <PageError
+        onRefresh={() => {
+          if (pageError) refetchPage();
+          if (articlesError) refetchArticles();
+        }}
+      />
+    );
+  }
 
   const backgroundSrc = page?.backgroundImage
     ? strapiImageUrl(page.backgroundImage.url)

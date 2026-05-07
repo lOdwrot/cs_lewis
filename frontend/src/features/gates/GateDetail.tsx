@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { SEO } from "@/components/SEO";
+import { PageError } from "@/components/ui/PageError";
 import { GatesLoadingSkeleton } from "./GatesLoadingSkeleton";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
 import { useGateQuery } from "@/hooks/queries";
@@ -32,7 +33,9 @@ const cardVariants = {
 
 export function GateDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: gate, isLoading: loading } = useGateQuery(slug!);
+  const { data: gate, isLoading: loading, isError, refetch } = useGateQuery(slug!);
+
+  if (isError) return <PageError onRefresh={() => refetch()} />;
 
   return (
     <PageTransition>

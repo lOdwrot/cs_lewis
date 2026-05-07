@@ -3,6 +3,7 @@ import { PageTransition } from "@/components/animations/PageTransition";
 import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { FadeInView } from "@/components/animations/FadeInView";
 import { SEO } from "@/components/SEO";
+import { PageError } from "@/components/ui/PageError";
 import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
 import { useBooksPageQuery, useBooksQuery } from "@/hooks/queries";
 import { strapiImageUrl } from "@/services/api";
@@ -27,8 +28,28 @@ const cardVariants = {
 };
 
 export function BooksPage() {
-  const { data: page } = useBooksPageQuery();
-  const { data: books, isLoading: loading } = useBooksQuery();
+  const {
+    data: page,
+    isError: pageError,
+    refetch: refetchPage,
+  } = useBooksPageQuery();
+  const {
+    data: books,
+    isLoading: loading,
+    isError: booksError,
+    refetch: refetchBooks,
+  } = useBooksQuery();
+
+  if (pageError || booksError) {
+    return (
+      <PageError
+        onRefresh={() => {
+          if (pageError) refetchPage();
+          if (booksError) refetchBooks();
+        }}
+      />
+    );
+  }
 
   const title = page?.title ?? "Półka Uczonego";
   const seoDescription =

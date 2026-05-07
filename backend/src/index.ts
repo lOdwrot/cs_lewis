@@ -90,6 +90,22 @@ async function seedIfEmpty(strapi: Core.Strapi) {
 
   strapi.log.info("🌱 Sianie przykładowych danych C.S. Lewisa…");
 
+  const pikaArt = await uploadImageOnce(strapi, {
+    filename: "pika-art.png",
+    alternativeText: "Pika art",
+  });
+  const pokeSign = await uploadImageOnce(strapi, {
+    filename: "poke-sign.png",
+    alternativeText: "Drogowskaz",
+  });
+
+  const stepImageByTitle: Record<string, number | undefined> = {
+    "Sehnsucht: Ból Radości": pokeSign?.id,
+  };
+  const journeyImageBySlug: Record<string, number | undefined> = {
+    "wizja-mitopoetyczna": pikaArt?.id,
+  };
+
   // ── Books ────────────────────────────────────────────────────────────────
   const books = [
     {
@@ -475,8 +491,11 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
 
   for (const stepData of stepsData) {
     const { content, ...rest } = stepData;
+    const data: Record<string, unknown> = { ...rest, content };
+    const imageId = stepImageByTitle[stepData.title];
+    if (imageId) data.image = imageId;
     const doc = await strapi.documents("api::step.step").create({
-      data: { ...rest, content } as never,
+      data: data as never,
     });
     await publishDoc(strapi, "api::step.step", doc.documentId);
     stepDocs[stepData.title] = doc.documentId;
@@ -529,15 +548,19 @@ Późniejszy Lewis rozumiał coś, co wcześniejszy Lewis mógł jedynie uzasadn
       .filter(Boolean)
       .map((documentId) => ({ documentId }));
 
+    const data: Record<string, unknown> = {
+      title: jData.title,
+      slug: jData.slug,
+      description: jData.description,
+      difficulty: jData.difficulty,
+      tags: jData.tags,
+      steps: stepIds,
+    };
+    const imageId = journeyImageBySlug[jData.slug];
+    if (imageId) data.image = imageId;
+
     const doc = await strapi.documents("api::journey.journey").create({
-      data: {
-        title: jData.title,
-        slug: jData.slug,
-        description: jData.description,
-        difficulty: jData.difficulty,
-        tags: jData.tags,
-        steps: stepIds,
-      } as never,
+      data: data as never,
     });
     await publishDoc(strapi, "api::journey.journey", doc.documentId);
     journeyDocs[jData.slug] = doc.documentId;
@@ -798,6 +821,11 @@ async function seedJourneysPageIfMissing(strapi: Core.Strapi) {
     .findOne({});
   if (existing) return;
 
+  const file = await uploadImageOnce(strapi, {
+    filename: "poke-sign.png",
+    alternativeText: "Drogowskaz",
+  });
+
   const data: Record<string, unknown> = {
     title: "Wszystkie Przygody",
     seoDescription:
@@ -814,6 +842,9 @@ async function seedJourneysPageIfMissing(strapi: Core.Strapi) {
     emptyMessage: "Nie znaleziono przygód dla podanych kryteriów.",
     endMessage: "Wszystkie przygody załadowane",
   };
+  if (file?.id) {
+    data.backgroundImage = file.id;
+  }
 
   const doc = await strapi
     .documents("api::journeys-page.journeys-page")

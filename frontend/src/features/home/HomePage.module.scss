@@ -10,16 +10,16 @@
 }
 
 .portrait {
-  position: absolute;
-  // Sit flush with the top of <main> (just below the sticky header).
-  top: 0;
-  // Break out of the 720px centered container and align to the viewport's right edge.
-  // 360px = half of .page max-width; 50vw = half the viewport.
-  // min(0px, ...) keeps it pinned to the page edge on narrow viewports.
-  right: min(0px, calc(360px - 50vw));
+  position: fixed;
+  // Pin top-right corner of the image to the top-right corner of the page
+  // (below the 68px sticky header). Parallax is driven via transform, not
+  // scroll position, which avoids per-frame jitter racing the browser's paint.
+  top: 68px;
+  right: 0;
   width: clamp(500px, 68vw, 1180px);
   height: auto;
   max-width: none;
+  will-change: transform;
   filter: grayscale(100%) sepia(28%) contrast(1.05) brightness(0.65);
   opacity: 0.5;
   pointer-events: none;
@@ -68,7 +68,7 @@
 
 @media (max-width: 700px) {
   .portrait {
-    right: -2rem;
+    right: 0;
     width: 90%;
     opacity: 0.3;
   }

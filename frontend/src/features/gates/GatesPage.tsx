@@ -2,14 +2,36 @@ import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { SEO } from "@/components/SEO";
+import { PageError } from "@/components/ui/PageError";
 import { GatesGrid } from "./GatesGrid";
 import { useGatePageQuery, useGatesQuery } from "@/hooks/queries";
 import { strapiImageUrl } from "@/services/api";
 import styles from "./GatesPage.module.scss";
 
 export function GatesPage() {
-  const { data: page, isLoading: pageLoading } = useGatePageQuery();
-  const { data: allGates, isLoading: gatesLoading } = useGatesQuery();
+  const {
+    data: page,
+    isLoading: pageLoading,
+    isError: pageError,
+    refetch: refetchPage,
+  } = useGatePageQuery();
+  const {
+    data: allGates,
+    isLoading: gatesLoading,
+    isError: gatesError,
+    refetch: refetchGates,
+  } = useGatesQuery();
+
+  if (pageError || gatesError) {
+    return (
+      <PageError
+        onRefresh={() => {
+          if (pageError) refetchPage();
+          if (gatesError) refetchGates();
+        }}
+      />
+    );
+  }
 
   const title = page?.title ?? "Wielki Portal";
   const description = page?.description ?? "";

@@ -3,13 +3,18 @@ import { PageTransition } from "@/components/animations/PageTransition";
 import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { FadeInView } from "@/components/animations/FadeInView";
 import { SEO } from "@/components/SEO";
+import { PageLoading } from "@/components/ui/PageLoading";
+import { PageError } from "@/components/ui/PageError";
 import { useBiographyPageQuery } from "@/hooks/queries";
 import { strapiImageUrl } from "@/services/api";
 import type { BiographyEvent } from "@/types/strapi";
 import styles from "./BiographyPage.module.scss";
 
 export function BiographyPage() {
-  const { data: page } = useBiographyPageQuery();
+  const { data: page, isLoading, isError, refetch } = useBiographyPageQuery();
+
+  if (isLoading) return <PageLoading />;
+  if (isError || !page) return <PageError onRefresh={() => refetch()} />;
 
   const backgroundSrc = page?.backgroundImage
     ? strapiImageUrl(page.backgroundImage.url)

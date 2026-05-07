@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { PageError } from "@/components/ui/PageError";
 import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
 
 const stepsContainerVariants = {
@@ -49,7 +50,7 @@ const TYPE_LABEL: Record<StepType, string> = {
 
 export function JourneyDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: journey, isLoading: loading } = useJourneyQuery(slug!);
+  const { data: journey, isLoading: loading, isError, refetch } = useJourneyQuery(slug!);
   const isStepComplete = useProgressStore((s) => s.isStepComplete);
   const stepRefs = useRef<Map<string, HTMLElement>>(new Map());
   const completeRef = useRef<HTMLDivElement>(null);
@@ -74,6 +75,8 @@ export function JourneyDetail() {
       setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "center" }), 500);
     }
   }, [journey, loading]);
+
+  if (isError) return <PageError onRefresh={() => refetch()} />;
 
   return (
     <PageTransition>

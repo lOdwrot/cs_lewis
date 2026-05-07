@@ -1,7 +1,9 @@
 import { useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { SEO } from "@/components/SEO";
+import { PageLoading } from "@/components/ui/PageLoading";
+import { PageError } from "@/components/ui/PageError";
 import { GatesGrid } from "@/features/gates/GatesGrid";
 import { NewsSection } from "@/features/news/NewsSection";
 import { useHomePageQuery } from "@/hooks/queries";
@@ -9,10 +11,15 @@ import { strapiImageUrl } from "@/services/api";
 import styles from "./HomePage.module.scss";
 
 export function HomePage() {
-  const { data: home, isLoading } = useHomePageQuery();
-  const news = home?.news;
+  const { data: home, isLoading, isError, refetch } = useHomePageQuery();
   const gatesSectionRef = useRef<HTMLElement | null>(null);
   const newsSectionRef = useRef<HTMLElement | null>(null);
+  const { scrollY } = useScroll();
+  const portraitY = useTransform(scrollY, (v) => -v * 0.1);
+
+  if (isLoading) return <PageLoading />;
+  if (isError || !home) return <PageError onRefresh={() => refetch()} />;
+  const news = home?.news;
 
   const scrollTo = (ref: React.RefObject<HTMLElement | null>) => () => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -32,11 +39,12 @@ export function HomePage() {
       />
       <main className={styles.page}>
         {portraitSrc && (
-          <img
+          <motion.img
             src={portraitSrc}
             alt={portraitAlt}
             aria-hidden={portraitAlt ? undefined : true}
             className={styles.portrait}
+            style={{ y: portraitY }}
           />
         )}
         {home?.title && (

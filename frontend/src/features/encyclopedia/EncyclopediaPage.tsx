@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { SEO } from "@/components/SEO";
+import { PageError } from "@/components/ui/PageError";
 import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
 import {
   useEncyclopediaPageQuery,
@@ -22,7 +23,11 @@ const itemVariants = {
 };
 
 export function EncyclopediaPage() {
-  const { data: page } = useEncyclopediaPageQuery();
+  const {
+    data: page,
+    isError: pageError,
+    refetch: refetchPage,
+  } = useEncyclopediaPageQuery();
 
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -40,6 +45,8 @@ export function EncyclopediaPage() {
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
+    isError: termsError,
+    refetch: refetchTerms,
   } = useTermsInfiniteQuery(debouncedSearch);
 
   const terms = data?.pages.flatMap((p) => p.data) ?? [];
@@ -63,6 +70,17 @@ export function EncyclopediaPage() {
   );
 
   const isEmpty = !isLoading && terms.length === 0;
+
+  if (pageError || termsError) {
+    return (
+      <PageError
+        onRefresh={() => {
+          if (pageError) refetchPage();
+          if (termsError) refetchTerms();
+        }}
+      />
+    );
+  }
 
   const backgroundSrc = page?.backgroundImage
     ? strapiImageUrl(page.backgroundImage.url)

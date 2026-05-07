@@ -1,4 +1,4 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -6,57 +6,31 @@ import { PageTransition } from "@/components/animations/PageTransition";
 import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { FadeInView } from "@/components/animations/FadeInView";
 import { SEO } from "@/components/SEO";
-import { Spinner } from "@/components/ui/Spinner";
+import { PageLoading } from "@/components/ui/PageLoading";
+import { PageError } from "@/components/ui/PageError";
 import { useArticleQuery, useLibraryPageQuery } from "@/hooks/queries";
 import { strapiImageUrl } from "@/services/api";
 import styles from "./ArticleDetail.module.scss";
 
 export function ArticleDetail() {
   const { slug = "" } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
   const { data: page } = useLibraryPageQuery();
-  const { data: article, isLoading, isError } = useArticleQuery(slug);
+  const {
+    data: article,
+    isLoading,
+    isError,
+    refetch,
+  } = useArticleQuery(slug);
 
   const backgroundSrc = page?.backgroundImage
     ? strapiImageUrl(page.backgroundImage.url)
     : "/old_book.png";
   const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
 
-  if (isLoading) {
-    return (
-      <>
-        <PageBackdrop src={backgroundSrc} alt={backgroundAlt} />
-        <PageTransition>
-          <main className={styles.page}>
-            <div className={styles.loading}>
-              <Spinner />
-            </div>
-          </main>
-        </PageTransition>
-      </>
-    );
-  }
+  if (isLoading) return <PageLoading />;
 
   if (isError || !article) {
-    return (
-      <>
-        <PageBackdrop src={backgroundSrc} alt={backgroundAlt} />
-        <PageTransition>
-          <main className={styles.page}>
-            <div className={styles.empty}>
-              <span className="material-symbols-outlined">menu_book</span>
-              <p>Nie znaleziono artykułu.</p>
-              <button
-                className={styles.backBtn}
-                onClick={() => navigate("/library")}
-              >
-                Wróć do Biblioteki
-              </button>
-            </div>
-          </main>
-        </PageTransition>
-      </>
-    );
+    return <PageError onRefresh={() => refetch()} />;
   }
 
   return (

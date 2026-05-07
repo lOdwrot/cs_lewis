@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { SEO } from "@/components/SEO";
+import { PageError } from "@/components/ui/PageError";
 import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
 import { useJourneysInfiniteQuery, useJourneysPageQuery } from "@/hooks/queries";
@@ -21,7 +22,11 @@ const cardVariants = {
 };
 
 export function AllJourneysPage() {
-  const { data: page } = useJourneysPageQuery();
+  const {
+    data: page,
+    isError: pageError,
+    refetch: refetchPage,
+  } = useJourneysPageQuery();
 
   const title = page?.title ?? "Wszystkie Przygody";
   const seoDescription =
@@ -67,6 +72,8 @@ export function AllJourneysPage() {
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
+    isError: journeysError,
+    refetch: refetchJourneys,
   } = useJourneysInfiniteQuery(debouncedSearch, difficulties);
 
   const journeys = data?.pages.flatMap((p) => p.data) ?? [];
@@ -90,6 +97,17 @@ export function AllJourneysPage() {
   );
 
   const isEmpty = !isLoading && journeys.length === 0;
+
+  if (pageError || journeysError) {
+    return (
+      <PageError
+        onRefresh={() => {
+          if (pageError) refetchPage();
+          if (journeysError) refetchJourneys();
+        }}
+      />
+    );
+  }
 
   const backgroundSrc = page?.backgroundImage
     ? strapiImageUrl(page.backgroundImage.url)
