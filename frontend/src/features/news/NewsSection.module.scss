@@ -3,6 +3,10 @@
 .section {
   // Match GatesPage full-width breakout: escape the 720px page container
   position: relative;
+  // Explicit lower stacking context — a zooming GateCard from the gates
+  // section (z-index: 50) must paint over this section, never under it
+  z-index: 0;
+  isolation: isolate;
   left: 50%;
   width: 100vw;
   margin-left: -50vw;

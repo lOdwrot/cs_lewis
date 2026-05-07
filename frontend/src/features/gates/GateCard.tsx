@@ -132,7 +132,7 @@ export function GateCard({ gate }: Props) {
           x: portalX,
           y: portalY,
           scale: portalScale,
-          ...(phase === "exit" ? { position: "relative", zIndex: 9999 } : {}),
+          ...(phase !== "idle" ? { position: "relative", zIndex: 9999 } : {}),
         }}
         onClick={handleClick}
         onMouseMove={handleMouseMove}

@@ -144,6 +144,11 @@
   // Break out of the 720px page max-width so the grid is centred against the
   // viewport, not against the narrow text column above.
   position: relative;
+  // Lift above siblings (NewsSection) so a zooming GateCard, whose internal
+  // z-index is trapped inside nested stacking contexts (perspective + per-card
+  // transforms), still paints over later sections during the portal-suck.
+  z-index: 50;
+  isolation: isolate;
   left: 50%;
   width: 100vw;
   margin-left: -50vw;
