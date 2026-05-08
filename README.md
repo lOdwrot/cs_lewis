@@ -147,9 +147,29 @@ VITE_STRAPI_URL=http://localhost:1337
 
 # CORS — add your frontend's public URL so Strapi allows it
 CLIENT_URL=https://your-frontend-domain.com
+
+# Media uploads (optional) — when all three are set, Strapi uploads to Cloudinary
+CLOUDINARY_NAME=
+CLOUDINARY_KEY=
+CLOUDINARY_SECRET=
 ```
 
 Generate secure random values with `openssl rand -base64 32`.
+
+### Cloudinary (optional)
+
+By default, uploaded media is stored on local disk at `backend/public/uploads/`. To offload uploads to [Cloudinary](https://cloudinary.com/) instead:
+
+1. Create a Cloudinary account and grab your **Cloud name**, **API key**, and **API secret** from the dashboard.
+2. Set all three variables in `.env`:
+   ```env
+   CLOUDINARY_NAME=your_cloud_name
+   CLOUDINARY_KEY=your_api_key
+   CLOUDINARY_SECRET=your_api_secret
+   ```
+3. Restart Strapi — the upload provider switches automatically (see [backend/config/plugins.ts](backend/config/plugins.ts)).
+
+Leaving any of the three blank (or commenting them out) falls back to local disk storage. This is recommended for production deploys on platforms with ephemeral filesystems (Render, Fly.io, Railway), where local uploads would be lost on each redeploy.
 
 ---
 
