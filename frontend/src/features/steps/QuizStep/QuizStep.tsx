@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { QuizComplete } from "./QuizComplete";
 import { useProgressStore } from "@/store/progressStore";
-import { strapiImageUrl, getImageVariant } from "@/services/api";
+import { getImageVariant } from "@/services/api";
 import type { Step, QuizContent } from "@/types/strapi";
 import styles from "./QuizStep.module.scss";
 

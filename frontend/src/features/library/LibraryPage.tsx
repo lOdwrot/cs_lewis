@@ -7,7 +7,7 @@ import { SEO } from "@/components/SEO";
 import { PageError } from "@/components/ui/PageError";
 import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
 import { useArticlesInfiniteQuery, useLibraryPageQuery } from "@/hooks/queries";
-import { strapiImageUrl, getImageVariant } from "@/services/api";
+import { getImageVariant } from "@/services/api";
 import styles from "./LibraryPage.module.scss";
 
 const itemVariants = {
