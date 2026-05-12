@@ -7,7 +7,7 @@ import {
   useSpring,
 } from "framer-motion";
 import type { Journey } from "@/types/strapi";
-import { strapiImageUrl } from "@/services/api";
+import { getImageVariant } from "@/services/api";
 import { useProgressStore } from "@/store/progressStore";
 import styles from "./JourneyCard.module.scss";
 
@@ -93,7 +93,7 @@ export function JourneyCard({ journey }: Props) {
         <div className={styles.imageWrap}>
           {journey.image ? (
             <img
-              src={strapiImageUrl(journey.image.url)}
+              src={getImageVariant(journey.image, "small")}
               alt={journey.image.alternativeText ?? journey.title}
               className={styles.image}
             />

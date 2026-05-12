@@ -8,7 +8,7 @@ import { PageError } from "@/components/ui/PageError";
 import { GatesGrid } from "@/features/gates/GatesGrid";
 import { NewsSection } from "@/features/news/NewsSection";
 import { useHomePageQuery } from "@/hooks/queries";
-import { strapiImageUrl } from "@/services/api";
+import { getImageVariant } from "@/services/api";
 import type { HomeNavLink, HomeNavLinkTarget } from "@/types/strapi";
 import styles from "./HomePage.module.scss";
 
@@ -54,15 +54,14 @@ export function HomePage() {
 
   const isLinkVisible = (link: HomeNavLink) => {
     if (link.target === "news-section") return (news?.length ?? 0) > 0;
-    if (link.target === "gates-section")
-      return (home?.gates?.length ?? 0) > 0;
+    if (link.target === "gates-section") return (home?.gates?.length ?? 0) > 0;
     return Boolean(PAGE_PATHS[link.target]);
   };
 
   const visibleNavLinks = navLinks.filter(isLinkVisible);
 
   const portraitSrc = home?.backgroundImage
-    ? strapiImageUrl(home.backgroundImage.url)
+    ? getImageVariant(home.backgroundImage, "large")
     : undefined;
   const portraitAlt = home?.backgroundImage?.alternativeText ?? "";
 
@@ -92,98 +91,98 @@ export function HomePage() {
         />
         <main className={styles.page}>
           {home?.title && (
-          <motion.h1
-            className={styles.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            {home.title}
-          </motion.h1>
-        )}
-        <motion.div
-          className={styles.divider}
-          initial={{ opacity: 0, scaleX: 0 }}
-          animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        />
-        {home?.subtitle && (
-          <motion.p
-            className={styles.subtitle}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.25 }}
-          >
-            {home.subtitle}
-          </motion.p>
-        )}
-        {home?.content && (
-          <motion.p
-            className={styles.body}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.35 }}
-          >
-            {home.content}
-          </motion.p>
-        )}
-
-        {visibleNavLinks.length > 0 && (
+            <motion.h1
+              className={styles.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              {home.title}
+            </motion.h1>
+          )}
           <motion.div
-            className={styles.cta}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.35 }}
-          >
-            {visibleNavLinks.map((link) => (
-              <button
-                key={link.id}
-                type="button"
-                onClick={handleNavLink(link)}
-                className={styles.ctaLink}
-              >
-                {link.label}
-              </button>
-            ))}
-          </motion.div>
-        )}
-
-        {(isLoading || (home?.gates?.length ?? 0) > 0) && (
-          <section ref={gatesSectionRef} className={styles.gatesSection}>
-            <div className={styles.gatesInner}>
-              {home?.gatesSectionTitle && (
-                <motion.h2
-                  className={styles.gatesSectionTitle}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.55 }}
-                >
-                  <span className={styles.titleRule} aria-hidden="true" />
-                  <span className={styles.titleFleur} aria-hidden="true">
-                    ❦
-                  </span>
-                  <span className={styles.titleText}>
-                    {home.gatesSectionTitle}
-                  </span>
-                  <span className={styles.titleFleur} aria-hidden="true">
-                    ❦
-                  </span>
-                  <span className={styles.titleRule} aria-hidden="true" />
-                </motion.h2>
-              )}
-              <GatesGrid gates={home?.gates} loading={isLoading} />
-            </div>
-          </section>
-        )}
-
-        {(news?.length ?? 0) > 0 && (
-          <NewsSection
-            ref={newsSectionRef}
-            title={home?.newsSectionTitle}
-            news={news}
+            className={styles.divider}
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           />
-        )}
+          {home?.subtitle && (
+            <motion.p
+              className={styles.subtitle}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.25 }}
+            >
+              {home.subtitle}
+            </motion.p>
+          )}
+          {home?.content && (
+            <motion.p
+              className={styles.body}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.35 }}
+            >
+              {home.content}
+            </motion.p>
+          )}
+
+          {visibleNavLinks.length > 0 && (
+            <motion.div
+              className={styles.cta}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.35 }}
+            >
+              {visibleNavLinks.map((link) => (
+                <button
+                  key={link.id}
+                  type="button"
+                  onClick={handleNavLink(link)}
+                  className={styles.ctaLink}
+                >
+                  {link.label}
+                </button>
+              ))}
+            </motion.div>
+          )}
+
+          {(isLoading || (home?.gates?.length ?? 0) > 0) && (
+            <section ref={gatesSectionRef} className={styles.gatesSection}>
+              <div className={styles.gatesInner}>
+                {home?.gatesSectionTitle && (
+                  <motion.h2
+                    className={styles.gatesSectionTitle}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.55 }}
+                  >
+                    <span className={styles.titleRule} aria-hidden="true" />
+                    <span className={styles.titleFleur} aria-hidden="true">
+                      ❦
+                    </span>
+                    <span className={styles.titleText}>
+                      {home.gatesSectionTitle}
+                    </span>
+                    <span className={styles.titleFleur} aria-hidden="true">
+                      ❦
+                    </span>
+                    <span className={styles.titleRule} aria-hidden="true" />
+                  </motion.h2>
+                )}
+                <GatesGrid gates={home?.gates} loading={isLoading} />
+              </div>
+            </section>
+          )}
+
+          {(news?.length ?? 0) > 0 && (
+            <NewsSection
+              ref={newsSectionRef}
+              title={home?.newsSectionTitle}
+              news={news}
+            />
+          )}
         </main>
       </PageTransition>
     </>

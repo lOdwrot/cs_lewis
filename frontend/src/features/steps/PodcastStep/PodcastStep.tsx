@@ -6,7 +6,7 @@ import { PageTransition } from "@/components/animations/PageTransition";
 import { FadeInView } from "@/components/animations/FadeInView";
 import { AudioPlayer } from "./AudioPlayer";
 import { useProgressStore } from "@/store/progressStore";
-import { strapiImageUrl } from "@/services/api";
+import { strapiImageUrl, getImageVariant } from "@/services/api";
 import type { Step, PodcastContent } from "@/types/strapi";
 import styles from "./PodcastStep.module.scss";
 
@@ -81,7 +81,7 @@ export function PodcastStep({ step }: Props) {
               </div>
               {step.image ? (
                 <img
-                  src={strapiImageUrl(step.image.url)}
+                  src={getImageVariant(step.image, "medium")}
                   alt={step.image.alternativeText ?? step.title}
                   className={styles.cover}
                 />

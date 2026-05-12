@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { QuizComplete } from "./QuizComplete";
 import { useProgressStore } from "@/store/progressStore";
-import { strapiImageUrl } from "@/services/api";
+import { strapiImageUrl, getImageVariant } from "@/services/api";
 import type { Step, QuizContent } from "@/types/strapi";
 import styles from "./QuizStep.module.scss";
 
@@ -149,7 +149,7 @@ export function QuizStep({ step }: Props) {
               {step.image && (
                 <div className={styles.questionImage}>
                   <img
-                    src={strapiImageUrl(step.image.url)}
+                    src={getImageVariant(step.image, "medium")}
                     alt={step.image.alternativeText ?? step.title}
                   />
                 </div>

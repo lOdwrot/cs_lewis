@@ -28,7 +28,9 @@ export function NewsCard({ news }: Props) {
               <a
                 href={href}
                 target={href?.startsWith("http") ? "_blank" : undefined}
-                rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
+                rel={
+                  href?.startsWith("http") ? "noopener noreferrer" : undefined
+                }
                 {...rest}
               >
                 {children}
@@ -39,6 +41,7 @@ export function NewsCard({ news }: Props) {
                 src={strapiImageUrl(typeof src === "string" ? src : "")}
                 alt={alt ?? ""}
                 className={styles.image}
+                loading="lazy"
                 {...rest}
               />
             ),

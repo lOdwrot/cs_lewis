@@ -9,7 +9,7 @@ import {
   useEncyclopediaPageQuery,
   useTermsInfiniteQuery,
 } from "@/hooks/queries";
-import { strapiImageUrl } from "@/services/api";
+import { getImageVariant } from "@/services/api";
 import styles from "./EncyclopediaPage.module.scss";
 
 const itemVariants = {
@@ -36,7 +36,10 @@ export function EncyclopediaPage() {
   const handleSearchChange = (value: string) => {
     setSearch(value);
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => setDebouncedSearch(value.trim()), 350);
+    debounceRef.current = setTimeout(
+      () => setDebouncedSearch(value.trim()),
+      350,
+    );
   };
 
   const {
@@ -83,8 +86,8 @@ export function EncyclopediaPage() {
   }
 
   const backgroundSrc = page?.backgroundImage
-    ? strapiImageUrl(page.backgroundImage.url)
-    : "/open_book.webp";
+    ? getImageVariant(page.backgroundImage, "large")
+    : null;
   const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
 
   const title = page?.title ?? "Encyklopedia";
@@ -104,111 +107,111 @@ export function EncyclopediaPage() {
         />
         <main className={styles.page}>
           <section className={styles.hero}>
-          <motion.h1
-            className={styles.heroTitle}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            {title}
-          </motion.h1>
-          <motion.div
-            className={styles.heroDivider}
-            initial={{ opacity: 0, scaleX: 0 }}
-            animate={{ opacity: 1, scaleX: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          />
-          {description && (
-            <motion.p
-              className={styles.heroDesc}
-              initial={{ opacity: 0, y: 12 }}
+            <motion.h1
+              className={styles.heroTitle}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.25 }}
+              transition={{ duration: 0.6 }}
             >
-              {description}
-            </motion.p>
-          )}
-        </section>
+              {title}
+            </motion.h1>
+            <motion.div
+              className={styles.heroDivider}
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            />
+            {description && (
+              <motion.p
+                className={styles.heroDesc}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.25 }}
+              >
+                {description}
+              </motion.p>
+            )}
+          </section>
 
-        <div className={styles.searchWrap}>
-          <span className={`material-symbols-outlined ${styles.searchIcon}`}>
-            search
-          </span>
-          <input
-            className={styles.searchInput}
-            type="search"
-            placeholder="Szukaj hasła…"
-            value={search}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            autoComplete="off"
-          />
-          {search && (
-            <button
-              className={styles.searchClear}
-              type="button"
-              onClick={() => handleSearchChange("")}
-              aria-label="Wyczyść"
-            >
-              <span className="material-symbols-outlined">close</span>
-            </button>
-          )}
-        </div>
-
-        {totalCount !== null && (
-          <p className={styles.resultCount}>
-            {totalCount === 0
-              ? "Brak wyników"
-              : `${totalCount} ${
-                  totalCount === 1
-                    ? "hasło"
-                    : totalCount % 10 >= 2 &&
-                        totalCount % 10 <= 4 &&
-                        (totalCount % 100 < 10 || totalCount % 100 >= 20)
-                      ? "hasła"
-                      : "haseł"
-                }`}
-          </p>
-        )}
-
-        {isEmpty ? (
-          <div className={styles.empty}>
-            <span className="material-symbols-outlined">menu_book</span>
-            <p>Nie znaleziono haseł dla podanego zapytania.</p>
+          <div className={styles.searchWrap}>
+            <span className={`material-symbols-outlined ${styles.searchIcon}`}>
+              search
+            </span>
+            <input
+              className={styles.searchInput}
+              type="search"
+              placeholder="Szukaj hasła…"
+              value={search}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              autoComplete="off"
+            />
+            {search && (
+              <button
+                className={styles.searchClear}
+                type="button"
+                onClick={() => handleSearchChange("")}
+                aria-label="Wyczyść"
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            )}
           </div>
-        ) : (
-          <ul className={styles.list}>
-            <AnimatePresence initial={false}>
-              {terms.map((term) => (
-                <motion.li
-                  key={term.documentId}
-                  className={styles.entry}
-                  variants={itemVariants}
-                  initial="hidden"
-                  animate="show"
-                  layout="position"
-                >
-                  <h2 className={styles.entryName}>{term.name}</h2>
-                  <p className={styles.entryDesc}>{term.description}</p>
-                </motion.li>
-              ))}
-            </AnimatePresence>
-          </ul>
-        )}
 
-        {loading && <GatesLoadingSkeleton />}
+          {totalCount !== null && (
+            <p className={styles.resultCount}>
+              {totalCount === 0
+                ? "Brak wyników"
+                : `${totalCount} ${
+                    totalCount === 1
+                      ? "hasło"
+                      : totalCount % 10 >= 2 &&
+                          totalCount % 10 <= 4 &&
+                          (totalCount % 100 < 10 || totalCount % 100 >= 20)
+                        ? "hasła"
+                        : "haseł"
+                  }`}
+            </p>
+          )}
 
-        {!loading && hasNextPage && (
-          <div ref={sentinelRef} className={styles.sentinel} />
-        )}
+          {isEmpty ? (
+            <div className={styles.empty}>
+              <span className="material-symbols-outlined">menu_book</span>
+              <p>Nie znaleziono haseł dla podanego zapytania.</p>
+            </div>
+          ) : (
+            <ul className={styles.list}>
+              <AnimatePresence initial={false}>
+                {terms.map((term) => (
+                  <motion.li
+                    key={term.documentId}
+                    className={styles.entry}
+                    variants={itemVariants}
+                    initial="hidden"
+                    animate="show"
+                    layout="position"
+                  >
+                    <h2 className={styles.entryName}>{term.name}</h2>
+                    <p className={styles.entryDesc}>{term.description}</p>
+                  </motion.li>
+                ))}
+              </AnimatePresence>
+            </ul>
+          )}
 
-        {!hasNextPage && terms.length > 0 && (
-          <p className={styles.endMessage}>
-            <span className="material-symbols-outlined">auto_stories</span>
-            Wszystkie hasła załadowane
-          </p>
-        )}
-      </main>
-    </PageTransition>
+          {loading && <GatesLoadingSkeleton />}
+
+          {!loading && hasNextPage && (
+            <div ref={sentinelRef} className={styles.sentinel} />
+          )}
+
+          {!hasNextPage && terms.length > 0 && (
+            <p className={styles.endMessage}>
+              <span className="material-symbols-outlined">auto_stories</span>
+              Wszystkie hasła załadowane
+            </p>
+          )}
+        </main>
+      </PageTransition>
     </>
   );
 }

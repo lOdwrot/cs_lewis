@@ -6,6 +6,7 @@ export async function getLibraryPage(): Promise<LibraryPage> {
     params: {
       "populate[backgroundImage][fields][0]": "url",
       "populate[backgroundImage][fields][1]": "alternativeText",
+      "populate[backgroundImage][fields][2]": "formats",
     },
   });
   return res.data.data;

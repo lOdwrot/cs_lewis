@@ -29,7 +29,7 @@ const stepCardVariants = {
 };
 import { useJourneyQuery } from "@/hooks/queries";
 import { useProgressStore } from "@/store/progressStore";
-import { strapiImageUrl } from "@/services/api";
+import { getImageVariant } from "@/services/api";
 import { SEO } from "@/components/SEO";
 import type { StepType } from "@/types/strapi";
 import styles from "./JourneyDetail.module.scss";
@@ -50,7 +50,12 @@ const TYPE_LABEL: Record<StepType, string> = {
 
 export function JourneyDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: journey, isLoading: loading, isError, refetch } = useJourneyQuery(slug!);
+  const {
+    data: journey,
+    isLoading: loading,
+    isError,
+    refetch,
+  } = useJourneyQuery(slug!);
   const isStepComplete = useProgressStore((s) => s.isStepComplete);
   const stepRefs = useRef<Map<string, HTMLElement>>(new Map());
   const completeRef = useRef<HTMLDivElement>(null);
@@ -65,14 +70,26 @@ export function JourneyDetail() {
     const journeySteps = journey.steps ?? [];
     const anyComplete = journeySteps.some((s) => isStepComplete(s.documentId));
     if (!anyComplete) return;
-    const firstIncomplete = journeySteps.find((s) => !isStepComplete(s.documentId));
+    const firstIncomplete = journeySteps.find(
+      (s) => !isStepComplete(s.documentId),
+    );
     if (!firstIncomplete) {
-      setTimeout(() => completeRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 500);
+      setTimeout(
+        () =>
+          completeRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          }),
+        500,
+      );
       return;
     }
     const el = stepRefs.current.get(firstIncomplete.documentId);
     if (el) {
-      setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "center" }), 500);
+      setTimeout(
+        () => el.scrollIntoView({ behavior: "smooth", block: "center" }),
+        500,
+      );
     }
   }, [journey, loading]);
 
@@ -199,7 +216,7 @@ export function JourneyDetail() {
                             </div>
                             {step.image ? (
                               <img
-                                src={strapiImageUrl(step.image.url)}
+                                src={getImageVariant(step.image, "small")}
                                 alt={step.image.alternativeText ?? step.title}
                                 className={styles.cardThumb}
                               />

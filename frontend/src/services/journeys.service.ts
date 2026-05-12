@@ -7,8 +7,10 @@ export async function getJourney(slug: string): Promise<Journey> {
       "filters[slug][$eq]": slug,
       "populate[image][fields][0]": "url",
       "populate[image][fields][1]": "alternativeText",
+      "populate[image][fields][2]": "formats",
       "populate[steps][populate][image][fields][0]": "url",
       "populate[steps][populate][image][fields][1]": "alternativeText",
+      "populate[steps][populate][image][fields][2]": "formats",
     },
   });
   if (!res.data.data[0]) throw new Error(`Journey not found: ${slug}`);
@@ -40,6 +42,7 @@ export async function getJourneys(
   const params: Record<string, any> = {
     "populate[image][fields][0]": "url",
     "populate[image][fields][1]": "alternativeText",
+    "populate[image][fields][2]": "formats",
     "populate[steps][fields][0]": "estimatedTime",
     "pagination[page]": page,
     "pagination[pageSize]": pageSize,

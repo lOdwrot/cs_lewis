@@ -6,8 +6,10 @@ export async function getHomePage(): Promise<HomePage> {
     params: {
       "populate[backgroundImage][fields][0]": "url",
       "populate[backgroundImage][fields][1]": "alternativeText",
+      "populate[backgroundImage][fields][2]": "formats",
       "populate[gates][populate][image][fields][0]": "url",
       "populate[gates][populate][image][fields][1]": "alternativeText",
+      "populate[gates][populate][image][fields][2]": "formats",
       "populate[gates][sort]": "order:asc",
       "populate[news][fields][0]": "title",
       "populate[news][fields][1]": "content",

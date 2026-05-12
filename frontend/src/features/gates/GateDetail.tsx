@@ -7,7 +7,7 @@ import { PageError } from "@/components/ui/PageError";
 import { GatesLoadingSkeleton } from "./GatesLoadingSkeleton";
 import { JourneyCard } from "@/features/journeys/JourneyCard";
 import { useGateQuery } from "@/hooks/queries";
-import { strapiImageUrl } from "@/services/api";
+import { getImageVariant } from "@/services/api";
 import styles from "./GateDetail.module.scss";
 
 const gridVariants = {
@@ -35,12 +35,17 @@ const cardVariants = {
 
 export function GateDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: gate, isLoading: loading, isError, refetch } = useGateQuery(slug!);
+  const {
+    data: gate,
+    isLoading: loading,
+    isError,
+    refetch,
+  } = useGateQuery(slug!);
 
   if (isError) return <PageError onRefresh={() => refetch()} />;
 
   const backgroundSrc = gate?.backgroundImage
-    ? strapiImageUrl(gate.backgroundImage.url)
+    ? getImageVariant(gate.backgroundImage, "large")
     : null;
   const backgroundAlt = gate?.backgroundImage?.alternativeText ?? "";
 
@@ -48,72 +53,72 @@ export function GateDetail() {
     <>
       <PageBackdrop src={backgroundSrc} alt={backgroundAlt} />
       <PageTransition>
-      <SEO
-        title={gate ? gate.title : "Brama"}
-        description={gate?.description ?? undefined}
-        path={`/gate/${slug}`}
-      />
-      <main className={styles.page}>
-        <Link to="/portal" className={styles.backLink}>
-          <span className="material-symbols-outlined">arrow_back</span>
-          Wielki Portal
-        </Link>
+        <SEO
+          title={gate ? gate.title : "Brama"}
+          description={gate?.description ?? undefined}
+          path={`/gate/${slug}`}
+        />
+        <main className={styles.page}>
+          <Link to="/portal" className={styles.backLink}>
+            <span className="material-symbols-outlined">arrow_back</span>
+            Wielki Portal
+          </Link>
 
-        {loading || !gate ? (
-          <GatesLoadingSkeleton />
-        ) : (
-          <>
-            <section className={styles.hero}>
-              <motion.span
-                className={styles.label}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
-              >
-                Brama
-              </motion.span>
-              <motion.h1
-                className={styles.title}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: 0.08 }}
-              >
-                {gate.title}
-              </motion.h1>
-              {gate.description && (
-                <motion.p
-                  className={styles.description}
-                  initial={{ opacity: 0, y: 12 }}
+          {loading || !gate ? (
+            <GatesLoadingSkeleton />
+          ) : (
+            <>
+              <section className={styles.hero}>
+                <motion.span
+                  className={styles.label}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  Brama
+                </motion.span>
+                <motion.h1
+                  className={styles.title}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, delay: 0.15 }}
+                  transition={{ duration: 0.45, delay: 0.08 }}
                 >
-                  {gate.description}
-                </motion.p>
-              )}
-              <div className={styles.divider} />
-            </section>
+                  {gate.title}
+                </motion.h1>
+                {gate.description && (
+                  <motion.p
+                    className={styles.description}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, delay: 0.15 }}
+                  >
+                    {gate.description}
+                  </motion.p>
+                )}
+                <div className={styles.divider} />
+              </section>
 
-            <motion.div
-              className={styles.grid}
-              style={{ perspective: 1200 }}
-              variants={gridVariants}
-              initial="hidden"
-              animate="show"
-            >
-              {(gate?.journeys ?? []).map((journey) => (
-                <motion.div
-                  key={journey.id}
-                  variants={cardVariants}
-                  style={{ transformOrigin: "bottom center" }}
-                >
-                  <JourneyCard journey={journey} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </>
-        )}
-      </main>
-    </PageTransition>
+              <motion.div
+                className={styles.grid}
+                style={{ perspective: 1200 }}
+                variants={gridVariants}
+                initial="hidden"
+                animate="show"
+              >
+                {(gate?.journeys ?? []).map((journey) => (
+                  <motion.div
+                    key={journey.id}
+                    variants={cardVariants}
+                    style={{ transformOrigin: "bottom center" }}
+                  >
+                    <JourneyCard journey={journey} />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </>
+          )}
+        </main>
+      </PageTransition>
     </>
   );
 }

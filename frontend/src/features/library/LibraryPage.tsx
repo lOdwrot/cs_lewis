@@ -6,11 +6,8 @@ import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { SEO } from "@/components/SEO";
 import { PageError } from "@/components/ui/PageError";
 import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
-import {
-  useArticlesInfiniteQuery,
-  useLibraryPageQuery,
-} from "@/hooks/queries";
-import { strapiImageUrl } from "@/services/api";
+import { useArticlesInfiniteQuery, useLibraryPageQuery } from "@/hooks/queries";
+import { strapiImageUrl, getImageVariant } from "@/services/api";
 import styles from "./LibraryPage.module.scss";
 
 const itemVariants = {
@@ -87,8 +84,8 @@ export function LibraryPage() {
   }
 
   const backgroundSrc = page?.backgroundImage
-    ? strapiImageUrl(page.backgroundImage.url)
-    : "/old_book.webp";
+    ? getImageVariant(page.backgroundImage, "large")
+    : null;
   const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
 
   const title = page?.title ?? "Biblioteka";
@@ -197,7 +194,9 @@ export function LibraryPage() {
                     >
                       <h2 className={styles.entryName}>{article.title}</h2>
                       {article.description && (
-                        <p className={styles.entryDesc}>{article.description}</p>
+                        <p className={styles.entryDesc}>
+                          {article.description}
+                        </p>
                       )}
                       <span className={styles.entryArrow}>
                         <span className="material-symbols-outlined">

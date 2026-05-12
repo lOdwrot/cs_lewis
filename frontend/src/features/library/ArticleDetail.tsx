@@ -9,22 +9,17 @@ import { SEO } from "@/components/SEO";
 import { PageLoading } from "@/components/ui/PageLoading";
 import { PageError } from "@/components/ui/PageError";
 import { useArticleQuery, useLibraryPageQuery } from "@/hooks/queries";
-import { strapiImageUrl } from "@/services/api";
+import { getImageVariant } from "@/services/api";
 import styles from "./ArticleDetail.module.scss";
 
 export function ArticleDetail() {
   const { slug = "" } = useParams<{ slug: string }>();
   const { data: page } = useLibraryPageQuery();
-  const {
-    data: article,
-    isLoading,
-    isError,
-    refetch,
-  } = useArticleQuery(slug);
+  const { data: article, isLoading, isError, refetch } = useArticleQuery(slug);
 
   const backgroundSrc = page?.backgroundImage
-    ? strapiImageUrl(page.backgroundImage.url)
-    : "/old_book.webp";
+    ? getImageVariant(page.backgroundImage, "large")
+    : null;
   const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
 
   if (isLoading) return <PageLoading />;

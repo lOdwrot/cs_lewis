@@ -6,6 +6,7 @@ export async function getStep(documentId: string): Promise<Step> {
     params: {
       "populate[image][fields][0]": "url",
       "populate[image][fields][1]": "alternativeText",
+      "populate[image][fields][2]": "formats",
       "populate[content][on][step.text-content]": "*",
       "populate[content][on][step.podcast-content][populate][audioFile][fields][0]":
         "url",

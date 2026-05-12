@@ -14,7 +14,7 @@ import { SEO } from "@/components/SEO";
 import { PageLoading } from "@/components/ui/PageLoading";
 import { PageError } from "@/components/ui/PageError";
 import { useBiographyPageQuery } from "@/hooks/queries";
-import { strapiImageUrl } from "@/services/api";
+import { getImageVariant } from "@/services/api";
 import type { BiographyEvent } from "@/types/strapi";
 import styles from "./BiographyPage.module.scss";
 
@@ -34,7 +34,7 @@ export function BiographyPage() {
   if (isError || !page) return <PageError onRefresh={() => refetch()} />;
 
   const backgroundSrc = page?.backgroundImage
-    ? strapiImageUrl(page.backgroundImage.url)
+    ? getImageVariant(page.backgroundImage, "large")
     : "/old_book.webp";
   const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
 
@@ -108,7 +108,7 @@ interface TimelineItemProps {
 }
 
 function TimelineItem({ event, side }: TimelineItemProps) {
-  const imageSrc = event.image ? strapiImageUrl(event.image.url) : null;
+  const imageSrc = event.image ? getImageVariant(event.image, "medium") : null;
   const imageAlt = event.image?.alternativeText ?? event.title;
   const oppositeSide = side === "left" ? "right" : "left";
 
@@ -178,7 +178,9 @@ function TimelineItem({ event, side }: TimelineItemProps) {
             rotateY: cardRotateY,
             transformPerspective: 900,
           }}
-          onMouseMove={(e) => handleTilt(e, cardRef.current, cardRawX, cardRawY)}
+          onMouseMove={(e) =>
+            handleTilt(e, cardRef.current, cardRawX, cardRawY)
+          }
           onHoverStart={() => startGlow(cardGlow)}
           onHoverEnd={() => stopGlow(cardGlow, cardRawX, cardRawY)}
         >

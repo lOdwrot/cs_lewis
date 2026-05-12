@@ -10,7 +10,7 @@ import {
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import type { Gate } from "@/types/strapi";
-import { strapiImageUrl } from "@/services/api";
+import { getImageVariant } from "@/services/api";
 import styles from "./GateCard.module.scss";
 
 type Phase = "idle" | "open" | "exit";
@@ -205,7 +205,7 @@ export function GateCard({ gate }: Props) {
                 >
                   {gate.image ? (
                     <img
-                      src={strapiImageUrl(gate.image.url)}
+                      src={getImageVariant(gate.image, "medium")}
                       alt={gate.image.alternativeText ?? gate.title}
                       className={styles.image}
                     />
