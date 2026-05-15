@@ -198,6 +198,31 @@ export interface Article {
   content: string;
 }
 
+export type TopMenuRedirect =
+  | "home"
+  | "portal"
+  | "journeys"
+  | "library"
+  | "biography"
+  | "encyclopedia"
+  | "books"
+  | "news";
+
+export interface TopMenuNavItem {
+  id: number;
+  label: string;
+  hoverText: string | null;
+  redirect: TopMenuRedirect;
+}
+
+export interface TopMenu {
+  id: number;
+  documentId: string;
+  homeText: string | null;
+  homeImage: StrapiImage | null;
+  navItems: TopMenuNavItem[];
+}
+
 export interface LibraryPage {
   id: number;
   documentId: string;
@@ -233,4 +258,13 @@ export interface BooksPage {
   buyLabel: string | null;
   motto: string | null;
   backgroundImage: StrapiImage | null;
+}
+
+export interface NewsPage {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string | null;
+  backgroundImage: StrapiImage | null;
+  news: News[];
 }

@@ -42,6 +42,33 @@ export interface HomeNavLink extends Struct.ComponentSchema {
   };
 }
 
+export interface MenuNavItem extends Struct.ComponentSchema {
+  collectionName: 'components_menu_nav_items';
+  info: {
+    description: 'A navigable item in the top menu bar';
+    displayName: 'Nav Item';
+    icon: 'link';
+  };
+  attributes: {
+    hoverText: Schema.Attribute.String;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    redirect: Schema.Attribute.Enumeration<
+      [
+        'home',
+        'portal',
+        'journeys',
+        'library',
+        'biography',
+        'encyclopedia',
+        'books',
+        'news',
+      ]
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'home'>;
+  };
+}
+
 export interface StepPodcastContent extends Struct.ComponentSchema {
   collectionName: 'components_step_podcast_contents';
   info: {
@@ -86,6 +113,7 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'biography.event': BiographyEvent;
       'home.nav-link': HomeNavLink;
+      'menu.nav-item': MenuNavItem;
       'step.podcast-content': StepPodcastContent;
       'step.quiz-content': StepQuizContent;
       'step.text-content': StepTextContent;

@@ -18,6 +18,8 @@ export default {
     await seedArticlesIfEmpty(strapi);
     await seedLibraryPageIfMissing(strapi);
     await seedBiographyPageIfMissing(strapi);
+    await seedNewsPageIfMissing(strapi);
+    await seedTopMenuIfMissing(strapi);
   },
 };
 
@@ -45,6 +47,8 @@ async function setPublicPermissions(strapi: Core.Strapi) {
     "api::books-page.books-page",
     "api::library-page.library-page",
     "api::biography-page.biography-page",
+    "api::news-page.news-page",
+    "api::top-menu.top-menu",
   ];
   const contentTypes = [
     ...collectionTypes.flatMap((ct) =>
@@ -1496,4 +1500,62 @@ async function seedBiographyPageIfMissing(strapi: Core.Strapi) {
   );
 
   strapi.log.info("✅ Seedowanie strony życiorysu zakończone.");
+}
+
+async function seedNewsPageIfMissing(strapi: Core.Strapi) {
+  const existing = await strapi.db
+    .query("api::news-page.news-page" as never)
+    .findOne({});
+  if (existing) return;
+
+  const backgroundFile = await uploadImageOnce(strapi, {
+    filename: "levis.webp",
+    alternativeText: "C.S. Lewis",
+  });
+
+  // Link all existing news items in their current order
+  const newsItems = await strapi.db.query("api::news.news").findMany({
+    orderBy: { id: "asc" },
+  });
+  const newsConnect = newsItems.map((n: { id: number }) => ({ id: n.id }));
+
+  const data: Record<string, unknown> = {
+    title: "Aktualności",
+    description:
+      "Bieżące wiadomości ze świata C.S. Lewisa — nowe wydania, konferencje i wydarzenia poświęcone autorowi Kronik Narnii.",
+    news: newsConnect,
+  };
+  if (backgroundFile?.id) {
+    data.backgroundImage = backgroundFile.id;
+  }
+
+  const doc = (await strapi
+    .documents("api::news-page.news-page" as never)
+    .create({ data: data as never })) as { documentId: string };
+  await publishDoc(strapi, "api::news-page.news-page", doc.documentId);
+
+  strapi.log.info("✅ Seedowanie strony aktualności zakończone.");
+}
+
+async function seedTopMenuIfMissing(strapi: Core.Strapi) {
+  const existing = await strapi.db.query("api::top-menu.top-menu").findOne({});
+  if (existing) return;
+
+  const data: Record<string, unknown> = {
+    homeText: "C.S. Lewis",
+    navItems: [
+      { label: "Wielki Portal", hoverText: "Trzy bramy do prawdy – Wyobraźnia, Rozum, Wiara", redirect: "portal" },
+      { label: "Przygody", hoverText: "Podróże przez myśl i dzieła C.S. Lewisa", redirect: "journeys" },
+      { label: "Biblioteka", hoverText: "Eseje i artykuły o Lewisie", redirect: "library" },
+      { label: "Życiorys", hoverText: "Historia życia – od Belfastu po Oxford", redirect: "biography" },
+      { label: "Encyklopedia", hoverText: "Słownik pojęć i postaci z dzieł Lewisa", redirect: "encyclopedia" },
+      { label: "Książki", hoverText: "Pełna bibliografia C.S. Lewisa", redirect: "books" },
+      { label: "Aktualności", hoverText: "Najnowsze wiadomości ze świata lewisologii", redirect: "news" },
+    ],
+  };
+
+  const doc = await strapi.documents("api::top-menu.top-menu").create({ data: data as never });
+  await publishDoc(strapi, "api::top-menu.top-menu", doc.documentId);
+
+  strapi.log.info("✅ Seedowanie górnego menu zakończone.");
 }

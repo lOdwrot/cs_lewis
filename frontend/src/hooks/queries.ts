@@ -14,6 +14,8 @@ import {
   getLibraryPage,
 } from '@/services/library.service'
 import { getBiographyPage } from '@/services/biography.service'
+import { getNewsPage } from '@/services/news-page.service'
+import { getTopMenu } from '@/services/top-menu.service'
 import type { Difficulty } from '@/types/strapi'
 
 const PAGE_SIZE = 6
@@ -37,6 +39,9 @@ export const useBooksQuery = () =>
 
 export const useHomePageQuery = () =>
   useQuery({ queryKey: ['home-page'], queryFn: getHomePage })
+
+export const useTopMenuQuery = () =>
+  useQuery({ queryKey: ['top-menu'], queryFn: getTopMenu, staleTime: 5 * 60 * 1000 })
 
 export const useGatePageQuery = () =>
   useQuery({ queryKey: ['gate-page'], queryFn: getGatePage })
@@ -98,3 +103,6 @@ export const useArticleQuery = (slug: string) =>
 
 export const useBiographyPageQuery = () =>
   useQuery({ queryKey: ['biography-page'], queryFn: getBiographyPage })
+
+export const useNewsPageQuery = () =>
+  useQuery({ queryKey: ['news-page'], queryFn: getNewsPage })

@@ -1,0 +1,31 @@
+{
+  "kind": "singleType",
+  "collectionName": "top_menus",
+  "info": {
+    "singularName": "top-menu",
+    "pluralName": "top-menus",
+    "displayName": "Top Menu",
+    "description": "CMS-controlled top navigation bar — logo text/image and nav items"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "homeText": {
+      "type": "string",
+      "default": "C.S. Lewis"
+    },
+    "homeImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "navItems": {
+      "type": "component",
+      "repeatable": true,
+      "component": "menu.nav-item"
+    }
+  }
+}

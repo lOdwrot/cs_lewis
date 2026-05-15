@@ -802,6 +802,38 @@ export interface ApiLibraryPageLibraryPage extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiNewsPageNewsPage extends Struct.SingleTypeSchema {
+  collectionName: 'news_pages';
+  info: {
+    description: 'Editable content for the public Aktualno\u015Bci page';
+    displayName: 'News Page';
+    pluralName: 'news-pages';
+    singularName: 'news-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    backgroundImage: Schema.Attribute.Media<'images'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::news-page.news-page'
+    > &
+      Schema.Attribute.Private;
+    news: Schema.Attribute.Relation<'oneToMany', 'api::news.news'>;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiNewsNews extends Struct.CollectionTypeSchema {
   collectionName: 'news_items';
   info: {
@@ -886,6 +918,38 @@ export interface ApiTermTerm extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::term.term'> &
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiTopMenuTopMenu extends Struct.SingleTypeSchema {
+  collectionName: 'top_menus';
+  info: {
+    description: 'CMS-controlled top navigation bar \u2014 logo text/image and nav items';
+    displayName: 'Top Menu';
+    pluralName: 'top-menus';
+    singularName: 'top-menu';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    homeImage: Schema.Attribute.Media<'images'>;
+    homeText: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'C.S. Lewis'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::top-menu.top-menu'
+    > &
+      Schema.Attribute.Private;
+    navItems: Schema.Attribute.Component<'menu.nav-item', true>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1415,9 +1479,11 @@ declare module '@strapi/strapi' {
       'api::journey.journey': ApiJourneyJourney;
       'api::journeys-page.journeys-page': ApiJourneysPageJourneysPage;
       'api::library-page.library-page': ApiLibraryPageLibraryPage;
+      'api::news-page.news-page': ApiNewsPageNewsPage;
       'api::news.news': ApiNewsNews;
       'api::step.step': ApiStepStep;
       'api::term.term': ApiTermTerm;
+      'api::top-menu.top-menu': ApiTopMenuTopMenu;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

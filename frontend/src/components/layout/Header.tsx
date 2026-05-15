@@ -1,16 +1,22 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTopMenuQuery } from "@/hooks/queries";
+import { strapiImageUrl } from "@/services/api";
+import type { TopMenuRedirect } from "@/types/strapi";
 import styles from "./Header.module.scss";
 
-const navLinks = [
-  { to: "/portal", label: "Wielki Portal" },
-  { to: "/journeys", label: "Przygody" },
-  { to: "/library", label: "Biblioteka" },
-  { to: "/biography", label: "Życiorys" },
-  { to: "/encyclopedia", label: "Encyklopedia" },
-  { to: "/books", label: "Książki" },
-];
+// Map CMS redirect enum → actual URL paths
+const REDIRECT_PATHS: Record<TopMenuRedirect, string> = {
+  home: "/",
+  portal: "/portal",
+  journeys: "/journeys",
+  library: "/library",
+  biography: "/biography",
+  encyclopedia: "/encyclopedia",
+  books: "/books",
+  news: "/news",
+};
 
 const EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
 
@@ -40,10 +46,90 @@ const itemVariants = {
   }),
 };
 
+// ── Fancy tooltip ──────────────────────────────────────────────────────────
+interface TooltipProps {
+  text: string;
+  children: React.ReactNode;
+}
+
+function NavTooltip({ text, children }: TooltipProps) {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <div
+      className={styles.tooltipAnchor}
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+    >
+      {children}
+      <AnimatePresence>
+        {visible && (
+          <motion.div
+            className={styles.tooltip}
+            initial={{ opacity: 0, y: 14, scale: 0.82, x: "-50%", filter: "blur(6px)", rotateX: -18 }}
+            animate={{ opacity: 1, y: 0, scale: 1, x: "-50%", filter: "blur(0px)", rotateX: 0 }}
+            exit={{ opacity: 0, y: 8, scale: 0.9, x: "-50%", filter: "blur(4px)", rotateX: -10 }}
+            transition={{
+              type: "spring",
+              stiffness: 320,
+              damping: 18,
+              mass: 0.7,
+              opacity: { duration: 0.22, ease: "easeOut" },
+              filter: { duration: 0.28, ease: "easeOut" },
+              rotateX: { type: "spring", stiffness: 280, damping: 20 },
+            }}
+            style={{ transformPerspective: 600 }}
+          >
+            <span className={styles.tooltipArrow} />
+            {text}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ── Skeleton pieces ────────────────────────────────────────────────────────
+function LogoSkeleton() {
+  return <div className={`${styles.skeleton} ${styles.skeletonLogo}`} />;
+}
+
+function NavSkeleton() {
+  return (
+    <>
+      {Array.from({ length: 7 }).map((_, i) => (
+        <div
+          key={i}
+          className={`${styles.skeleton} ${styles.skeletonNavItem}`}
+          style={{ width: `${52 + (i % 3) * 18}px` }}
+        />
+      ))}
+    </>
+  );
+}
+
+// ── Main Header ────────────────────────────────────────────────────────────
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { data: topMenu, isLoading } = useTopMenuQuery();
 
   const close = () => setMenuOpen(false);
+
+  const navItems = topMenu?.navItems ?? [];
+
+  const logoContent = (() => {
+    if (isLoading) return <LogoSkeleton />;
+    if (topMenu?.homeImage?.url) {
+      return (
+        <img
+          src={strapiImageUrl(topMenu.homeImage.url)}
+          alt={topMenu.homeImage.alternativeText ?? "Logo"}
+          className={styles.logoImage}
+        />
+      );
+    }
+    return topMenu?.homeText ?? "C.S. Lewis";
+  })();
 
   return (
     <>
@@ -55,7 +141,7 @@ export function Header() {
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <NavLink to="/" className={styles.logo} onClick={close}>
-              C.S. Lewis
+              {logoContent}
             </NavLink>
           </motion.div>
 
@@ -66,17 +152,31 @@ export function Header() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
           >
-            {navLinks.map(({ to, label }) => (
-              <NavLink
-                key={to}
-                to={to}
-                className={({ isActive }) =>
-                  `${styles.navLink} ${isActive ? styles.active : ""}`
-                }
-              >
-                {label}
-              </NavLink>
-            ))}
+            {isLoading ? (
+              <NavSkeleton />
+            ) : (
+              navItems.map(({ id, label, hoverText, redirect }) => {
+                const to = REDIRECT_PATHS[redirect] ?? "/";
+                const link = (
+                  <NavLink
+                    key={id}
+                    to={to}
+                    className={({ isActive }) =>
+                      `${styles.navLink} ${isActive ? styles.active : ""}`
+                    }
+                  >
+                    {label}
+                  </NavLink>
+                );
+                return hoverText ? (
+                  <NavTooltip key={id} text={hoverText}>
+                    {link}
+                  </NavTooltip>
+                ) : (
+                  link
+                );
+              })
+            )}
           </motion.nav>
 
           {/* Hamburger button — mobile only */}
@@ -102,19 +202,26 @@ export function Header() {
             animate="open"
             exit="closed"
           >
-            {navLinks.map(({ to, label }, i) => (
-              <motion.div key={to} custom={i} variants={itemVariants}>
-                <NavLink
-                  to={to}
-                  className={({ isActive }) =>
-                    `${styles.mobileNavLink} ${isActive ? styles.active : ""}`
-                  }
-                  onClick={close}
-                >
-                  {label}
-                </NavLink>
-              </motion.div>
-            ))}
+            {isLoading
+              ? Array.from({ length: 5 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className={`${styles.skeleton} ${styles.skeletonMobileNavItem}`}
+                  />
+                ))
+              : navItems.map(({ id, label, redirect }, i) => (
+                  <motion.div key={id} custom={i} variants={itemVariants}>
+                    <NavLink
+                      to={REDIRECT_PATHS[redirect] ?? "/"}
+                      className={({ isActive }) =>
+                        `${styles.mobileNavLink} ${isActive ? styles.active : ""}`
+                      }
+                      onClick={close}
+                    >
+                      {label}
+                    </NavLink>
+                  </motion.div>
+                ))}
           </motion.nav>
         )}
       </AnimatePresence>

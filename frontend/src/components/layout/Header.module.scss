@@ -163,3 +163,105 @@
     display: none;
   }
 }
+
+// ── Logo image variant ────────────────────────────────────────────────────
+.logoImage {
+  height: 32px;
+  max-width: 140px;
+  object-fit: contain;
+  display: block;
+}
+
+// ── Fancy tooltip ─────────────────────────────────────────────────────────
+.tooltipAnchor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+@keyframes tooltipGlow {
+  0%   { box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba($gold, 0.08); }
+  50%  { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 12px rgba($gold, 0.22), 0 0 0 1px rgba($gold, 0.3); }
+  100% { box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba($gold, 0.08); }
+}
+
+.tooltip {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  z-index: 200;
+  background: linear-gradient(135deg, rgba($surface-container, 0.97) 0%, rgba($surface, 0.97) 100%);
+  border: 1px solid rgba($gold, 0.35);
+  border-radius: 8px;
+  padding: 0.45rem 0.85rem;
+  font-family: $font-sans;
+  font-size: 0.78rem;
+  color: $on-surface-variant;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba($gold, 0.08), inset 0 1px 0 rgba($gold, 0.12);
+  backdrop-filter: blur(12px);
+  letter-spacing: 0.01em;
+  animation: tooltipGlow 2.4s ease-in-out infinite;
+}
+
+.tooltipArrow {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid rgba($gold, 0.35);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: -4px;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid $surface-container;
+  }
+}
+
+// ── Skeletons ─────────────────────────────────────────────────────────────
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton {
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    rgba($surface-container-high, 0.6) 25%,
+    rgba($gold-dim, 0.12) 50%,
+    rgba($surface-container-high, 0.6) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.6s infinite linear;
+}
+
+.skeletonLogo {
+  width: 100px;
+  height: 22px;
+  border-radius: 4px;
+}
+
+.skeletonNavItem {
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.skeletonMobileNavItem {
+  height: 20px;
+  width: 60%;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+}

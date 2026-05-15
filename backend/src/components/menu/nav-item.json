@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_menu_nav_items",
+  "info": {
+    "displayName": "Nav Item",
+    "icon": "link",
+    "description": "A navigable item in the top menu bar"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "hoverText": {
+      "type": "string",
+      "required": false
+    },
+    "redirect": {
+      "type": "enumeration",
+      "required": true,
+      "default": "home",
+      "enum": [
+        "home",
+        "portal",
+        "journeys",
+        "library",
+        "biography",
+        "encyclopedia",
+        "books",
+        "news"
+      ]
+    }
+  }
+}
