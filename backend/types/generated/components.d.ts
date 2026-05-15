@@ -15,6 +15,19 @@ export interface BiographyEvent extends Struct.ComponentSchema {
   };
 }
 
+export interface FooterSocialLink extends Struct.ComponentSchema {
+  collectionName: 'components_footer_social_links';
+  info: {
+    description: 'A social media link with an icon image and a redirect URL';
+    displayName: 'Social Link';
+    icon: 'link';
+  };
+  attributes: {
+    image: Schema.Attribute.Media<'images'>;
+    redirectUrl: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface HomeNavLink extends Struct.ComponentSchema {
   collectionName: 'components_home_nav_links';
   info: {
@@ -112,6 +125,7 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'biography.event': BiographyEvent;
+      'footer.social-link': FooterSocialLink;
       'home.nav-link': HomeNavLink;
       'menu.nav-item': MenuNavItem;
       'step.podcast-content': StepPodcastContent;

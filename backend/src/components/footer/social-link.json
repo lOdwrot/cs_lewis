@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_footer_social_links",
+  "info": {
+    "displayName": "Social Link",
+    "icon": "link",
+    "description": "A social media link with an icon image and a redirect URL"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "redirectUrl": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

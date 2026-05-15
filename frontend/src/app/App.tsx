@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import { BreathingBackground } from "@/components/animations/BreathingBackground";
 import { HomePage } from "@/features/home/HomePage";
 import { GatesPage } from "@/features/gates/GatesPage";
@@ -16,6 +17,7 @@ import { ArticleDetail } from "@/features/library/ArticleDetail";
 import { BiographyPage } from "@/features/biography/BiographyPage";
 import { NewsPage } from "@/features/news/NewsPage";
 import { NotFoundPage } from "@/features/notfound/NotFoundPage";
+import styles from "./App.module.scss";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -53,8 +55,13 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       <BreathingBackground />
-      <Header />
-      <AnimatedRoutes />
+      <div className={styles.layout}>
+        <Header />
+        <div className={styles.content}>
+          <AnimatedRoutes />
+        </div>
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 }

@@ -590,6 +590,38 @@ export interface ApiEncyclopediaPageEncyclopediaPage
   };
 }
 
+export interface ApiFooterFooter extends Struct.SingleTypeSchema {
+  collectionName: 'footers';
+  info: {
+    description: 'CMS-controlled site footer \u2014 description text and social media links';
+    displayName: 'Footer';
+    pluralName: 'footers';
+    singularName: 'footer';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.RichText;
+    image: Schema.Attribute.Media<'images'>;
+    imageLink: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::footer.footer'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    socialLinks: Schema.Attribute.Component<'footer.social-link', true>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiGatePageGatePage extends Struct.SingleTypeSchema {
   collectionName: 'gate_pages';
   info: {
@@ -1473,6 +1505,7 @@ declare module '@strapi/strapi' {
       'api::book.book': ApiBookBook;
       'api::books-page.books-page': ApiBooksPageBooksPage;
       'api::encyclopedia-page.encyclopedia-page': ApiEncyclopediaPageEncyclopediaPage;
+      'api::footer.footer': ApiFooterFooter;
       'api::gate-page.gate-page': ApiGatePageGatePage;
       'api::gate.gate': ApiGateGate;
       'api::home-page.home-page': ApiHomePageHomePage;

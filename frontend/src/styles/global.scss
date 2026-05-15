@@ -42,9 +42,11 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
+  overflow-x: hidden;
   font-family: $font-sans;
   background-color: $parchment;
   color: $on-surface;

@@ -20,6 +20,8 @@ export default {
     await seedBiographyPageIfMissing(strapi);
     await seedNewsPageIfMissing(strapi);
     await seedTopMenuIfMissing(strapi);
+    await uploadSharedImagesOnce(strapi);
+    await seedFooterIfMissing(strapi);
   },
 };
 
@@ -49,6 +51,7 @@ async function setPublicPermissions(strapi: Core.Strapi) {
     "api::biography-page.biography-page",
     "api::news-page.news-page",
     "api::top-menu.top-menu",
+    "api::footer.footer",
   ];
   const contentTypes = [
     ...collectionTypes.flatMap((ct) =>
@@ -1531,6 +1534,66 @@ async function seedNewsPageIfMissing(strapi: Core.Strapi) {
   await publishDoc(strapi, "api::news-page.news-page", doc.documentId);
 
   strapi.log.info("✅ Seedowanie strony aktualności zakończone.");
+}
+
+async function uploadSharedImagesOnce(strapi: Core.Strapi) {
+  await uploadImageOnce(strapi, {
+    filename: "Rozum_Wiara.png",
+    alternativeText: "Rozum i Wiara",
+  });
+  await uploadImageOnce(strapi, {
+    filename: "fundacja-prodoteo.png",
+    alternativeText: "Fundacja Prodoteo",
+  });
+  await uploadImageOnce(strapi, {
+    filename: "fb-logo.png",
+    alternativeText: "Facebook",
+  });
+}
+
+async function seedFooterIfMissing(strapi: Core.Strapi) {
+  const existing = await strapi.db.query("api::footer.footer").findOne({});
+  if (existing) return;
+
+  const fbLogo = await uploadImageOnce(strapi, {
+    filename: "fb-logo.png",
+    alternativeText: "Facebook",
+  });
+
+  const prodoteoLogo = await uploadImageOnce(strapi, {
+    filename: "fundacja-prodoteo.png",
+    alternativeText: "Fundacja Prodoteo",
+  });
+
+  const socialLinks: Record<string, unknown>[] = [
+    {
+      image: fbLogo?.id ?? null,
+      redirectUrl: "https://www.facebook.com/fundacjaprodoteo/",
+    },
+    {
+      image: fbLogo?.id ?? null,
+      redirectUrl: "https://www.youtube.com/c/Prodoteo/featured",
+    },
+    {
+      image: fbLogo?.id ?? null,
+      redirectUrl: "https://www.instagram.com/contra_gentiles/",
+    },
+  ];
+
+  const data: Record<string, unknown> = {
+    description:
+      "Fundacja Prodoteo\n\nKontakt: [kontakt@prodoteo.pl](mailto:kontakt@prodoteo.pl)\n\nCopyright © 2026 Prodoteo",
+    socialLinks,
+    image: prodoteoLogo?.id ?? null,
+    imageLink: "https://www.prodoteo.pl/",
+  };
+
+  const doc = await strapi
+    .documents("api::footer.footer")
+    .create({ data: data as never });
+  await publishDoc(strapi, "api::footer.footer", doc.documentId);
+
+  strapi.log.info("✅ Seedowanie stopki zakończone.");
 }
 
 async function seedTopMenuIfMissing(strapi: Core.Strapi) {

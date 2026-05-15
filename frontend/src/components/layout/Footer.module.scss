@@ -1,0 +1,109 @@
+@use '@/styles/variables' as *;
+
+.footer {
+  background-color: $surface;
+  border-top: 1px solid rgba($gold, 0.2);
+  padding: 2.5rem 2rem;
+  margin-top: auto;
+}
+
+.inner {
+  max-width: $max-content;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+.logoSide {
+  flex-shrink: 0;
+}
+
+.rightSide {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+
+  @media (max-width: 640px) {
+    align-items: center;
+  }
+}
+
+.logoLink {
+  display: inline-flex;
+  opacity: 0.85;
+  transition: opacity $transition-fast;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.logo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.socialLink {
+  display: inline-flex;
+  text-decoration: none;
+  opacity: 0.75;
+  transition: opacity $transition-fast, transform $transition-fast;
+
+  &:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+.socialIcon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.socialFallback {
+  font-size: 1.2rem;
+  color: $gold;
+}
+
+.description {
+  font-family: $font-sans;
+  font-size: 0.85rem;
+  color: $secondary;
+  text-align: left;
+  letter-spacing: 0.02em;
+
+  @media (max-width: 640px) {
+    text-align: center;
+  }
+
+  p {
+    margin: 0.2rem 0;
+  }
+
+  a {
+    color: $gold;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

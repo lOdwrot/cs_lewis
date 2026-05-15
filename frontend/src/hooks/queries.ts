@@ -16,6 +16,7 @@ import {
 import { getBiographyPage } from "@/services/biography.service";
 import { getNewsPage } from "@/services/news-page.service";
 import { getTopMenu } from "@/services/top-menu.service";
+import { getFooter } from "@/services/footer.service";
 import type { Difficulty } from "@/types/strapi";
 
 const PAGE_SIZE = 6;
@@ -56,6 +57,13 @@ export const useTopMenuQuery = () =>
   useQuery({
     queryKey: ["top-menu"],
     queryFn: getTopMenu,
+    staleTime: 5 * 60 * 1000,
+  });
+
+export const useFooterQuery = () =>
+  useQuery({
+    queryKey: ["footer"],
+    queryFn: getFooter,
     staleTime: 5 * 60 * 1000,
   });
 

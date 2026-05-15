@@ -268,3 +268,18 @@ export interface NewsPage {
   backgroundImage: StrapiImage | null;
   news: News[];
 }
+
+export interface FooterSocialLink {
+  id: number;
+  image: StrapiImage | null;
+  redirectUrl: string;
+}
+
+export interface Footer {
+  id: number;
+  documentId: string;
+  description: string | null;
+  socialLinks: FooterSocialLink[];
+  image: StrapiImage | null;
+  imageLink: string | null;
+}
