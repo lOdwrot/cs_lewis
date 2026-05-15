@@ -66,9 +66,7 @@ export function NewsPage() {
 
           <div className={styles.list}>
             {news.length > 0 ? (
-              news.map((item) => (
-                <NewsCard key={item.documentId} news={item} />
-              ))
+              news.map((item) => <NewsCard key={item.documentId} news={item} />)
             ) : (
               <p className={styles.empty}>Brak aktualności.</p>
             )}

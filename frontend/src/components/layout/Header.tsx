@@ -66,9 +66,30 @@ function NavTooltip({ text, children }: TooltipProps) {
         {visible && (
           <motion.div
             className={styles.tooltip}
-            initial={{ opacity: 0, y: 14, scale: 0.82, x: "-50%", filter: "blur(6px)", rotateX: -18 }}
-            animate={{ opacity: 1, y: 0, scale: 1, x: "-50%", filter: "blur(0px)", rotateX: 0 }}
-            exit={{ opacity: 0, y: 8, scale: 0.9, x: "-50%", filter: "blur(4px)", rotateX: -10 }}
+            initial={{
+              opacity: 0,
+              y: 14,
+              scale: 0.82,
+              x: "-50%",
+              filter: "blur(6px)",
+              rotateX: -18,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              x: "-50%",
+              filter: "blur(0px)",
+              rotateX: 0,
+            }}
+            exit={{
+              opacity: 0,
+              y: 8,
+              scale: 0.9,
+              x: "-50%",
+              filter: "blur(4px)",
+              rotateX: -10,
+            }}
             transition={{
               type: "spring",
               stiffness: 320,

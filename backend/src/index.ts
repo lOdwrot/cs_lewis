@@ -662,11 +662,7 @@ async function seedHomePageIfMissing(strapi: Core.Strapi) {
         documentId: existing.documentId,
         data: { navLinks: DEFAULT_NAV_LINKS } as never,
       });
-      await publishDoc(
-        strapi,
-        "api::home-page.home-page",
-        existing.documentId,
-      );
+      await publishDoc(strapi, "api::home-page.home-page", existing.documentId);
       strapi.log.info("✅ Backfilled navLinks on existing home page.");
     }
     return;
@@ -1544,17 +1540,47 @@ async function seedTopMenuIfMissing(strapi: Core.Strapi) {
   const data: Record<string, unknown> = {
     homeText: "C.S. Lewis",
     navItems: [
-      { label: "Wielki Portal", hoverText: "Trzy bramy do prawdy – Wyobraźnia, Rozum, Wiara", redirect: "portal" },
-      { label: "Przygody", hoverText: "Podróże przez myśl i dzieła C.S. Lewisa", redirect: "journeys" },
-      { label: "Biblioteka", hoverText: "Eseje i artykuły o Lewisie", redirect: "library" },
-      { label: "Życiorys", hoverText: "Historia życia – od Belfastu po Oxford", redirect: "biography" },
-      { label: "Encyklopedia", hoverText: "Słownik pojęć i postaci z dzieł Lewisa", redirect: "encyclopedia" },
-      { label: "Książki", hoverText: "Pełna bibliografia C.S. Lewisa", redirect: "books" },
-      { label: "Aktualności", hoverText: "Najnowsze wiadomości ze świata lewisologii", redirect: "news" },
+      {
+        label: "Wielki Portal",
+        hoverText: "Trzy bramy do prawdy – Wyobraźnia, Rozum, Wiara",
+        redirect: "portal",
+      },
+      {
+        label: "Przygody",
+        hoverText: "Podróże przez myśl i dzieła C.S. Lewisa",
+        redirect: "journeys",
+      },
+      {
+        label: "Biblioteka",
+        hoverText: "Eseje i artykuły o Lewisie",
+        redirect: "library",
+      },
+      {
+        label: "Życiorys",
+        hoverText: "Historia życia – od Belfastu po Oxford",
+        redirect: "biography",
+      },
+      {
+        label: "Encyklopedia",
+        hoverText: "Słownik pojęć i postaci z dzieł Lewisa",
+        redirect: "encyclopedia",
+      },
+      {
+        label: "Książki",
+        hoverText: "Pełna bibliografia C.S. Lewisa",
+        redirect: "books",
+      },
+      {
+        label: "Aktualności",
+        hoverText: "Najnowsze wiadomości ze świata lewisologii",
+        redirect: "news",
+      },
     ],
   };
 
-  const doc = await strapi.documents("api::top-menu.top-menu").create({ data: data as never });
+  const doc = await strapi
+    .documents("api::top-menu.top-menu")
+    .create({ data: data as never });
   await publishDoc(strapi, "api::top-menu.top-menu", doc.documentId);
 
   strapi.log.info("✅ Seedowanie górnego menu zakończone.");
