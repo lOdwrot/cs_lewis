@@ -49,6 +49,8 @@
   text-decoration: none;
   position: relative;
   padding-bottom: 2px;
+  text-align: center;
+  line-height: 1.5;
   transition: color $transition-fast;
 
   &::after {
