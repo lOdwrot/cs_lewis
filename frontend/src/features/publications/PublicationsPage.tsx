@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { PageBackdrop } from "@/components/animations/PageBackdrop";
 import { SEO } from "@/components/SEO";
 import { PageError } from "@/components/ui/PageError";
 import { GatesLoadingSkeleton } from "@/features/gates/GatesLoadingSkeleton";
@@ -75,6 +76,11 @@ export function PublicationsPage() {
 
   const isEmpty = !isLoading && publications.length === 0;
 
+  const backgroundSrc = page?.backgroundImage
+    ? getImageVariant(page.backgroundImage, "large")
+    : null;
+  const backgroundAlt = page?.backgroundImage?.alternativeText ?? "";
+
   if (pageError || pubsError) {
     return (
       <PageError
@@ -90,8 +96,10 @@ export function PublicationsPage() {
   const description = page?.description ?? "";
 
   return (
-    <PageTransition>
-      <SEO
+    <>
+      <PageBackdrop src={backgroundSrc} alt={backgroundAlt} />
+      <PageTransition>
+        <SEO
         title={title}
         description={
           description ||
@@ -226,5 +234,6 @@ export function PublicationsPage() {
         )}
       </main>
     </PageTransition>
+    </>
   );
 }

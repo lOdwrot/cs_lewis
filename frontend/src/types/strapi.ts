@@ -175,6 +175,7 @@ export interface PublicationsPage {
   documentId: string;
   title: string;
   description: string | null;
+  backgroundImage: StrapiImage | null;
 }
 
 export interface GatePage {

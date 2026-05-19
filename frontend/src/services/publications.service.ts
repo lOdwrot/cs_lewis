@@ -4,6 +4,13 @@ import type { Publication, PublicationsPage, StrapiResponse } from "@/types/stra
 export async function getPublicationsPage(): Promise<PublicationsPage> {
   const res = await api.get<StrapiResponse<PublicationsPage>>(
     "/publications-page",
+    {
+      params: {
+        "populate[backgroundImage][fields][0]": "url",
+        "populate[backgroundImage][fields][1]": "alternativeText",
+        "populate[backgroundImage][fields][2]": "formats",
+      },
+    },
   );
   return res.data.data;
 }
