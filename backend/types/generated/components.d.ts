@@ -75,6 +75,7 @@ export interface MenuNavItem extends Struct.ComponentSchema {
         'encyclopedia',
         'books',
         'news',
+        'publikacje',
       ]
     > &
       Schema.Attribute.Required &

@@ -29,7 +29,9 @@ export function Footer() {
               >
                 {logoEl}
               </a>
-            ) : logoEl}
+            ) : (
+              logoEl
+            )}
           </div>
         )}
 

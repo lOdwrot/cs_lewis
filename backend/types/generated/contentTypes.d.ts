@@ -893,6 +893,69 @@ export interface ApiNewsNews extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPublicationPublication extends Struct.CollectionTypeSchema {
+  collectionName: 'publications';
+  info: {
+    description: 'C.S. Lewis publication';
+    displayName: 'Publication';
+    pluralName: 'publications';
+    singularName: 'publication';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    image: Schema.Attribute.Media<'images'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::publication.publication'
+    > &
+      Schema.Attribute.Private;
+    publicationYear: Schema.Attribute.Integer & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPublicationsPagePublicationsPage
+  extends Struct.SingleTypeSchema {
+  collectionName: 'publications_pages';
+  info: {
+    description: 'Editable content for the public publications page';
+    displayName: 'Publications Page';
+    pluralName: 'publications-pages';
+    singularName: 'publications-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::publications-page.publications-page'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiStepStep extends Struct.CollectionTypeSchema {
   collectionName: 'steps';
   info: {
@@ -1514,6 +1577,8 @@ declare module '@strapi/strapi' {
       'api::library-page.library-page': ApiLibraryPageLibraryPage;
       'api::news-page.news-page': ApiNewsPageNewsPage;
       'api::news.news': ApiNewsNews;
+      'api::publication.publication': ApiPublicationPublication;
+      'api::publications-page.publications-page': ApiPublicationsPagePublicationsPage;
       'api::step.step': ApiStepStep;
       'api::term.term': ApiTermTerm;
       'api::top-menu.top-menu': ApiTopMenuTopMenu;

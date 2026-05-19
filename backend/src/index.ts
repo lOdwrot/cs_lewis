@@ -22,6 +22,8 @@ export default {
     await seedTopMenuIfMissing(strapi);
     await uploadSharedImagesOnce(strapi);
     await seedFooterIfMissing(strapi);
+    await seedPublicationsPageIfMissing(strapi);
+    await seedPublicationsIfEmpty(strapi);
   },
 };
 
@@ -40,6 +42,7 @@ async function setPublicPermissions(strapi: Core.Strapi) {
     "api::term.term",
     "api::news.news",
     "api::article.article",
+    "api::publication.publication",
   ];
   const singleTypes = [
     "api::home-page.home-page",
@@ -52,6 +55,7 @@ async function setPublicPermissions(strapi: Core.Strapi) {
     "api::news-page.news-page",
     "api::top-menu.top-menu",
     "api::footer.footer",
+    "api::publications-page.publications-page",
   ];
   const contentTypes = [
     ...collectionTypes.flatMap((ct) =>
@@ -1638,6 +1642,11 @@ async function seedTopMenuIfMissing(strapi: Core.Strapi) {
         hoverText: "Najnowsze wiadomości ze świata lewisologii",
         redirect: "news",
       },
+      {
+        label: "Publikacje",
+        hoverText: "Chronologiczny wykaz dzieł C.S. Lewisa",
+        redirect: "publikacje",
+      },
     ],
   };
 
@@ -1647,4 +1656,330 @@ async function seedTopMenuIfMissing(strapi: Core.Strapi) {
   await publishDoc(strapi, "api::top-menu.top-menu", doc.documentId);
 
   strapi.log.info("✅ Seedowanie górnego menu zakończone.");
+}
+
+async function seedPublicationsPageIfMissing(strapi: Core.Strapi) {
+  const existing = await strapi.db
+    .query("api::publications-page.publications-page")
+    .findOne({});
+  if (existing) return;
+
+  const data: Record<string, unknown> = {
+    title: "Publikacje",
+    description:
+      "Pełna lista dzieł C.S. Lewisa — od poezji i powieści po apologetykę i filozofię. Przeglądaj chronologicznie lub wyszukaj interesującą Cię pozycję.",
+  };
+
+  const doc = await strapi
+    .documents("api::publications-page.publications-page")
+    .create({ data: data as never });
+  await publishDoc(
+    strapi,
+    "api::publications-page.publications-page",
+    doc.documentId,
+  );
+
+  strapi.log.info("✅ Seedowanie strony publikacji zakończone.");
+}
+
+const PUBLICATIONS_SEED: {
+  title: string;
+  publicationYear: number;
+  description: string;
+}[] = [
+  {
+    title: "Spirits in Bondage",
+    publicationYear: 1919,
+    description: `## Spirits in Bondage: A Cycle of Lyrics
+
+Pierwszy opublikowany zbiór wierszy Lewisa, wydany pod pseudonimem **Clive Hamilton**. Cykl liryczny podzielony na trzy części: *The Prison House*, *Hesitation* i *Hope*. Wiersze odzwierciedlają dualizm wczesnego okresu — głęboka miłość do natury i piękna kontrastuje z wrogością wobec Boga i wszechświata.
+
+Lewis napisał te wiersze podczas służby w I wojnie światowej i krótko po niej. Widać w nich zarówno wpływ nordyckiej mitologii, jak i ból doświadczeń frontowych z Francji.`,
+  },
+  {
+    title: "Dymer",
+    publicationYear: 1926,
+    description: `## Dymer
+
+Długi poemat narracyjny opublikowany pod tym samym pseudonimem co debiut — *Clive Hamilton*. Tytułowy bohater ucieka z totalitarnego państwa i wkracza w świat snu i fantazji, gdzie rodzi potwora, który ostatecznie go pożera.
+
+Poemat odzwierciedla ówczesny ateizm Lewisa oraz jego zainteresowanie mitem i psychologią głębi. Sam autor później ocenił dzieło ambiwalentnie, lecz dostrzegał w nim elementy przepowiadające jego późniejsze nawrócenie.`,
+  },
+  {
+    title: "The Pilgrim's Regress",
+    publicationYear: 1933,
+    description: `## Powrót Pielgrzyma
+
+Pierwsza prozatorska książka Lewisa po nawróceniu — alegoryczna opowieść wzorowana na *Pielgrzymce Johna Bunyana*. Bohater John podróżuje przez krainy symbolizujące filozoficzne i kulturowe pułapki nowoczesności (liberalizm, marksizm, estetyzm, spirytyzm), szukając źródła wyspy widzianej w dzieciństwie.
+
+Dzieło jest zarazem intelektualną autobiografią nawrócenia Lewisa i satyrą na współczesne ideologie. Autor sam przyznał w późniejszych latach, że allegoria jest zbyt szczelna i trudna w odbiorze dla czytelnika nieznającego kontekstu.`,
+  },
+  {
+    title: "The Allegory of Love",
+    publicationYear: 1936,
+    description: `## Alegoria Miłości
+
+Przełomowe studium akademickie o miłości dworskiej i alegorii w literaturze średniowiecznej, za które Lewis otrzymał Nagrodę Hawthorndena. Praca analizuje tradycję od Owidiusza po Spensera, ukazując, jak motyw miłości dworskiej kształtował europejską wyobraźnię literacką przez ponad tysiąc lat.
+
+Dzieło było kamieniem węgielnym kariery Lewisa jako mediewisty i po dziś dzień pozostaje kanoniczną lekturą w anglojęzycznych studiach humanistycznych.`,
+  },
+  {
+    title: "Out of the Silent Planet",
+    publicationYear: 1938,
+    description: `## Poza Milczącą Planetą
+
+Pierwsza część **Trylogii Kosmicznej** (zwanej też Trylogią Ransom). Filolog Elwin Ransom zostaje porwany na Malacandę (Marsa) i odkrywa żywy, wielorasowy świat zamieszkały przez sorny, hrossy i pfifltriggi, pozostający w harmonii ze swym *eldil* — anielskim opiekunem.
+
+Powieść jest odpowiedzią na ówczesne przestrzenne science-fiction, lecz fundamentalnie różni się od niego: kosmosem rządzą inteligentne duchy, a Ziemia jest „milczącą planetą" — odciętą od reszty Stworzenia wskutek buntu swojego eldila.`,
+  },
+  {
+    title: "Rehabilitations and Other Essays",
+    publicationYear: 1939,
+    description: `## Rehabilitations and Other Essays
+
+Zbiór esejów akademickich i krytycznych, w których Lewis broni pisarzy i gatunków niesłusznie pogardzanych przez współczesną krytykę — m.in. Shelleya, Williama Morrisa, poezji romantycznej i samego gatunku fantastyki.
+
+Tytuł wskazuje na nadrzędny projekt: *rehabilitację* dzieł i autorów, których odrzucił modernistyczny snobizm. Eseje są manifestem tego, co Lewis nazwie później walką z „chronologicznym snobizmem".`,
+  },
+  {
+    title: "The Problem of Pain",
+    publicationYear: 1940,
+    description: `## Problem Bólu
+
+Pierwsza w pełni apologetyczna proza Lewisa, napisana na prośbę Ashleya Sampsona z serii *Christian Challenge*. Lewis analizuje pytanie: jeśli Bóg jest dobry i wszechmocny, skąd pochodzi cierpienie?
+
+Argumentuje, że ból jest „megafonem Boga do ogłuszonego świata" — narzędziem przełamującym samowystarczalność człowieka. Choć niektóre odpowiedzi Lewis potem zakwestionuje w *A Grief Observed*, książka pozostaje klasykiem apologetyki.`,
+  },
+  {
+    title: "The Screwtape Letters",
+    publicationYear: 1942,
+    description: `## Listy Starszego Diabła
+
+Arcydzieło satyry teologicznej. Trzydzieści jeden listów starszego demona Screwtape'a do swojego bratanka Wormwooda, instruujących go, jak skutecznie prowadzić ku potępieniu przeciętnego angielskiego chrześcijanina.
+
+Odwrócona perspektywa — demony rozmawiają o ludzkich słabościach z cynizmem zrozumiałym dopiero gdy się go przełoży na pozytyw — uczyniła z tej książki jedno z najostrzejszych narzędzi introspekcji moralnej XX wieku. Lewis przyznał, że pisanie jej było bolesne duchowo.`,
+  },
+  {
+    title: "A Preface to Paradise Lost",
+    publicationYear: 1942,
+    description: `## Przedmowa do Raju Utraconego
+
+Zapis wykładów Lewisa o epopei Miltona wygłoszonych w Oxfordzie, poszerzony o rozważania teoretyczne. Lewis broni Miltona przed krytyką T.S. Eliota i F.R. Leavisa, analizuje strukturę epiki jako gatunku oraz omawia teologiczne tło *Raju Utraconego*.
+
+Dzieło jest jednocześnie kluczem do zrozumienia własnej wyobraźni Lewisa — jego koncepcji hierarchii, posłuszeństwa i Upadku w późniejszej twórczości.`,
+  },
+  {
+    title: "Perelandra",
+    publicationYear: 1943,
+    description: `## Perelandra
+
+Druga część Trylogii Kosmicznej. Ransom zostaje przetransportowany na Wenus — Perelandra — planetę pokrytą unoszącymi się wyspami z roślinnością. Musi powstrzymać demonicznie opętanego Westa przed skłonieniem Zielonej Damy do ponowienia Upadku człowieka.
+
+Powieść jest teologiczną medytacją o naturze kuszenia, posłuszeństwa i niewinności. Sceny dysput między Ransomem a Westem należą do najgęstszych intelektualnie w całym dorobku Lewisa.`,
+  },
+  {
+    title: "The Abolition of Man",
+    publicationYear: 1943,
+    description: `## Zniesienie Człowieczeństwa
+
+Jedno z najważniejszych dzieł filozoficznych Lewisa — trzy wykłady o edukacji, wartościach i naturze człowieczeństwa. Lewis analizuje podręcznik szkolny, w którym autorzy nieświadomie propagują subiektywizm etyczny, i wyciąga konsekwencje: jeśli wartości są tylko uczuciami, eliminujemy *Tao* — wspólne wszystkim kulturom prawo moralne — i kończymy z „ludźmi bez piersi", niezdolnymi do cnoty.
+
+Finałowy esej o możliwości stworzenia „Człowieka Warunkowanego" jest proroczy w świetle XX-wiecznego totalitaryzmu.`,
+  },
+  {
+    title: "That Hideous Strength",
+    publicationYear: 1945,
+    description: `## Ta Wstrętna Moc
+
+Trzecia i ostatnia część Trylogii Kosmicznej — najbardziej rozbudowana i kontrowersyjna. Akcja rozgrywa się w Anglii: technokratyczna organizacja N.I.C.E. usiłuje przeprowadzić totalną transformację cywilizacji, manipulując rządem i opinią publiczną. Ransom przewodzi małej grupie oporu.
+
+Powieść łączy elementy dystopii, arthuriańskiej legendy (Merlin zostaje wskrzeszony) i chrześcijańskiej kosmologii. Jest jednocześnie krytyką scientyzmu, biurokracji i nowoczesnej koncepcji postępu.`,
+  },
+  {
+    title: "The Great Divorce",
+    publicationYear: 1945,
+    description: `## Wielki Rozwód
+
+Teologiczna wizja senna: narrator wsiada do autobusu, który wyjeżdża z Piekła i przybywa na obrzeża Nieba. Duchy z autobusu spotykają „Jasne Osoby" z Nieba, które próbują je nakłonić do pozostania. Niemal wszystkie odmawiają.
+
+Lewis pokazuje, że Piekło jest stanem wybieranym — duchem zamkniętym w sobie. Każda z rozmów jest studium innego rodzaju samooszukiwania i pychy. Książka jest odpowiedzią na Blake'owskie „Małżeństwo Nieba i Piekła".`,
+  },
+  {
+    title: "Miracles",
+    publicationYear: 1947,
+    description: `## Cuda
+
+Filozoficzna obrona możliwości cudów. Lewis argumentuje, że naturalizm — pogląd, że rzeczywistość wyczerpuje się w procesach naturalnych — jest samoobalający: jeśli umysł jest jedynie produktem ślepych sił, nie może być wiarygodnym narzędziem poznania.
+
+Główna część książki analizuje Wcielenie jako „wielki cud", z którego wszystkie pozostałe wynikają logicznie. Po słynnej dyskusji z Elizabeth Anscombe Lewis zrewidował rozdział o naturalistycznym argumencie, wzmacniając go.`,
+  },
+  {
+    title: "The Lion, the Witch and the Wardrobe",
+    publicationYear: 1950,
+    description: `## Lew, Czarownica i Stara Szafa
+
+Pierwsza opublikowana (choć nie pierwsza chronologicznie w narracji wewnętrznej) część **Kronik Narnii**. Czworo rodzeństwa Pevensie — Peter, Susan, Edmund i Lucy — odkrywa przez szafę magiczny świat Narnii, rządzonej przez Białą Czarownicę utrzymującą wieczną zimę bez Bożego Narodzenia.
+
+Aslan — wielki Lew, stwórca Narnii — oddaje życie za Edmunda i powraca z martwych. Alegoria Ofiary i Zmartwychwstania jest tu najbardziej przejrzysta z całego cyklu. Książka inauguruje jeden z najpoczytniejszych cyklów fantastycznych w historii literatury anglojęzycznej.`,
+  },
+  {
+    title: "Prince Caspian",
+    publicationYear: 1951,
+    description: `## Książę Kaspian
+
+Druga część Kronik Narnii. Rodzeństwo Pevensie zostaje wezwane z powrotem do Narnii — tym razem tysiąc trzysta lat po swojej pierwszej wizycie. Dawna Narnia jest podbita przez Telmarinów, a tytułowy książę Kaspian walczy o przywrócenie starych praw.
+
+Historia analizuje temat wierności temu, co prawdziwe, nawet gdy tradycja ulega zatarciu i deformacji. Lewis polemizuje z tendencją do rozmywania dziedzictwa w imię pragmatyki.`,
+  },
+  {
+    title: "Mere Christianity",
+    publicationYear: 1952,
+    description: `## Chrześcijaństwo po Prostu
+
+Uznawana za jedno z najważniejszych dzieł apologetycznych XX wieku, rozbudowana wersja wykładów radiowych BBC z lat 1942–1944. Lewis argumentuje za istnieniem Prawa Moralnego, jego Dawcy, bóstwa Chrystusa i praktyki chrześcijaństwa.
+
+Tytuł (za Richardem Baxter'em) wskazuje na cel: przedstawić tylko ten rdzeń wiary, który łączy wszystkich chrześcijan, bez angażowania się w denominacyjne spory. Książka przyczyniła się do nawrócenia wielu znanych intelektualistów, m.in. Charlesa Colsona i Francisa Collinsa.`,
+  },
+  {
+    title: "The Voyage of the Dawn Treader",
+    publicationYear: 1952,
+    description: `## Podróż Wędrowca do Świtu
+
+Trzecia część Kronik Narnii. Edmund i Lucy (wraz z kuznem Eustacym Scrubb'em) dołączają do króla Kaspiana na statku *Wędrowiec do Świtu*, płynącym ku wschodniemu kraniecowi świata. Każda wyspa przynosi nową próbę i przemianę.
+
+Opowieść jest medytacją o *metanoi* — przemianie serca. Szczególnie wymowna jest historia Eustacego, zamienionego w smoka własną chciwością i uwolnionego przez Aslana z łusek jednym wielkim szarpnięciem pazurów.`,
+  },
+  {
+    title: "The Silver Chair",
+    publicationYear: 1953,
+    description: `## Srebrne Krzesło
+
+Czwarta część Kronik Narnii. Eustacy Scrubb i Jill Pole zostają posłani przez Aslana z misją odnalezienia zaginionego księcia Rilianka. Prowadzeni przez cztery Znaki, trafiają do podziemnego królestwa Czarownicy z Zielonej Krainy.
+
+Kluczowa scena filozoficzna: Czarownica usiłuje przekonać bohaterów, że Narnia i Aslan są tylko projekcją podziemnego świata. Puddleglum i Eustacy odmówią — nawet gdyby tak było, świat przez nich wyobrażony jest lepszy niż realny. Jest to jeden z najbardziej zwartych argumentów za wartością wiary u Lewisa.`,
+  },
+  {
+    title: "The Horse and His Boy",
+    publicationYear: 1954,
+    description: `## Koń i Jego Chłopiec
+
+Piąta część Kronik Narnii (rozgrywająca się w czasie wydarzeń *Lwa, Czarownicy i Starej Szafy*). Shasta — chłopiec z południowego Calormen — ucieka na Północ razem z koniem Bree, który jest Mówiącym Koniem z Narnii.
+
+Powieść eksploruje tematy tożsamości, przeznaczenia i Bożej Opatrzności — wyjawiając stopniowo, że Aslan od początku prowadził bohaterów przez każdą pozornie przypadkową przeszkodę.`,
+  },
+  {
+    title: "English Literature in the Sixteenth Century",
+    publicationYear: 1954,
+    description: `## English Literature in the Sixteenth Century, Excluding Drama
+
+Tom III *Oxford History of English Literature* — monumentalne opracowanie literatury angielskiej od ok. 1485 do 1603, wyłączając dramat. Lewis omawia poezję i prozę od wczesnych humanistów po Spensera i Sydneya, prezentując własną periodyzację odmienną od powszechnie przyjętej.
+
+Dzieło jest jednocześnie syntezą naukową i wyrazem osobistego gustu: Lewis broni wartości poezji „złotej" i złożonego humanizmu contra protestantyzmu, podkreślając ciągłość ze średniowieczem tam, gdzie inni widzą zerwanie.`,
+  },
+  {
+    title: "The Magician's Nephew",
+    publicationYear: 1955,
+    description: `## Siostrzeniec Czarodzieja
+
+Szósta część Kronik Narnii (pierwsza chronologicznie w narracji wewnętrznej). Digory i Polly trafiają magicznymi pierścieniami do świata Charn — martwego świata pochłoniętego przez jego ostatnią królową Jadis — a potem do pierwotnej ciemności, w której Aslan śpiewem stwarza Narnię.
+
+Stworzenie świata przez Pieśń Aslana należy do najpiękniejszych scen w całym dorobku Lewisa. Obecność Jadis i jabłka ogrodu wyraźnie nawiązuje do biblijnych narracji o Raju.`,
+  },
+  {
+    title: "Surprised by Joy",
+    publicationYear: 1955,
+    description: `## Zaskoczony Radością
+
+Autobiografia duchowa — opis drogi Lewisa od dziecięcego ateizmu przez różne etapy poszukiwań do nawrócenia na chrześcijaństwo w 1931 roku. Centralnym pojęciem jest *Radość* (Joy) — przeszywająca tęsknota za czymś transcendentnym, którą Lewis odczuwał przez całe życie.
+
+Lewis opisuje kolejno: pierwszą Radość z nordyckiej mitologii, podróż przez Anglię wyobraźni, Wielką Wojnę Idei z Barfieldem, nocny przejazd taksówką do Whipsnade Zoo w momencie nawrócenia. Jest to jeden z najbardziej intelektualnie uczciwy zapis konwersji w literaturze angielskiej.`,
+  },
+  {
+    title: "The Last Battle",
+    publicationYear: 1956,
+    description: `## Ostatnia Bitwa
+
+Siódma i ostatnia część Kronik Narnii, za którą Lewis otrzymał Nagrodę Carnegie. Fałszywy Aslan — małpa Shift używa osła Puzzle'a — prowadzi Narnię ku zniszczeniu. Tirian, ostatni król Narnii, musi walczyć o prawdę w świecie, gdzie manipulacja i kłamstwo triumfują.
+
+Końcowe rozdziały — Sąd nad Narnią, odrzucenie starego świata i wejście do Prawdziwej Narnii — są jednym z najbardziej poruszających opisów Nieba w literaturze chrześcijańskiej. „Dalej w górę i dalej w głąb!" — wołanie, które streszcza platońską metafizykę Lewisa.`,
+  },
+  {
+    title: "Till We Have Faces",
+    publicationYear: 1956,
+    description: `## Aż Mamy Twarze
+
+Jedyna powieść Lewisa dla dorosłych, uważana przez wielu za jego arcydzieło prozatorskie. Retelling mitu o Psyche i Erosie przez pryzmat narracji jej siostry Orual — królowej Glome, która oskarża bogów o niesprawiedliwość.
+
+Dzieło jest wielowarstwowe: analizuje naturę zazdrości, różne formy miłości (Orual kocha Psyche miłością duszącą), mechanizm oskarżenia Boga i ostateczne odkrycie własnej twarzy. Lewis sam uważał tę książkę za swoje najdojrzalsze dzieło.`,
+  },
+  {
+    title: "Reflections on the Psalms",
+    publicationYear: 1958,
+    description: `## Refleksje nad Psalmami
+
+Medytacje laika nad Psałterzem — Lewis podkreśla, że nie jest biblistą i pisze jako czytelnik dzielący się własnymi trudnościami. Omawia m.in. problematykę psalmów przeklęcia, pochwałę prawa Bożego i poetykę paralelizmu.
+
+Szczególnie ważny jest rozdział o *drugim znaczeniu* — Lewis stara się pokazać, jak żydowskie teksty mogły być prorocze bez świadomości ich autorów, co rzuca światło na jego ogólną filozofię hermeneutyczną.`,
+  },
+  {
+    title: "The Four Loves",
+    publicationYear: 1960,
+    description: `## Cztery Miłości
+
+Analiza czterech form miłości znanych Grekom: *storge* (przywiązanie), *philia* (przyjaźń), *eros* (miłość romantyczna) i *agape* (miłość Boża). Lewis bada każdą z nich, ukazując ich piękno i niebezpieczeństwa, gdy stają się samowystarczalne.
+
+Szczególnie ceniona jest część o przyjaźni — Lewis opisuje ją jako miłość, która nie widzi siebie jako miłości, bo nie jest oślepiona instynktem. Esej o *eros* jest apologetyką romantyczną i teologią małżeństwa.`,
+  },
+  {
+    title: "An Experiment in Criticism",
+    publicationYear: 1961,
+    description: `## Eksperyment w Krytyce
+
+Wywrotowa propozycja metodologiczna: zamiast oceniać dzieło i dzielić je na „dobre" i „złe", Lewis proponuje oceniać *czytelników* i ich sposób lektury. „Dobra literatura" to ta, która umożliwia odbiór „dobrego czytelnika".
+
+Lewis opisuje dwa typy lektury: *utilizerzy* (czytają dla fabuły, porzucają po przeczytaniu) i *prawdziwi czytelnicy* (wielokrotnie wracają, dają się pochłonąć, otrzymują nowe życie). Esej jest zarazem obroną fantastyki i literatury popularnej przed snobizmem krytycznym.`,
+  },
+  {
+    title: "A Grief Observed",
+    publicationYear: 1961,
+    description: `## Smutek
+
+Dziennik żałoby prowadzony przez Lewisa po śmierci żony Joy Davidman w 1960 roku. Początkowo opublikowany pod pseudonimem N.W. Clerk. Lewis notuje niemal z brutalną szczerością: gniew na Boga, uczucie odciętych drzwi, doświadczenie pamięci jako żywego bólu.
+
+Stopniowo jednak dziennik przesuwa się — nie ku pogodzonemu spokojowi, lecz ku oczyszczonemu, twardszemu rozumieniu Boga i miłości. Jest to jedno z najważniejszych świadectw wiary pośród cierpienia w literaturze XX wieku, tworząc ironiczny dialog z *Problemem Bólu*.`,
+  },
+  {
+    title: "Letters to Malcolm",
+    publicationYear: 1964,
+    description: `## Listy do Malcolma, głównie o modlitwie
+
+Ostatnia ukończona przez Lewisa książka, opublikowana pośmiertnie dwa miesiące po jego śmierci. Fikcyjna korespondencja z przyjacielem Malcolmem, będąca pretekstem do rozważań o modlitwie prywatnej, liturgii i obecności Boga.
+
+Lewis broni modlitwy jako realnego kontaktu, analizuje kłopoty z liturgiczną nowością, omawia problemy wstawiennictwa i przebóstwienia. Książka jest ostatnim jego teologicznym testamentem — cieplejszym i bardziej pokornym niż wcześniejsze apologetyczne prace.`,
+  },
+  {
+    title: "The Discarded Image",
+    publicationYear: 1964,
+    description: `## Odrzucony Obraz
+
+Zapis wykładów Lewisa o średniowiecznym i renesansowym modelu Wszechświata — wielkiego hierarchicznego kosmosu z nieruchomą Ziemią w centrum, otoczoną coraz to wyższymi sferami planet, zamkniętą sferą gwiazd stałych i Empireum.
+
+Lewis argumentuje, że model ten nie był pomyłką naukową, lecz spójnym estetyczno-metafizycznym obrazem rzeczywistości, który przez ponad tysiąc lat kształtował europejską wyobraźnię. Zrozumienie go jest kluczem do czytania Dantego, Chaucera, Spensera i Miltona.`,
+  },
+];
+
+async function seedPublicationsIfEmpty(strapi: Core.Strapi) {
+  const count = await strapi.db.query("api::publication.publication").count({});
+  if (count > 0) return;
+
+  strapi.log.info("🌱 Sianie danych publikacji C.S. Lewisa…");
+
+  for (const pub of PUBLICATIONS_SEED) {
+    const doc = await strapi
+      .documents("api::publication.publication")
+      .create({ data: pub as never });
+    await publishDoc(strapi, "api::publication.publication", doc.documentId);
+  }
+
+  strapi.log.info("✅ Seedowanie publikacji zakończone.");
 }

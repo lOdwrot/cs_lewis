@@ -161,6 +161,22 @@ export interface EncyclopediaPage {
   backgroundImage: StrapiImage | null;
 }
 
+export interface Publication {
+  id: number;
+  documentId: string;
+  title: string;
+  publicationYear: number;
+  description: string;
+  image: StrapiImage | null;
+}
+
+export interface PublicationsPage {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string | null;
+}
+
 export interface GatePage {
   id: number;
   documentId: string;
@@ -206,7 +222,8 @@ export type TopMenuRedirect =
   | "biography"
   | "encyclopedia"
   | "books"
-  | "news";
+  | "news"
+  | "publikacje";
 
 export interface TopMenuNavItem {
   id: number;

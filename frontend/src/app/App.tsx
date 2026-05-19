@@ -16,6 +16,7 @@ import { LibraryPage } from "@/features/library/LibraryPage";
 import { ArticleDetail } from "@/features/library/ArticleDetail";
 import { BiographyPage } from "@/features/biography/BiographyPage";
 import { NewsPage } from "@/features/news/NewsPage";
+import { PublicationsPage } from "@/features/publications/PublicationsPage";
 import { NotFoundPage } from "@/features/notfound/NotFoundPage";
 import styles from "./App.module.scss";
 
@@ -44,6 +45,7 @@ function AnimatedRoutes() {
         <Route path="/library/:slug" element={<ArticleDetail />} />
         <Route path="/biography" element={<BiographyPage />} />
         <Route path="/news" element={<NewsPage />} />
+        <Route path="/publikacje" element={<PublicationsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AnimatePresence>

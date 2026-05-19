@@ -16,6 +16,7 @@ const REDIRECT_PATHS: Record<TopMenuRedirect, string> = {
   encyclopedia: "/encyclopedia",
   books: "/books",
   news: "/news",
+  publikacje: "/publikacje",
 };
 
 const EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];

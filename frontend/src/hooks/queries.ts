@@ -9,6 +9,10 @@ import { getJourneysPage } from "@/services/journeys-page.service";
 import { getBooksPage } from "@/services/books-page.service";
 import { getEncyclopediaPage, getTerms } from "@/services/encyclopedia.service";
 import {
+  getPublicationsPage,
+  getPublications,
+} from "@/services/publications.service";
+import {
   getArticle,
   getArticles,
   getLibraryPage,
@@ -138,3 +142,18 @@ export const useBiographyPageQuery = () =>
 
 export const useNewsPageQuery = () =>
   useQuery({ queryKey: ["news-page"], queryFn: getNewsPage });
+
+export const usePublicationsPageQuery = () =>
+  useQuery({ queryKey: ["publications-page"], queryFn: getPublicationsPage });
+
+export const usePublicationsInfiniteQuery = (search: string) =>
+  useInfiniteQuery({
+    queryKey: ["publications", { search }],
+    queryFn: ({ pageParam }) =>
+      getPublications({ page: pageParam, pageSize: 12, search }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pagination.page < lastPage.pagination.pageCount
+        ? lastPage.pagination.page + 1
+        : undefined,
+  });
